@@ -27,6 +27,30 @@
 <div id="site-footer"></div><div id="toast"></div>
 <script src="js/app.js"></script>
 <script>
+<section class="country-hero"><div class="container">
+  <div class="tabs" style="justify-content:flex-start;margin-bottom:20px" id="ctyTabs"></div>
+  <h1 id="ctyTitle">Study in the UK</h1><p id="ctyBlurb"></p>
+</div></section>
+<section class="section"><div class="container">
+  <div class="bmetric">
+    <div class="bm"><b id="ctyUnis">—</b><span>Partner Universities</span></div>
+    <div class="bm"><b id="ctyTuition">—</b><span>Avg. Tuition / year</span></div>
+    <div class="bm"><b id="ctyWork">—</b><span>Post-Study Work</span></div>
+    <div class="bm"><b id="ctyVisa">—</b><span>Visa Success Rate</span></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><h4>🎓 Popular Fields</h4><p id="ctyFields" style="margin-top:8px"></p>
+      <h4 style="margin-top:20px">🗓 Upcoming Intakes</h4><p id="ctyIntakes" style="margin-top:8px"></p></div>
+    <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
+      <h3>Get the <span id="ctyShort">UK</span> Shortlist</h3><div class="fs">Free · matched to your band + budget. We'll call within 24 hrs.</div>
+      <div class="field"><label>Name</label><input class="inp" id="cName" placeholder="Your name"></div>
+      <div class="field"><label>Phone</label><input class="inp" id="cPhone" placeholder="+91 ·····"></div>
+      <button class="btn btn-o btn-full" onclick="cLead()">Send Me Universities</button></div>
+  </div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
 FE.renderCountryPage();
 function cLead(){const n=document.getElementById('cName').value.trim();if(!n){FE.toast('⚠ Please enter your name');return}
  FE.saveLead('Country page: '+(FE.settings(),document.getElementById('ctyTitle').textContent),{name:n,phone:document.getElementById('cPhone').value,country:document.getElementById('ctyTitle').text[...]
