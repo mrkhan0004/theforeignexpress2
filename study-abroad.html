@@ -1,156 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Study Abroad — The Foreign Express</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/visual-refresh.css">
-  <link rel="stylesheet" href="css/roveia-theme.css">
-</head>
-<body>
-
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Study Abroad — The Foreign Express</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
 <div id="site-header"></div>
-
-<!-- Hero Section with Country Explorer Tabs -->
-<section class="country-hero">
-  <div class="container">
-    <div class="tabs" style="justify-content:flex-start;margin-bottom:20px" id="ctyTabs"></div>
-    <h1 id="ctyTitle">From IELTS to Boarding Pass</h1>
-    <p id="ctyBlurb">We handle everything after the score — country selection, shortlisting, applications, scholarships, loans, visa, flights and accommodation. End to end.</p>
+<section class="country-hero"><div class="container"><h1>From IELTS to Boarding Pass</h1><p>We handle everything after the score — country selection, shortlisting, applications, scholarships, loans, visa, flights and accommodation. End to end.</p></div></section>
+<section class="section white"><div class="container">
+  <div class="section-t"><h2>What We Handle For You</h2><p>One team, one timeline, zero chasing.</p></div>
+  <div class="grid-3">
+    <div class="card"><div class="ico i-b">🌍</div><h4>Country Selection</h4><p>Cost, work rights, PR pathways — matched to your budget.</p></div>
+    <div class="card"><div class="ico i-o">🎯</div><h4>University Shortlisting</h4><p>Your AI shortlist, reviewed by a human counsellor.</p></div>
+    <div class="card"><div class="ico i-g">📄</div><h4>Application + SOP/LOR</h4><p>Complete application submitted within 48 hours of go-ahead.</p></div>
+    <div class="card"><div class="ico i-y">💰</div><h4>Scholarship & Loan</h4><p>Scholarships up to ₹10 Lakhs + education loans.</p></div>
+    <div class="card"><div class="ico i-b">🛂</div><h4>Visa Filing</h4><p>Docs, financial proof, mock interviews — 90%+ success.</p></div>
+    <div class="card"><div class="ico i-o">🧳</div><h4>Pre-Departure</h4><p>Insurance, flights, accommodation, forex, SIM.</p></div>
   </div>
-</section>
-
-<!-- Country-Specific Metrics & Intake Data -->
-<section class="section">
-  <div class="container">
-    <div class="bmetric">
-      <div class="bm"><b id="ctyUnis">—</b><span>Partner Universities</span></div>
-      <div class="bm"><b id="ctyTuition">—</b><span>Avg. Tuition / year</span></div>
-      <div class="bm"><b id="ctyWork">—</b><span>Post-Study Work</span></div>
-      <div class="bm"><b id="ctyVisa">—</b><span>Visa Success Rate</span></div>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <h4>🎓 Popular Fields</h4>
-        <p id="ctyFields" style="margin-top:8px"></p>
-        <h4 style="margin-top:20px">🗓 Upcoming Intakes</h4>
-        <p id="ctyIntakes" style="margin-top:8px"></p>
-      </div>
-      <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
-        <h3>Get the <span id="ctyShort">Country</span> Shortlist</h3>
-        <div class="fs">Free · matched to your band + budget. We'll call within 24 hrs.</div>
-        <div class="field"><label>Name</label><input class="inp" id="cName" placeholder="Your name"></div>
-        <div class="field"><label>Phone</label><input class="inp" id="cPhone" placeholder="+91 ·····"></div>
-        <button class="btn btn-o btn-full" onclick="cLead()">Send Me Universities</button>
-      </div>
-    </div>
+  <div class="section-t" style="margin-top:48px"><h2>Your Journey, Step by Step</h2></div>
+  <div class="grid-2"><div class="timeline" style="max-width:540px">
+    <div class="tl-item"><b>Day 0 — Free Counselling Call</b><p>Profile evaluation, budget and country mapping.</p></div>
+    <div class="tl-item"><b>Day 1–2 — Application Ready</b><p>SOP, LORs, transcripts prepared and submitted.</p></div>
+    <div class="tl-item"><b>Day 3–7 — Offer Letter</b><p>Partner universities respond in as little as 48 hours.</p></div>
+    <div class="tl-item"><b>Week 2–4 — Visa & Finance</b><p>Loan, scholarship claims, visa filing, biometrics.</p></div>
+    <div class="tl-item"><b>Take-off ✈</b><p>Flights, housing, insurance, airport pickup.</p></div>
   </div>
-</section>
-
-<!-- Full Service Offerings, Journey Timeline & Consultation Form -->
-<section class="section white">
-  <div class="container">
-    <div class="section-t">
-      <h2>What We Handle For You</h2>
-      <p>One team, one timeline, zero chasing.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card"><div class="ico i-b">🌍</div><h4>Country Selection</h4><p>Cost, work rights, PR pathways — matched to your budget.</p></div>
-      <div class="card"><div class="ico i-o">🎯</div><h4>University Shortlisting</h4><p>Your AI shortlist, reviewed by a human counsellor.</p></div>
-      <div class="card"><div class="ico i-g">📄</div><h4>Application + SOP/LOR</h4><p>Complete application submitted within 48 hours of go-ahead.</p></div>
-      <div class="card"><div class="ico i-y">💰</div><h4>Scholarship & Loan</h4><p>Scholarships up to ₹10 Lakhs + education loans.</p></div>
-      <div class="card"><div class="ico i-b">🛂</div><h4>Visa Filing</h4><p>Docs, financial proof, mock interviews — 90%+ success.</p></div>
-      <div class="card"><div class="ico i-o">🧳</div><h4>Pre-Departure</h4><p>Insurance, flights, accommodation, forex, SIM.</p></div>
-    </div>
-
-    <div class="section-t" style="margin-top:48px">
-      <h2>Your Journey, Step by Step</h2>
-    </div>
-    <div class="grid-2">
-      <div class="timeline" style="max-width:540px">
-        <div class="tl-item"><b>Day 0 — Free Counselling Call</b><p>Profile evaluation, budget and country mapping.</p></div>
-        <div class="tl-item"><b>Day 1–2 — Application Ready</b><p>SOP, LORs, transcripts prepared and submitted.</p></div>
-        <div class="tl-item"><b>Day 3–7 — Offer Letter</b><p>Partner universities respond in as little as 48 hours.</p></div>
-        <div class="tl-item"><b>Week 2–4 — Visa & Finance</b><p>Loan, scholarship claims, visa filing, biometrics.</p></div>
-        <div class="tl-item"><b>Take-off ✈</b><p>Flights, housing, insurance, airport pickup.</p></div>
-      </div>
-      <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
-        <h3>Start Your Journey</h3>
-        <div class="fs">Free 30-min expert session.</div>
-        <div class="field"><label>Full Name*</label><input class="inp" id="saName" placeholder="Your name"></div>
-        <div class="field"><label>Phone*</label><input class="inp" id="saPhone" placeholder="+91 ·····"></div>
-        <div class="field">
-          <label>Interested Country</label>
-          <select class="inp" id="saCountry">
-            <option>UK</option>
-            <option>Canada</option>
-            <option>Germany</option>
-            <option>Ireland</option>
-            <option>Australia</option>
-            <option>Dubai</option>
-            <option>Italy</option>
-          </select>
-        </div>
-        <button class="btn btn-o btn-full" onclick="saLead()">Book Free Consultation</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Partner Stats Strip -->
-<div class="strip">
-  <div class="container">
-    <div><b>850+</b><span>University partners</span></div>
-    <div><b>70%+</b><span>Application→offer rate</span></div>
-    <div><b>48 hrs</b><span>Fastest offer letter</span></div>
-    <div><b>90%+</b><span>Visa success rate</span></div>
-  </div>
-</div>
-
-<div id="site-footer"></div>
-<div id="toast"></div>
-
-<script src="js/app.js"></script>
-<script>
-  // Initialize country tabs and dynamic metrics
-  FE.renderCountryPage();
-
-  // Country-specific shortlist handler
-  function cLead() {
-    const n = document.getElementById('cName').value.trim();
-    if (!n) {
-      FE.toast('⚠ Please enter your name');
-      return;
-    }
-    FE.saveLead('Country page: ' + (FE.settings(), document.getElementById('ctyTitle').textContent), {
-      name: n,
-      phone: document.getElementById('cPhone').value,
-      country: document.getElementById('ctyTitle').textContent,
-      band: ''
-    });
-    FE.toast('✅ Request received! Your shortlist is being prepared.');
-  }
-
-  // Consultation booking handler
-  function saLead() {
-    const name = document.getElementById('saName').value.trim();
-    const phone = document.getElementById('saPhone').value.trim();
-    const country = document.getElementById('saCountry').value;
-
-    if (!name) {
-      FE.toast('⚠ Enter your name');
-      return;
-    }
-    FE.saveLead('Study Abroad page', {
-      name: name,
-      phone: phone,
-      country: country,
-      band: ''
-    });
-    FE.toast('✅ Session request received! Expert will call within 24 hrs.');
-  }
-</script>
-</body>
-</html>
+  <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
+    <h3>Start Your Journey</h3><div class="fs">Free 30-min expert session.</div>
+    <div class="field"><label>Full Name*</label><input class="inp" id="saName" placeholder="Your name"></div>
+    <div class="field"><label>Phone*</label><input class="inp" id="saPhone" placeholder="+91 ·····"></div>
+    <div class="field"><label>Interested Country</label><select class="inp" id="saCountry"><option>UK</option><option>Canada</option><option>Germany</option><option>Ireland</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+    <button class="btn btn-o btn-full" onclick="if(!document.getElementById('saName').value.trim()){FE.toast('⚠ Enter your name');return}FE.saveLead('Study Abroad page',{name:saName.value,phone:saPhone.value,country:saCountry.value,band:''});FE.toast('✅ Session request received! Expert will call within 24 hrs.')">Book Free Consultation</button>
+  </div></div>
+</div></section>
+<div class="strip"><div class="container"><div><b>850+</b><span>University partners</span></div><div><b>70%+</b><span>Application→offer rate</span></div><div><b>48 hrs</b><span>Fastest offer letter</span></div><div><b>90%+</b><span>Visa success rate</span></div></div></div>
+<div id="site-footer"></div><div id="toast"></div><script src="js/app.js"></script></body></html>
