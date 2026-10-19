@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5ef">
+  <title>Academic IELTS Test Library — The Foreign Express</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"><link rel="stylesheet" href="css/ielts-player.css">
+</head>
+<body class="ielts-player-body">
+  <div id="site-header"></div>
+  <main class="lp-intro">
+    <p class="lp-eyebrow">THE FOREIGN EXPRESS · ACADEMIC ONLY</p>
+    <h1>Choose a practice<br><span>session by skill.</span></h1>
+    <p class="lp-intro-copy">The original demo set below is playable and uses the same split-screen player for prompt and response. Cambridge Academic and Actual Tests need licensed question/audio content before they can be activated.</p>
+    <div class="lp-mode-row"><span class="lp-mode-chip">Listening</span><span class="lp-mode-chip">Reading</span><span class="lp-mode-chip">Writing Task 1 &amp; 2</span><span class="lp-mode-chip">Speaking Parts 1–3</span></div>
+    <div class="lp-section-list" id="mtGrid"></div>
+    <div class="lp-disclaimer">This project does not include the reference site's proprietary Cambridge passages, answer keys or recordings. The available test content is original sample material. Reading/Listening provide small-sample answer estimates only; Writing/Speaking need a real evaluation service for band scores.</div>
+    <div class="lp-intro-actions"><a href="ielts.html#library" class="rv-btn rv-btn-dark">Browse all Academic collections ↗</a><a href="https://www.lexibot.me/services/free-ielts-writing-score-checker/" target="_blank" rel="noopener noreferrer" class="rv-link-arrow">Free LexiBot Writing Checker ↗</a></div>
+  </main>
+  <div id="site-footer"></div><div id="toast" role="status" aria-live="polite"></div>
+  <script src="js/app.js"></script><script src="js/tests-data.js"></script>
+  <script>
+    (function(){
+      const target=document.getElementById('mtGrid');
+      const available=Object.values(FE_TESTS);
+      const icon={Full:'▤',Listening:'◖',Reading:'Aa',Writing:'✎',Speaking:'◉'};
+      target.innerHTML=available.map(t=>{
+        const progress=(FE.progress()||{})[Object.keys(FE_TESTS).find(id=>FE_TESTS[id]===t)]||0;
+        const id=Object.keys(FE_TESTS).find(key=>FE_TESTS[key]===t);
+        const subtitle=t.skill==='Full'?'Reading + Listening + Writing; Speaking is separate':t.skill==='Speaking'?'Microphone recording and self-review; no AI score':t.skill==='Writing'?'Academic Task 1 and Task 2 with local autosave':t.skill==='Listening'?'Original sample script read aloud by browser speech synthesis':'Original sample passage with question navigation';
+        return `<article class="lp-section-preview lp-library-card"><div class="lp-library-main"><span class="lp-library-icon">${icon[t.skill]||'✎'}</span><div><b>${t.name}</b><p>${subtitle}</p><small>${t.mins} minutes · ${t.skill} · ${progress||0}% saved progress</small></div></div><div class="lp-library-actions"><a class="rv-btn rv-btn-dark" href="test.html?id=${encodeURIComponent(id)}&amp;mode=practice">Practice ↗</a><a class="lp-exam-link" href="test.html?id=${encodeURIComponent(id)}&amp;mode=exam">Exam-style mode</a></div></article>`;
+      }).join('');
+    }());
+  </script>
+</body></html>

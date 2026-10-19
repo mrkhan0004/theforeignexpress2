@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Study Plan — The Foreign Express</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="pagehead"><div class="container"><h1>AI Study Plan Generator</h1><p>A day-by-day plan that adapts every week based on what you complete.</p></div></div>
+<section class="section" style="padding-top:34px"><div class="container grid-2" style="align-items:start">
+  <div class="card"><h4>⚙ Build My Plan</h4>
+    <div class="field"><label>Current Band</label><select class="inp" id="spCur"><option>5.0</option><option>5.5</option><option selected>6.0</option><option>6.5</option><option>7.0</option></select></div>
+    <div class="field"><label>Target Band</label><select class="inp" id="spTar"><option>6.5</option><option selected>7.0</option><option>7.5</option><option>8.0</option></select></div>
+    <div class="field"><label>Weeks Until Exam</label><select class="inp" id="spWeeks"><option>4</option><option selected>8</option><option>12</option></select></div>
+    <div class="field"><label>Weakest Skill</label><select class="inp" id="spWeak"><option>Writing</option><option>Speaking</option><option>Reading</option><option>Listening</option></select></div>
+    <button class="btn btn-n btn-full" onclick="spGen()">✨ Generate My Plan</button></div>
+  <div id="spOut"><div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:36px;margin-bottom:8px">🗓</div>Your personalised weekly plan appears here.</div></div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div><script src="js/app.js"></script>
+<script>
+function spGen(){const cur=document.getElementById('spCur').value,tar=document.getElementById('spTar').value,w=document.getElementById('spWeeks').value,weak=document.getElementById('spWeak').value;
+ const days=[['Mon',`📖 ${weak} micro-lesson (20m) + drill (25m)`],['Tue','🎧 Listening Section 2 + AI review'],['Wed',weak==='Writing'?'✍ Full Task 2 + AI check':'📚 15 academic collocations + usage'],['Thu',weak==='Speaking'?'🎙 Speaking Room Parts 1+2':'🎙 Speaking Room Part 1'],['Fri','📖 Timed reading passage + error log'],['Sat','🎯 Full mock test (exam simulation)'],['Sun','😴 Rest + 20-min flashcard review']];
+ document.getElementById('spOut').innerHTML=`<div class="card"><div style="text-align:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px"><h4>Your ${w}-Week Express Plan</h4><p style="font-size:13px;color:var(--muted)">${cur} → <b style="color:var(--orange)">${tar}</b> · emphasis: ${weak}</p></div>
+ ${days.map(d=>`<div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px"><b style="min-width:42px;color:var(--navy)">${d[0]}</b><span>${d[1]}</span></div>`).join('')}
+ <div class="note" style="margin:14px 0 0">📅 In production, the AI re-plans every Sunday based on your actual mock scores.</div>
+ <button class="btn btn-o btn-full" style="margin-top:12px" onclick="FE.toast('✅ Plan activated (save to account in production)')">Activate This Plan</button></div>`}
+</script></body></html>

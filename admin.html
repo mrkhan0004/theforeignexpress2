@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div id="adminRoot"></div>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
+const root=document.getElementById('adminRoot');
+function loginGate(){
+  root.innerHTML=`<div class="auth"><div class="formcard">
+  <h3>🛡 Admin Login</h3><div class="fs">Restricted area — staff only.</div>
+  <div class="demo-creds">Demo credentials: <b>admin@theforeignexpress.com</b> / <b>express@2026</b></div>
+  <div class="field"><label>Email</label><input class="inp" id="aEmail" type="email"></div>
+  <div class="field"><label>Password</label><input class="inp" id="aPass" type="password"></div>
+  <button class="btn btn-n btn-full" onclick="doAdminLogin()">Login to Admin Panel</button>
+  </div></div>`;
+}
+function doAdminLogin(){
+  if(FE.adminLogin(document.getElementById('aEmail').value.trim(),document.getElementById('aPass').value)){FE.toast('✅ Admin access granted');panel();}
+  else FE.toast('⚠ Invalid admin credentials');
+}
+const STAT=['New','Contacted','Qualified','Applied','Enrolled'];
+function pill(s){const cls={'New':'p-new','Contacted':'p-con','Qualified':'p-qua','Applied':'p-app','Enrolled':'p-enr'}[s];return `<span class="pill-s ${cls}">${s}</span>`}
+
+function panel(){
+  if(!FE.isAdmin()){loginGate();return}
+  root.innerHTML=`<div class="dash-wrap">
+  <div class="dside">
+    <a class="on" onclick="aTab('ov',this)">📊 Overview</a>
+    <a onclick="aTab('ld',this)">👥 Leads (CRM)</a>
+    <a onclick="aTab('us',this)">🧑‍🎓 Users</a>
+    <a onclick="aTab('rs',this)">📝 Test Results</a>
+    <a onclick="aTab('st',this)">⚙ Site Settings</a>
+    <a onclick="FE.adminLogout()">🚪 Logout Admin</a>
+  </div>
+  <div class="dmain" id="aMain"></div></div>`;
+  renderA('ov');
+}
+function aTab(k,el){document.querySelectorAll('.dside a').forEach(a=>a.classList.remove('on'));el.classList.add('on');renderA(k);}
+function renderA(k){
+  const m=document.getElementById('aMain');
+  if(k==='ov'){
+    const L=FE.leads(),U=FE.users(),RS=FE.results();
+    const today=L.filter(l=>new Date(l.created).toDateString()===new Date().toDateString()).length;
+    const enrolled=L.filter(l=>l.status==='Enrolled').length;
+    const conv=L.length?Math.round(enrolled/L.length*100):0;
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:20px">📊 Operations Overview</h3>
+    <div class="dgrid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="wcard"><h5>TOTAL LEADS</h5><div class="big" style="color:var(--orange)">${L.length}</div><small style="color:var(--green)">+${today} today</small></div>
+      <div class="wcard"><h5>REGISTERED USERS</h5><div class="big">${U.length}</div><small style="color:var(--muted)">platform signups</small></div>
+      <div class="wcard"><h5>TESTS TAKEN</h5><div class="big">${RS.length}</div><small style="color:var(--muted)">all attempts</small></div>
+      <div class="wcard"><h5>LEAD → ENROLLED</h5><div class="big">${conv}%</div><small style="color:var(--muted)">${enrolled} enrolled</small></div>
+    </div>
+    <h4 style="color:var(--navy);margin:8px 0 12px">Pipeline Snapshot</h4>
+    <div class="dgrid" style="grid-template-columns:repeat(5,1fr)">
+    ${STAT.map(s=>`<div class="wcard" style="text-align:center"><h5>${s.toUpperCase()}</h5><div class="big">${L.filter(l=>l.status===s).length}</div></div>`).join('')}</div>`;
+  }
+  if(k==='ld'){
+    const L=FE.leads();
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">👥 Lead Pipeline (CRM)</h3>
+    <table><tr><th>Name</th><th>Contact</th><th>Country</th><th>Band</th><th>Source</th><th>Status</th><th>Owner</th><th></th></tr>
+    ${L.map(l=>`<tr><td><b>${FE.esc(l.name)}</b><br><small style="color:var(--muted)">${new Date(l.created).toLocaleDateString()}</small></td>
+    <td>${FE.esc(l.email)}<br>${FE.esc(l.phone||'')}</td><td>${FE.esc(l.country||'—')}</td><td>${FE.esc(l.band||'—')}</td><td>${FE.esc(l.source)}</td>
+    <td><select class="inp" style="padding:5px 8px;font-size:12px" onchange="FE.updateLead('${l.id}',{status:this.value});FE.toast('Status → '+this.value)">${STAT.map(s=>`<option ${l.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+    <td><input class="inp" style="padding:5px 8px;font-size:12px;width:100px" value="${FE.esc(l.owner)}" onchange="FE.updateLead('${l.id}',{owner:this.value})"></td>
+    <td><button class="btn btn-red btn-sm" style="padding:4px 10px;font-size:11px" onclick="FE.delLead('${l.id}');renderA('ld');FE.toast('Lead deleted')">✕</button></td></tr>`).join('')}</table>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px">💡 Status dropdown aur owner field live update hote hain — homepage/contact forms se aane wale leads yahan instantly dikhte hain.</p>`;
+  }
+  if(k==='us'){
+    const U=FE.users();
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">🧑‍🎓 Registered Users</h3>
+    <table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>Band</th><th>Plan</th><th>Joined</th><th></th></tr>
+    ${U.map(x=>`<tr><td><b>${FE.esc(x.name)}</b></td><td>${FE.esc(x.email)}</td><td>${FE.esc(x.phone||'—')}</td><td>${FE.esc(x.country||'—')}</td><td>${FE.esc(x.band||'—')}</td><td style="text-transform:capitalize">${x.plan}</td><td>${new Date(x.created).toLocaleDateString()}</td>
+    <td><button class="btn btn-red btn-sm" style="padding:4px 10px;font-size:11px" onclick="if(confirm('Delete user?')){FE.delUser('${x.email}');renderA('us');FE.toast('User deleted')}">✕</button></td></tr>`).join('')}</table>`;
+  }
+  if(k==='rs'){
+    const RS=FE.results();
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">📝 All Test Results</h3>
+    ${RS.length?`<table><tr><th>User</th><th>Test</th><th>Band</th><th>Detail</th><th>Date</th></tr>
+    ${RS.map(r=>`<tr><td>${r.user==='guest'?'👤 Guest':FE.esc(r.user)}</td><td>${FE.esc(r.name)}</td><td><b>${r.band}</b></td><td>${FE.esc(r.detail||'')}</td><td>${new Date(r.created).toLocaleDateString()}</td></tr>`).join('')}</table>`:'<div class="wcard" style="text-align:center;padding:40px;color:var(--muted)">No test attempts yet.</div>'}`;
+  }
+  if(k==='st'){
+    const s=FE.settings();
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">⚙ Site Settings — live poori site par apply hote hain</h3>
+    <div class="grid-2" style="max-width:860px"><div class="wcard">
+      <div class="field"><label>Phone (header/footer)</label><input class="inp" id="stPhone" value="${FE.esc(s.phone)}"></div>
+      <div class="field"><label>Email</label><input class="inp" id="stEmail" value="${FE.esc(s.email)}"></div>
+      <div class="field"><label>Homepage Hero Title (HTML allowed)</label><textarea class="inp" id="stHero" rows="3">${FE.esc(s.heroTitle)}</textarea></div>
+      <div class="grid-2" style="gap:10px">
+        <div class="field"><label>Stat 1 value</label><input class="inp" id="s1" value="${FE.esc(s.s1)}"></div>
+        <div class="field"><label>Stat 1 label</label><input class="inp" id="s1l" value="${FE.esc(s.s1l)}"></div>
+        <div class="field"><label>Stat 2 value</label><input class="inp" id="s2" value="${FE.esc(s.s2)}"></div>
+        <div class="field"><label>Stat 2 label</label><input class="inp" id="s2l" value="${FE.esc(s.s2l)}"></div>
+        <div class="field"><label>Stat 3 value</label><input class="inp" id="s3" value="${FE.esc(s.s3)}"></div>
+        <div class="field"><label>Stat 3 label</label><input class="inp" id="s3l" value="${FE.esc(s.s3l)}"></div>
+        <div class="field"><label>Stat 4 value</label><input class="inp" id="s4" value="${FE.esc(s.s4)}"></div>
+        <div class="field"><label>Stat 4 label</label><input class="inp" id="s4l" value="${FE.esc(s.s4l)}"></div>
+      </div>
+      <button class="btn btn-o btn-full" onclick="saveSite()">💾 Save & Apply Site-Wide</button>
+    </div>
+    <div>
+      <div class="wcard" style="margin-bottom:16px"><h5>🔐 CHANGE ADMIN PASSWORD</h5>
+        <div class="field"><label>New Password</label><input class="inp" id="newPass" type="password"></div>
+        <button class="btn btn-n btn-full" onclick="const p=document.getElementById('newPass').value;if(p.length<6){FE.toast('⚠ Min 6 characters');return}FE.saveSettings({adminPass:p});FE.toast('✅ Admin password changed')">Update Password</button></div>
+      <div class="wcard"><h5>🧪 DATA TOOLS</h5>
+        <button class="btn btn-out btn-full" style="margin-bottom:8px" onclick="exportData()">⬇ Export All Data (JSON)</button>
+        <button class="btn btn-red btn-full" onclick="if(confirm('Reset ALL data to demo state? This cannot be undone.')){localStorage.clear();location.reload()}">🔄 Reset Demo Data</button></div>
+    </div></div>`;
+  }
+}
+function saveSite(){FE.saveSettings({phone:document.getElementById('stPhone').value,email:document.getElementById('stEmail').value,heroTitle:document.getElementById('stHero').value,s1:document.getElementById('s1').value,s1l:document.getElementById('s1l').value,s2:document.getElementById('s2').value,s2l:document.getElementById('s2l').value,s3:document.getElementById('s3').value,s3l:document.getElementById('s3l').value,s4:document.getElementById('s4').value,s4l:document.getElementById('s4l').value});FE.toast('✅ Settings saved — visible on every page!');}
+function exportData(){const data={};['fe_users','fe_leads','fe_results','fe_progress','fe_apps','fe_settings'].forEach(k=>data[k]=localStorage.getItem(k));
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='foreign-express-data.json';a.click();}
+FE.isAdmin()?panel():loginGate();
+</script></body></html>

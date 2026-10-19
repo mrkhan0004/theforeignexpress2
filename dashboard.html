@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Dashboard — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="dash-wrap">
+  <div class="dside">
+    <a class="on" onclick="dTab('ov',this)">🏠 Overview</a>
+    <a onclick="dTab('rs',this)">📊 My Results</a>
+    <a onclick="dTab('sl',this)">🎯 My Shortlist</a>
+    <a onclick="dTab('ap',this)">📄 Applications</a>
+    <a onclick="dTab('pf',this)">👤 Profile</a>
+  </div>
+  <div class="dmain" id="dMain"></div>
+</div>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
+FE.requireAuth();
+const u=FE.me(),myResults=()=>FE.results().filter(r=>r.user===u.email),prog=FE.progress();
+function dTab(k,el){document.querySelectorAll('.dside a').forEach(a=>a.classList.remove('on'));el.classList.add('on');render(k);window.scrollTo({top:0});}
+
+function statCards(){
+  const rs=myResults();const avg=rs.length?(rs.reduce((a,r)=>a+r.band,0)/rs.length).toFixed(1):'—';
+  return `<div class="dgrid">
+  <div class="wcard"><h5>CURRENT BAND → TARGET</h5><div class="big">${u.band||'—'} → ${u.target||'7.0'}</div><div class="pbar" style="margin-top:10px"><i style="width:${Math.min(100,(parseFloat(u.band)||5)/9*100)}%"></i></div></div>
+  <div class="wcard"><h5>AVG MOCK BAND</h5><div class="big" style="color:var(--orange)">${avg}</div><small style="color:var(--muted)">${rs.length} test${rs.length!==1?'s':''} taken</small></div>
+  <div class="wcard"><h5>PLAN</h5><div class="big" style="text-transform:capitalize">${u.plan}</div><a href="pricing.html" style="font-size:12.5px;color:var(--orange);font-weight:700">${u.plan==='free'?'Upgrade to Pro →':'Manage plan'}</a></div>
+  </div>`;
+}
+
+function render(k){
+  const m=document.getElementById('dMain');
+  if(k==='ov'){
+    m.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div><h3 style="color:var(--navy)">Welcome back, ${FE.esc(u.name.split(' ')[0])} 👋</h3><p style="font-size:13px;color:var(--muted)">Target: ${FE.esc(u.target||'7.0')} · ${FE.esc(u.country||'—')}</p></div>
+      <a href="tests.html" class="btn btn-o btn-sm">＋ Take a Test</a></div>
+    ${statCards()}
+    <div class="wcard"><h5>AI COACH SAYS</h5>
+    <p style="font-size:14.5px">${coachMsg()}</p></div>
+    <div class="grid-3" style="margin-top:20px">
+      <div class="wcard"><h5>QUICK ACTIONS</h5>
+        <a href="diagnostic.html" class="btn btn-n btn-sm btn-full" style="margin-bottom:8px">🧪 Free Diagnostic</a>
+        <a href="writing-checker.html" class="btn btn-n btn-sm btn-full" style="margin-bottom:8px">✍ Check an Essay</a>
+        <a href="study-plan.html" class="btn btn-n btn-sm btn-full">🗓 Build Study Plan</a></div>
+      <div class="wcard"><h5>TEST PROGRESS</h5>${Object.keys(prog).length?Object.entries(prog).map(([t,p])=>`<div style="margin-bottom:10px"><div class="cl" style="display:flex;justify-content:space-between;font-size:12.5px"><span>${t}</span><b>${p}%</b></div><div class="pbar"><i style="width:${p}%"></i></div></div>`).join(''):'<p style="font-size:13px;color:var(--muted)">No tests yet — start with the library!</p>'}</div>
+      <div class="wcard"><h5>COUNSELLOR</h5><p style="font-size:14px;margin-bottom:10px">👩‍💼 Free 30-min session with an expert for your country plan.</p><a href="contact.html" class="btn btn-g btn-sm btn-full">Book Free Call</a></div>
+    </div>`;
+  }
+  if(k==='rs'){
+    const rs=myResults();
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:18px">📊 My Test Results</h3>
+    ${rs.length?`<table><tr><th>Test</th><th>Band</th><th>Detail</th><th>Date</th></tr>${rs.map(r=>`<tr><td>${FE.esc(r.name)}</td><td><b style="color:${r.band>=7?'var(--green)':r.band>=6?'var(--gold)':'#EF4444'}">${r.band}</b></td><td>${FE.esc(r.detail||'')}</td><td>${new Date(r.created).toLocaleDateString()}</td></tr>`).join('')}</table>`
+    :`<div class="wcard" style="text-align:center;padding:44px"><div style="font-size:36px">📝</div><p style="margin:10px 0 16px">No results yet. Take your first mock test!</p><a href="tests.html" class="btn btn-o">Browse Test Library</a></div>`}`;
+  }
+  if(k==='sl'){
+    const band=parseFloat(u.band)||6.5;
+    const list=FE.UNIS.filter(x=>x.iel<=band).slice(0,9);
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:6px">🎯 AI Shortlist — matched to Band ${band}</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Generated from your band, budget and field. Admit probability is an AI estimate.</p>
+    <div class="grid-3">${list.map(x=>{const p=Math.max(30,Math.min(92,Math.round(95-(x.iel-band)*25-(x.t/2))));
+      return `<div class="wcard"><h5>${x.n}</h5><div class="big" style="color:${p>=70?'var(--green)':p>=50?'var(--gold)':'#EF4444'}">${p}%</div><small style="color:var(--muted)">admit probability</small><div class="pbar" style="margin:10px 0"><i style="width:${p}%"></i></div><p style="font-size:12.5px">${x.s} · ₹${x.t}L/yr · IELTS ${x.iel}+</p><button class="btn btn-o btn-sm btn-full" style="margin-top:10px" onclick="FE.addApp({uni:'${x.n}',course:'${x.s.split('·')[0].trim()}'});FE.toast('✅ Added to your applications!');render('ap')">Start Application →</button></div>`}).join('')}</div>`;
+  }
+  if(k==='ap'){
+    const stages=[['drafting','📝 Drafting'],['submitted','📤 Submitted'],['offer','🎉 Offer'],['visa','🛂 Visa']];
+    const list=FE.apps();
+    if(!list.length){
+      m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:18px">📄 Application Tracker</h3>
+        <div class="wcard" style="text-align:center;padding:44px"><div style="font-size:36px">🎯</div><p style="margin:10px 0 16px">No applications yet. Open your AI Shortlist to add universities.</p><button class="btn btn-o" onclick="dTab('sl',document.querySelectorAll('.dside a')[2])">View Shortlist</button></div>`;
+    }else{
+      const columns=stages.map(([sk,sl])=>{
+        const items=list.map((a,i)=>{
+          if(a.stage!==sk)return '';
+          return `<div class="kitem"><b>${FE.esc(a.uni)}</b>${FE.esc(a.course)}<div style="margin-top:6px;display:flex;gap:6px"><button class="btn btn-out btn-sm" style="padding:3px 8px;font-size:11px" onclick="mv(${i},'${sk}',-1)" aria-label="Move ${FE.esc(a.uni)} backward">←</button><button class="btn btn-out btn-sm" style="padding:3px 8px;font-size:11px" onclick="mv(${i},'${sk}',1)" aria-label="Move ${FE.esc(a.uni)} forward">→</button></div></div>`;
+        }).join('');
+        return `<div class="kcol"><h6>${sl}</h6>${items||'<p style="font-size:12px;color:var(--muted);padding:8px 3px">No applications in this stage.</p>'}</div>`;
+      }).join('');
+      m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:18px">📄 Application Tracker</h3><div class="kanban">${columns}</div>`;
+    }
+  }
+  if(k==='pf'){
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:18px">👤 My Profile</h3><div class="grid-2" style="max-width:640px">
+    <div class="wcard">
+      <div class="field"><label>Full Name</label><input class="inp" id="pfName" value="${FE.esc(u.name)}"></div>
+      <div class="field"><label>Phone</label><input class="inp" id="pfPhone" value="${FE.esc(u.phone)}"></div>
+      <div class="field"><label>Target Country</label><input class="inp" id="pfCountry" value="${FE.esc(u.country)}"></div>
+      <div class="grid-2" style="gap:10px"><div class="field"><label>Current Band</label><input class="inp" id="pfBand" value="${FE.esc(u.band)}"></div>
+      <div class="field"><label>Target Band</label><input class="inp" id="pfTarget" value="${FE.esc(u.target)}"></div></div>
+      <button class="btn btn-o btn-full" onclick="saveProfile()">💾 Save Changes</button>
+    </div>
+    <div class="wcard"><h5>ACCOUNT</h5>
+      <p style="font-size:14px"><b>${FE.esc(u.email)}</b><br>Member since ${new Date(u.created).toLocaleDateString()}<br>Plan: <b style="text-transform:capitalize">${u.plan}</b></p>
+      <a href="pricing.html" class="btn btn-o btn-sm btn-full" style="margin:14px 0 8px">⭐ Upgrade Plan</a>
+      <button class="btn btn-red btn-sm btn-full" onclick="if(confirm('Logout?'))FE.logout()">Logout</button></div>
+    </div>`;
+  }
+}
+function mv(i,cur,dir){const order=['drafting','submitted','offer','visa'];const nx=order[Math.max(0,Math.min(3,order.indexOf(cur)+dir))];FE.moveApp(i,nx);render('ap');FE.toast('Moved to '+nx)}
+function saveProfile(){FE.updateProfile({name:document.getElementById('pfName').value,phone:document.getElementById('pfPhone').value,country:document.getElementById('pfCountry').value,band:document.getElementById('pfBand').value,target:document.getElementById('pfTarget').value});FE.toast('✅ Profile updated!');}
+function coachMsg(){const rs=myResults();
+  if(!rs.length)return 'Take your first mock test so I can analyse your level. Start with <a href="tests.html" style="color:var(--orange);font-weight:700">FE-11 Reading Test 1</a> 🚀';
+  const lows=rs.slice(0,4).sort((a,b)=>a.band-b.band)[0];
+  return `Your strongest recent area is solid, but <b>${FE.esc(lows.name)} (${lows.band})</b> is dragging your average. Do 3 targeted drills this week + one Writing Task 2 with the <a href="writing-checker.html" style="color:var(--orange);font-weight:700">AI Checker</a>. At this trend you hit your target in <b>~4–5 weeks</b>. 🚀`;}
+render('ov');
+</script></body></html>

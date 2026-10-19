@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Find Your University — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="pagehead"><div class="container"><h1>Find Your University</h1><p>Filter by country, field, budget and IELTS requirement. If you're logged in, your saved band is auto-applied.</p></div></div>
+<section class="section" style="padding-top:30px"><div class="container">
+  <div class="card" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px">
+    <div class="field" style="margin:0"><label>Country</label><select class="inp" id="ufCountry"><option>All</option><option>UK</option><option>Canada</option><option>Germany</option><option>Ireland</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+    <div class="field" style="margin:0"><label>Field</label><select class="inp" id="ufField"><option>All</option><option>Business</option><option>Computing</option><option>Engineering</option><option>Data & AI</option></select></div>
+    <div class="field" style="margin:0"><label>Max Tuition</label><select class="inp" id="ufTui"><option value="99">Any</option><option value="15">Under ₹15L/yr</option><option value="20">Under ₹20L/yr</option><option value="30">Under ₹30L/yr</option></select></div>
+    <div class="field" style="margin:0"><label>My IELTS Band</label><select class="inp" id="ufBand"><option value="9">Any</option><option value="6.0">6.0+</option><option value="6.5">6.5+</option><option value="7.0">7.0+</option></select></div>
+  </div>
+  <p style="color:var(--muted);font-size:13.5px;margin-bottom:14px">Showing <b id="ufCount">0</b> universities</p>
+  <div class="grid-3" id="ufGrid"></div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
+const me=FE.me();
+if(me&&me.band&&parseFloat(me.band))document.getElementById('ufBand').value=parseFloat(me.band)>=7?'7.0':parseFloat(me.band)>=6.5?'6.5':'6.0';
+FE.renderUnisPage();
+</script></body></html>

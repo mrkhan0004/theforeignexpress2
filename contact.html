@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact — The Foreign Express</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="pagehead"><div class="container"><h1>Contact Us</h1><p>Book a free 30-minute consultation or just ask us anything.</p></div></div>
+<section class="section" style="padding-top:34px"><div class="container grid-2">
+  <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
+    <h3>Book Your Free Consultation</h3><div class="fs">An expert will call you within 24 hours.</div>
+    <div class="field"><label>Full Name*</label><input class="inp" id="ctName" placeholder="Your name"></div>
+    <div class="field"><label>Email*</label><input class="inp" id="ctEmail" type="email"></div>
+    <div class="field"><label>Phone*</label><input class="inp" id="ctPhone"></div>
+    <div class="field"><label>What do you need help with?</label><select class="inp" id="ctTopic"><option>IELTS preparation</option><option>Choosing a country</option><option>University shortlisting</option><option>Scholarship / loan</option><option>Visa filing</option><option>Something else</option></select></div>
+    <button class="btn btn-o btn-full" onclick="if(!ctName.value.trim()||!ctEmail.value.trim()){FE.toast('⚠ Name & email required');return}FE.saveLead('Contact page',{name:ctName.value,email:ctEmail.value,phone:ctPhone.value,country:ctTopic.value,band:''});FE.toast('✅ Request received! Expert will call within 24 hrs.');ctName.value=ctEmail.value=ctPhone.value=''">SUBMIT REQUEST</button></div>
+  <div>
+    <div class="card" style="margin-bottom:16px"><h4>📞 Call Us</h4><p id="ctPhoneDisp" style="font-size:18px;color:var(--navy);font-weight:700;margin-top:6px"></p><p style="font-size:13px">8:00 AM – 11:00 PM IST, all days</p></div>
+    <div class="card" style="margin-bottom:16px"><h4>✉ Email</h4><p id="ctEmailDisp" style="margin-top:6px"></p></div>
+    <div class="card"><h4>📍 Experience Centre</h4><p style="margin-top:6px;color:var(--muted)">[Your office address here]<br>Walk-ins welcome, 10 AM – 7 PM</p></div>
+  </div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div><script src="js/app.js"></script>
+<script>const s=FE.settings();document.getElementById('ctPhoneDisp').textContent=s.phone;document.getElementById('ctEmailDisp').textContent=s.email;</script></body></html>

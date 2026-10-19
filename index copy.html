@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Foreign Express — From IELTS Band 6 to Your Dream Campus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A1F44;--navy2:#132B56;--orange:#FF6B35;--gold:#F5A623;--green:#10B981;--bg:#F6F8FB;--text:#1E293B;--muted:#64748B;--line:#E2E8F0;--card:#FFFFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;line-height:1.25}
+.container{max-width:1180px;margin:0 auto;padding:0 20px}
+.page{display:none}
+.page.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+a{text-decoration:none;color:inherit}
+
+/* TOP BAR + NAV */
+.topbar{background:var(--navy);color:#cbd5e1;font-size:13px;padding:7px 0}
+.topbar .container{display:flex;justify-content:space-between;align-items:center}
+.topbar b{color:#fff}
+nav.main{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 2px 10px rgba(10,31,68,.08)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{font-family:'Poppins';font-weight:800;font-size:20px;color:var(--navy);display:flex;align-items:center;gap:8px}
+.logo .plane{background:var(--orange);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.navlinks{display:flex;gap:22px;align-items:center;font-weight:600;font-size:14.5px}
+.navlinks a{color:#334155;padding:6px 2px;border-bottom:2px solid transparent}
+.navlinks a:hover,.navlinks a.on{color:var(--orange);border-color:var(--orange)}
+.btn{display:inline-block;padding:11px 22px;border-radius:9px;font-weight:700;font-size:14.5px;cursor:pointer;border:none;transition:.2s;font-family:'Inter'}
+.btn-o{background:var(--orange);color:#fff}.btn-o:hover{background:#e5551f;transform:translateY(-1px)}
+.btn-n{background:var(--navy);color:#fff}.btn-n:hover{background:var(--navy2)}
+.btn-out{background:#fff;color:var(--navy);border:2px solid var(--navy)}.btn-out:hover{background:var(--navy);color:#fff}
+.btn-sm{padding:7px 14px;font-size:13px}
+.btn-g{background:var(--green);color:#fff}.btn-g:hover{background:#0d9668}
+
+/* HERO */
+.hero{background:linear-gradient(120deg,var(--navy) 0%,var(--navy2) 60%,#1a3a75 100%);color:#fff;padding:70px 0;position:relative;overflow:hidden}
+.hero:before{content:'';position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:rgba(255,107,53,.15)}
+.hero:after{content:'';position:absolute;right:60px;bottom:-160px;width:300px;height:300px;border-radius:50%;background:rgba(245,166,35,.12)}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:50px;align-items:center;position:relative;z-index:2}
+.hero h1{font-size:42px;font-weight:800;margin-bottom:16px}
+.hero h1 span{color:var(--gold)}
+.hero p.sub{color:#cbd5e1;font-size:17px;margin-bottom:22px}
+.ticks{list-style:none;margin-bottom:26px}
+.ticks li{padding:6px 0;font-size:15.5px;font-weight:500}
+.ticks li:before{content:'✓';background:var(--green);color:#fff;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;margin-right:10px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+
+/* FORM CARD */
+.formcard{background:#fff;border-radius:14px;padding:26px;color:var(--text);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.formcard h3{color:var(--navy);font-size:19px;margin-bottom:4px}
+.formcard .fs{font-size:13px;color:var(--muted);margin-bottom:16px}
+.field{margin-bottom:12px}
+.field label{font-size:12.5px;font-weight:600;color:#475569;display:block;margin-bottom:4px}
+.inp{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:'Inter';background:#fff}
+.inp:focus{outline:none;border-color:var(--orange)}
+.check{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;margin:10px 0 14px}
+.btn-full{width:100%}
+
+/* SECTIONS */
+.section{padding:70px 0}
+.section.white{background:#fff}
+.section-t{text-align:center;max-width:680px;margin:0 auto 45px}
+.section-t h2{font-size:32px;color:var(--navy);margin-bottom:10px}
+.section-t p{color:var(--muted)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:24px;transition:.2s}
+.card:hover{box-shadow:0 12px 30px rgba(10,31,68,.1);transform:translateY(-3px)}
+.card h4{color:var(--navy);font-size:16.5px;margin-bottom:7px}
+.card p{font-size:13.8px;color:var(--muted)}
+.ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:14px}
+.i-o{background:#FFF0E8}.i-b{background:#E8F0FE}.i-g{background:#E7F8F1}.i-y{background:#FFF7E0}
+
+/* STAT STRIP */
+.strip{background:var(--navy);color:#fff;padding:22px 0}
+.strip .container{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.strip b{font-size:26px;font-family:'Poppins';color:var(--gold);display:block}
+.strip span{font-size:13px;color:#cbd5e1}
+
+/* FLYWHEEL */
+.fly{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.fstep{text-align:center;flex:1;min-width:120px}
+.fstep .cir{width:64px;height:64px;border-radius:50%;background:#fff;border:3px solid var(--orange);color:var(--orange);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-family:'Poppins';font-weight:700;animation:pulse 2.4s infinite}
+.fstep:nth-child(3) .cir{animation-delay:.3s}.fstep:nth-child(5) .cir{animation-delay:.6s}.fstep:nth-child(7) .cir{animation-delay:.9s}.fstep:nth-child(9) .cir{animation-delay:1.2s}.fstep:nth-child(11) .cir{animation-delay:1.5s}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,107,53,.35)}70%{box-shadow:0 0 0 14px rgba(255,107,53,0)}100%{box-shadow:0 0 0 0 rgba(255,107,53,0)}}
+.fstep b{display:block;font-size:14px;color:var(--navy)}
+.farrow{color:var(--orange);font-size:22px;font-weight:700}
+
+/* DESTINATIONS */
+.dest{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden;transition:.2s;cursor:pointer}
+.dest:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(10,31,68,.12)}
+.dest .flag{height:110px;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:44px}
+.dest .db{padding:16px}
+.dest h4{color:var(--navy);font-size:16px}
+.dest .meta{font-size:12px;color:var(--muted);margin-top:6px}
+.dest .pill{display:inline-block;background:#FFF0E8;color:var(--orange);font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;margin-top:8px}
+
+/* MINI TEST ENGINE PREVIEW */
+.tui{background:#1e293b;border-radius:14px;padding:14px;box-shadow:0 24px 50px rgba(10,31,68,.35)}
+.tui .tbar{display:flex;justify-content:space-between;align-items:center;background:#334155;border-radius:8px;padding:9px 14px;color:#fff;font-size:12.5px;margin-bottom:12px}
+.tui .timer{background:var(--orange);padding:3px 10px;border-radius:6px;font-weight:700}
+.tui .tbody{background:#fff;border-radius:8px;padding:18px;min-height:190px}
+.tui .qp{font-size:13.5px;color:#334155;margin-bottom:12px}
+.tui .opt{border:1.5px solid var(--line);border-radius:7px;padding:8px 12px;font-size:12.5px;margin-bottom:7px;color:#475569}
+.tui .opt.sel{border-color:var(--orange);background:#FFF0E8}
+.tui .ai{background:linear-gradient(135deg,#EDE9FE,#E0F2FE);border-left:4px solid #7C3AED;border-radius:0 8px 8px 0;padding:11px 13px;font-size:12px;color:#4C1D95;margin-top:12px}
+
+/* TEST LIBRARY */
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:30px;flex-wrap:wrap}
+.tab{padding:10px 22px;border-radius:30px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:14px;cursor:pointer;color:#475569}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.tcard b{font-size:13.5px;color:var(--navy)}
+.tcard .tm{font-size:11.5px;color:var(--muted)}
+.pbar{height:6px;background:var(--line);border-radius:4px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--green);border-radius:4px}
+
+/* PRICING */
+.pcard{background:#fff;border:2px solid var(--line);border-radius:16px;padding:30px;text-align:center;position:relative}
+.pcard.hot{border-color:var(--orange);transform:scale(1.04);box-shadow:0 18px 40px rgba(255,107,53,.15)}
+.pcard .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:11.5px;font-weight:700;padding:4px 14px;border-radius:20px}
+.price{font-family:'Poppins';font-size:36px;font-weight:800;color:var(--navy);margin:12px 0 2px}
+.price small{font-size:14px;color:var(--muted);font-weight:500}
+.plist{list-style:none;text-align:left;margin:20px 0}
+.plist li{padding:7px 0;font-size:13.5px;color:#475569;border-bottom:1px dashed var(--line)}
+.plist li:before{content:'✓';color:var(--green);font-weight:700;margin-right:9px}
+.plist li.n:before{content:'—';color:#CBD5E1}
+
+/* ACCORDION */
+.acc{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:12px;overflow:hidden}
+.acc summary{padding:16px 20px;font-weight:600;color:var(--navy);cursor:pointer;font-size:14.5px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.acc summary:after{content:'+';font-size:20px;color:var(--orange)}
+.acc[open] summary:after{content:'–'}
+.acc .ab{padding:0 20px 16px;font-size:14px;color:var(--muted)}
+
+/* FOOTER */
+footer{background:#071530;color:#94A3B8;padding:55px 0 0;font-size:13.5px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:26px;padding-bottom:40px}
+footer h5{color:#fff;font-size:13.5px;margin-bottom:14px;font-family:'Poppins'}
+footer a{display:block;padding:4px 0}
+footer a:hover{color:var(--gold)}
+.fbot{border-top:1px solid #1E293B;padding:16px 0;text-align:center;font-size:12.5px}
+
+/* DASHBOARD / ADMIN */
+.dash-wrap{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 100px)}
+.dside{background:var(--navy);padding:24px 0}
+.dside a{display:block;padding:11px 24px;color:#B6C2D9;font-size:14px;font-weight:500;border-left:3px solid transparent}
+.dside a.on{color:#fff;background:rgba(255,255,255,.08);border-color:var(--orange)}
+.dmain{padding:30px;background:var(--bg)}
+.wcard{background:#fff;border:1px solid var(--line);border-radius:13px;padding:20px}
+.wcard h5{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:8px}
+.wcard .big{font-family:'Poppins';font-weight:800;font-size:26px;color:var(--navy)}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:24px}
+.pill-s{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.p-new{background:#E0F2FE;color:#0369A1}.p-con{background:#FEF3C7;color:#B45309}.p-qua{background:#EDE9FE;color:#6D28D9}.p-app{background:#DBEAFE;color:#1D4ED8}.p-enr{background:#D1FAE5;color:#047857}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:13.5px}
+th{background:var(--navy);color:#fff;text-align:left;padding:12px 16px;font-size:12.5px}
+td{padding:12px 16px;border-bottom:1px solid var(--line);color:#475569}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kcol{background:#EEF2F7;border-radius:11px;padding:12px}
+.kcol h6{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding-left:4px}
+.kitem{background:#fff;border-radius:9px;padding:11px;font-size:12.5px;margin-bottom:9px;border:1px solid var(--line)}
+.kitem b{color:var(--navy);display:block;font-size:12.5px}
+
+/* MODALS / TOAST / CHAT */
+.modal-bg{position:fixed;inset:0;background:rgba(7,21,48,.65);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:15px;padding:30px;max-width:420px;width:100%;position:relative}
+.modal h3{color:var(--navy);margin-bottom:16px}
+.mx{position:absolute;top:12px;right:16px;font-size:22px;cursor:pointer;color:var(--muted)}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:13px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:200;transition:.35s;opacity:0}
+#toast.show{transform:translateX(-50%);opacity:1}
+.chatbtn{position:fixed;bottom:22px;right:22px;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 26px rgba(255,107,53,.45);z-index:90;border:none}
+.chatbox{position:fixed;bottom:88px;right:22px;width:320px;background:#fff;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.25);z-index:95;display:none;overflow:hidden}
+.chatbox.show{display:block}
+.chat-h{background:var(--navy);color:#fff;padding:14px 18px;font-weight:600;font-size:14px}
+.chat-b{padding:14px;max-height:280px;overflow-y:auto}
+.chat-m{background:#F1F5F9;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:9px;color:#334155}
+.chat-q{display:inline-block;background:#fff;border:1.5px solid var(--orange);color:var(--orange);font-size:12px;font-weight:600;border-radius:20px;padding:5px 12px;margin:3px 4px 3px 0;cursor:pointer}
+.chat-q:hover{background:var(--orange);color:#fff}
+
+/* MISC */
+.gauge{width:150px;height:150px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;position:relative}
+.gauge:before{content:'';position:absolute;inset:14px;background:#fff;border-radius:50%}
+.gauge b{position:relative;font-family:'Poppins';font-size:30px;color:var(--navy);z-index:2}
+.crit{margin-bottom:14px}
+.crit .cl{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
+.story{background:#fff;border:1px solid var(--line);border-radius:13px;padding:24px}
+.story .q{font-size:40px;color:var(--orange);font-family:'Poppins';line-height:1}
+.story p{font-size:14px;color:#475569;margin:10px 0 16px}
+.avat{width:46px;height:46px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'Poppins'}
+.story .who{display:flex;gap:12px;align-items:center}
+.story .who b{color:var(--navy);font-size:14px;display:block}
+.story .who span{font-size:12px;color:var(--muted)}
+.note{background:#FFF7E0;border:1px solid #FDE68A;border-radius:10px;padding:14px 18px;font-size:13.5px;color:#92400E;margin:20px 0}
+.timeline{position:relative;padding-left:34px}
+.timeline:before{content:'';position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--orange)}
+.tl-item{position:relative;padding-bottom:26px}
+.tl-item:before{content:'';position:absolute;left:-29px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--orange);border:3px solid #FFF0E8}
+.tl-item b{color:var(--navy)}
+.tl-item p{font-size:13.5px;color:var(--muted)}
+.bmetric{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+.bm{background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px;text-align:center}
+.bm b{font-family:'Poppins';font-size:24px;color:var(--navy)}
+.bm span{font-size:12px;color:var(--muted)}
+.country-hero{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:55px 0}
+.country-hero h1{font-size:34px}
+.country-hero p{color:#cbd5e1;max-width:640px}
+.pagehead{background:#fff;border-bottom:1px solid var(--line);padding:48px 0;margin-bottom:0}
+.pagehead h1{color:var(--navy);font-size:32px}
+.pagehead p{color:var(--muted);max-width:680px;margin-top:8px}
+.ctastrip{background:linear-gradient(120deg,var(--orange),#e5551f);color:#fff;text-align:center;padding:52px 0}
+.ctastrip h2{font-size:28px;margin-bottom:8px}
+.mobile-menu-btn{display:none}
+@media(max-width:960px){
+.hero-grid,.grid-3,.grid-4,.grid-2,.dgrid,.bmetric,.strip .container{grid-template-columns:1fr 1fr}
+.fgrid{grid-template-columns:1fr 1fr 1fr}
+.kanban{grid-template-columns:1fr 1fr}
+.navlinks{display:none}
+.dash-wrap{grid-template-columns:1fr}
+.dside{display:flex;overflow-x:auto;padding:10px}
+.dside a{white-space:nowrap;border-left:none;border-bottom:3px solid transparent}
+.dside a.on{border-color:var(--orange)}
+.hero h1{font-size:31px}
+.pcard.hot{transform:none}
+}
+@media(max-width:600px){
+.grid-3,.grid-4,.grid-2,.dgrid,.bmetric,.strip .container{grid-template-columns:1fr}
+.fgrid{grid-template-columns:1fr 1fr}
+.hero{padding:44px 0}
+}
+</style>
+<link rel="stylesheet" href="css/roveia-theme.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar"><div class="container">
+  <span>📞 Call us: <b>+91 80693 61480</b> &nbsp;|&nbsp; ✉ support@theforeignexpress.com</span>
+  <span>🕘 Support 8 AM – 11 PM IST</span>
+</div></div>
+
+<!-- ============ NAV ============ -->
+<nav class="main"><div class="container nav-in">
+  <a href="#home" class="logo"><span class="plane">✈</span> The Foreign <span style="color:var(--orange)">Express</span></a>
+  <div class="navlinks">
+    <a href="#ielts" data-nl>IELTS</a>
+    <a href="#study-abroad" data-nl>Study Abroad</a>
+    <a href="#universities" data-nl>Universities</a>
+    <a href="#pricing" data-nl>Pricing</a>
+    <a href="#stories" data-nl>Success Stories</a>
+    <a href="#" onclick="openModal('mLogin');return false" style="color:var(--navy)">Login</a>
+    <a href="#contact"><button class="btn btn-o btn-sm">Book Free Call</button></a>
+  </div>
+</div></nav>
+
+<main>
+
+<!-- ================= PAGE: HOME ================= -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero"><div class="container hero-grid">
+    <div>
+      <h1>From IELTS <span>Band 6</span><br>to Your Dream Campus</h1>
+      <p class="sub">India's only platform where an AI IELTS coach turns your test score into a university shortlist, scholarship estimate and offer letter — all in one account.</p>
+      <ul class="ticks">
+        <li>AI Diagnostic in 15 minutes — free</li>
+        <li>Cambridge-style mock tests, real exam interface</li>
+        <li>Automatic university shortlist from your score</li>
+        <li>Offer letter in as little as 48 hours</li>
+      </ul>
+      <div class="hero-ctas">
+        <a href="#diagnostic"><button class="btn btn-o">Try Free AI Diagnostic →</button></a>
+        <a href="#study-abroad"><button class="btn btn-out" style="border-color:#fff;color:#fff;background:transparent">Explore Study Abroad</button></a>
+      </div>
+    </div>
+    <div>
+      <div class="formcard">
+        <h3>Book your free Consultation</h3>
+        <div class="fs">Get your personalised Band Report + country plan in 30 minutes.</div>
+        <div class="field"><label>Full Name*</label><input class="inp" id="lfName" placeholder="Your full name"></div>
+        <div class="field"><label>Email address*</label><input class="inp" id="lfEmail" type="email" placeholder="you@email.com"></div>
+        <div class="field"><label>Phone (WhatsApp)</label><input class="inp" placeholder="+91 ·····"></div>
+        <div class="field"><label>Target Country</label><select class="inp" id="lfCountry"><option>United Kingdom</option><option>Canada</option><option>Germany</option><option>Ireland</option><option>Australia</option><option>Dubai (UAE)</option><option>Italy</option><option>Not decided yet</option></select></div>
+        <div class="field"><label>Current IELTS Band</label><select class="inp" id="lfBand"><option>Not taken yet</option><option>Below 5.5</option><option>5.5 – 6.0</option><option>6.5</option><option>7.0+</option></select></div>
+        <label class="check"><input type="checkbox" id="lfAgree"> I have read and agreed to the <a href="#terms" style="color:var(--orange)">terms</a> &amp; <a href="#privacy" style="color:var(--orange)">privacy policy</a></label>
+        <button class="btn btn-o btn-full" onclick="submitLead()">GET MY FREE BAND REPORT</button>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- STAT STRIP -->
+  <div class="strip"><div class="container">
+    <div><b>12,400+</b><span>Students coached</span></div>
+    <div><b>4.9★</b><span>Average rating</span></div>
+    <div><b>850+</b><span>Partner universities</span></div>
+    <div><b>₹8.2 Cr</b><span>Scholarships won</span></div>
+  </div></div>
+
+  <!-- WHY -->
+  <section class="section white"><div class="container">
+    <div class="section-t"><h2>Why Choose The Foreign Express?</h2><p>Become a cut above the rest — preparation and admission, finally connected.</p></div>
+    <div class="grid-3">
+      <div class="card"><div class="ico i-o">🤖</div><h4>AI Band Coach</h4><p>Know exactly which skill is pulling your score down and fix it first — with a plan that updates every week.</p></div>
+      <div class="card"><div class="ico i-b">💻</div><h4>Real Test Engine</h4><p>Practice on an interface 90% identical to the actual computer-based IELTS — highlight, notes, question navigator.</p></div>
+      <div class="card"><div class="ico i-g">🎯</div><h4>Auto University Shortlist</h4><p>Your mock score instantly becomes a list of 12 universities you can realistically get into.</p></div>
+      <div class="card"><div class="ico i-y">💰</div><h4>Scholarship AI</h4><p>See which scholarships you actually qualify for — up to ₹10,00,000 — before you spend a rupee applying.</p></div>
+      <div class="card"><div class="ico i-o">⚡</div><h4>48-Hour Offers</h4><p>Partner universities issue offer letters in as little as two days. No waiting, no chasing.</p></div>
+      <div class="card"><div class="ico i-b">🧳</div><h4>Post-Visa Support</h4><p>Insurance, flights, accommodation, forex — handled even after the visa stamp. We fly with you.</p></div>
+    </div>
+  </div></section>
+
+  <!-- FLYWHEEL -->
+  <section class="section" style="padding-top:20px"><div class="container">
+    <div class="section-t"><h2>The Express Flywheel</h2><p>One account. One dashboard. From your first practice question to your boarding pass.</p></div>
+    <div class="fly">
+      <div class="fstep"><div class="cir">1</div><b>Test</b></div><div class="farrow">→</div>
+      <div class="fstep"><div class="cir">2</div><b>Diagnose</b></div><div class="farrow">→</div>
+      <div class="fstep"><div class="cir">3</div><b>Plan</b></div><div class="farrow">→</div>
+      <div class="fstep"><div class="cir">4</div><b>Practice</b></div><div class="farrow">→</div>
+      <div class="fstep"><div class="cir">5</div><b>Match</b></div><div class="farrow">→</div>
+      <div class="fstep"><div class="cir">6</div><b>Fly</b></div>
+    </div>
+  </div></section>
+
+  <!-- DESTINATIONS -->
+  <section class="section white"><div class="container">
+    <div class="section-t"><h2>Top Study Destinations</h2><p>Explore our most popular study destinations with comprehensive programs and support.</p></div>
+    <div class="grid-4" id="homeDest"></div>
+    <div style="text-align:center;margin-top:32px"><a href="#study-abroad"><button class="btn btn-n">View All Destinations →</button></a></div>
+  </div></section>
+
+  <!-- TEST ENGINE PREVIEW -->
+  <section class="section"><div class="container grid-2" style="align-items:center">
+    <div>
+      <span class="pill" style="background:#EDE9FE;color:#6D28D9;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">POWERED BY AI</span>
+      <h2 style="color:var(--navy);font-size:30px;margin:14px 0">Practice on a Real Computer-Based IELTS Interface</h2>
+      <p style="color:var(--muted);margin-bottom:18px">Timed sections, question navigation, highlight & note tools — designed to look 90% like the real exam, with an AI assistant beside you explaining every "why".</p>
+      <ul class="ticks" style="margin-bottom:24px">
+        <li>Realistic test interface with timer & navigator</li>
+        <li>Step-by-step AI explanations</li>
+        <li>Keyword highlighting & instant vocabulary</li>
+        <li>Practice Mode and Exam Simulation Mode</li>
+      </ul>
+      <a href="#mock-tests"><button class="btn btn-n">Browse the Test Library →</button></a>
+    </div>
+    <div class="tui">
+      <div class="tbar"><span>📑 Section 2 of 4 — Reading Passage 1</span><span class="timer">⏱ 18:42</span></div>
+      <div class="tbody">
+        <div class="qp"><b>Questions 1–3.</b> Complete the sentences. The growth of cities during the industrial period was driven largely by <i style="background:#FEF08A;padding:0 4px;border-radius:3px">migration</i> from rural areas…</div>
+        <div class="opt sel">A. migration ✔</div>
+        <div class="opt">B. industrialisation</div>
+        <div class="opt">C. agriculture</div>
+        <div class="ai">🤖 <b>AI Assistant:</b> The keyword "driven largely by" signals a cause. Scan the second paragraph — "workers moved to cities" is a paraphrase of <i>migration</i>.</div>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- WRITING CHECKER TEASER -->
+  <section class="section white"><div class="container" style="text-align:center;max-width:760px">
+    <div class="section-t" style="margin-bottom:24px"><h2>Free AI Writing Checker</h2><p>Paste your Task 2 essay. Get a band estimate + criterion-by-criterion feedback in 10 seconds.</p></div>
+    <a href="#writing-checker"><button class="btn btn-o" style="font-size:16px;padding:14px 34px">✍ Check My Essay — Free</button></a>
+  </div></section>
+
+  <!-- STORIES -->
+  <section class="section"><div class="container">
+    <div class="section-t"><h2>Success Stories</h2><p>Real students. Real transformations.</p></div>
+    <div class="grid-3" id="homeStories"></div>
+    <div style="text-align:center;margin-top:30px"><a href="#stories" class="btn btn-out">Read All Stories</a></div>
+  </div></section>
+
+  <!-- FAQ -->
+  <section class="section white"><div class="container" style="max-width:800px">
+    <div class="section-t"><h2>Frequently Asked Questions</h2><p>Find answers to common questions about our programmes and services.</p></div>
+    <div id="faqHome"></div>
+  </div></section>
+
+  <!-- FINAL CTA -->
+  <div class="ctastrip"><div class="container">
+    <h2>Still Confused?</h2>
+    <p style="margin-bottom:22px;opacity:.95">Book a free 30-min session with a study abroad expert and get started today.</p>
+    <a href="#contact"><button class="btn" style="background:#fff;color:var(--orange);font-size:16px;padding:14px 32px">Talk to an Expert</button></a>
+  </div></div>
+</div>
+
+<!-- ================= PAGE: IELTS LANDING ================= -->
+<div class="page" id="page-ielts">
+  <section class="hero" style="padding:56px 0"><div class="container" style="text-align:center;max-width:840px">
+    <span style="background:rgba(255,255,255,.12);padding:5px 16px;border-radius:20px;font-size:13px;font-weight:600">IELTS | Powered by AI</span>
+    <h1 style="font-size:38px;margin:18px 0 12px">Practice IELTS Online with a<br>Real Computer-Based Interface</h1>
+    <p class="sub" style="max-width:620px;margin:0 auto 26px">Cambridge-style Academic test sets · Instant AI scoring · Practice Mode with AI support and strict Exam Simulation Mode.</p>
+    <a href="#diagnostic"><button class="btn btn-o" style="font-size:16px;padding:14px 32px">Start Free Diagnostic</button></a>
+    &nbsp; <a href="#mock-tests"><button class="btn btn-out" style="border-color:#fff;color:#fff;background:transparent">Take a Mock Test</button></a>
+  </div></section>
+
+  <section class="section white"><div class="container">
+    <div class="grid-4">
+      <div class="card" style="text-align:center"><div class="ico i-b" style="margin:0 auto 12px">⏱</div><h4>Instant Scoring</h4><p>Band estimate the moment you submit — no waiting for a tutor.</p></div>
+      <div class="card" style="text-align:center"><div class="ico i-o" style="margin:0 auto 12px">🤖</div><h4>Self-Study with AI</h4><p>An IELTS-specialised AI explains every answer, 24/7, in 180+ languages.</p></div>
+      <div class="card" style="text-align:center"><div class="ico i-g" style="margin:0 auto 12px">📈</div><h4>Track Progress</h4><p>Every attempt feeds your dashboard. Watch your band trajectory climb.</p></div>
+      <div class="card" style="text-align:center"><div class="ico i-y" style="margin:0 auto 12px">🚀</div><h4>+1.5–2.0 Bands</h4><p>Learners improve 1.5–2.0 bands within three months of structured practice.</p></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:56px;align-items:stretch">
+      <div class="card" style="border-color:var(--orange)">
+        <h4 style="font-size:19px">🛠 Practice Mode <span style="font-size:12px;background:#FFF0E8;color:var(--orange);padding:3px 10px;border-radius:20px;margin-left:8px">AI ON</span></h4>
+        <p style="margin-top:8px">Adjustable time limit. Full AI assistant: hints, keyword highlights, vocabulary definitions, strategies. Practice at your own pace and actually understand every "why".</p>
+      </div>
+      <div class="card">
+        <h4 style="font-size:19px">🎯 Exam Simulation Mode</h4>
+        <p style="margin-top:8px">Fixed exam time. No help, no hints. Real test pressure with authentic test sets at the same difficulty as the actual IELTS — so test day feels like just another Tuesday.</p>
+      </div>
+    </div>
+
+    <div class="section-t" style="margin-top:56px"><h2>Two Ways to Practice</h2><p>Take full tests by set, or drill one skill at a time.</p></div>
+    <div class="grid-4">
+      <a href="#mock-tests" class="card" style="text-align:center"><div style="font-size:32px">🎧</div><h4>Listening</h4><p>40 questions · 30 min</p></a>
+      <a href="#mock-tests" class="card" style="text-align:center"><div style="font-size:32px">📖</div><h4>Reading</h4><p>40 questions · 60 min</p></a>
+      <a href="#writing-checker" class="card" style="text-align:center"><div style="font-size:32px">✍</div><h4>Writing</h4><p>Task 1 + 2 · AI checked</p></a>
+      <a href="#speaking-ai" class="card" style="text-align:center"><div style="font-size:32px">🎙</div><h4>Speaking</h4><p>AI examiner · Parts 1–3</p></a>
+    </div>
+  </div></section>
+
+  <div class="ctastrip"><div class="container"><h2>You're no longer studying alone.</h2><p style="margin-bottom:20px;opacity:.95">Take the 15-minute diagnostic and get your Band Report today.</p><a href="#diagnostic"><button class="btn" style="background:#fff;color:var(--orange)">Get My Band Report</button></a></div></div>
+</div>
+
+<!-- ================= PAGE: FREE DIAGNOSTIC ================= -->
+<div class="page" id="page-diagnostic">
+  <section class="section white" style="min-height:70vh"><div class="container" style="max-width:720px">
+    <div class="section-t"><span class="pill" style="background:#EDE9FE;color:#6D28D9;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">FREE · NO SIGNUP NEEDED</span>
+      <h2 style="margin-top:14px">15-Minute AI Diagnostic</h2><p>Six quick questions across grammar, vocabulary and reading. Get a provisional band estimate instantly.</p></div>
+
+    <!-- Intro -->
+    <div class="card" id="dgIntro" style="text-align:center;padding:40px">
+      <div style="font-size:44px;margin-bottom:10px">🧪</div>
+      <h4 style="font-size:19px">Ready? 6 questions · ~3 minutes</h4>
+      <p style="margin:8px 0 22px">No signup, no payment. Your result unlocks a personalised study plan.</p>
+      <button class="btn btn-o" style="font-size:15px;padding:13px 34px" onclick="dgStart()">Start Diagnostic →</button>
+    </div>
+
+    <!-- Quiz -->
+    <div class="card" id="dgQuiz" style="display:none;padding:30px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px"><span>Question <b id="dgNum">1</b> of 6</span><span>Grammar · Vocabulary · Reading</span></div>
+      <div class="pbar" style="margin-bottom:22px"><i id="dgBar" style="width:16%"></i></div>
+      <h4 id="dgQ" style="font-size:17px;color:var(--navy);margin-bottom:18px"></h4>
+      <div id="dgOpts"></div>
+    </div>
+
+    <!-- Result -->
+    <div class="card" id="dgResult" style="display:none;text-align:center;padding:36px">
+      <div style="font-size:40px">🎉</div>
+      <h4 style="font-size:18px;color:var(--muted);margin-top:6px">Your provisional band estimate</h4>
+      <div class="price" id="dgBand" style="font-size:52px">6.0</div>
+      <div class="gauge" id="dgGauge" style="width:130px;height:130px;margin:10px auto 20px"><b id="dgRead" style="font-size:22px">—</b></div>
+      <p style="color:var(--muted);font-size:14px;max-width:440px;margin:0 auto 22px">This is an AI estimate — your actual exam result may vary by ±0.5 band. Save your report to unlock a personalised study plan and university shortlist.</p>
+      <button class="btn btn-o" onclick="toast('✅ Report saved! (Demo — connect backend to persist)')">Save My Report & Get Study Plan</button>
+      &nbsp;<a href="#study-plan"><button class="btn btn-out">Preview My Study Plan</button></a>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: MOCK TESTS ================= -->
+<div class="page" id="page-mock-tests">
+  <div class="pagehead"><div class="container">
+    <h1>Test Library</h1>
+    <p>Cambridge-style Academic test sets (C11–C19) + Actual past papers. Listening · Reading · Writing. Take a full test or drill one skill.</p>
+  </div></div>
+  <section class="section" style="padding-top:40px"><div class="container">
+    <div class="tabs">
+      <div class="tab on" onclick="mtTab('full',this)">📕 Full Tests</div>
+      <div class="tab" onclick="mtTab('lr',this)">🎧📖 Listening & Reading</div>
+      <div class="tab" onclick="mtTab('ws',this)">✍ Writing Tests</div>
+    </div>
+    <div class="grid-3" id="mtGrid"></div>
+    <div class="note">🔐 <b>Demo note:</b> "Take Test" opens the signup prompt. In production this launches the full test engine with timer, navigator, highlight and note tools.</div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: WRITING CHECKER ================= -->
+<div class="page" id="page-writing-checker">
+  <div class="pagehead"><div class="container">
+    <span class="pill" style="background:#EDE9FE;color:#6D28D9;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">FREE · POWERED BY AI</span>
+    <h1 style="margin-top:12px">IELTS Writing Checker</h1>
+    <p>Paste your Task 2 essay (min. 150 words). Get an instant band estimate with the 4 official criteria.</p>
+  </div></div>
+  <section class="section" style="padding-top:36px"><div class="container grid-2" style="align-items:start">
+    <div class="card">
+      <h4>✍ Your Task 2 Essay</h4>
+      <textarea class="inp" id="wcText" rows="14" style="margin:12px 0;font-size:14px" placeholder="Paste or type your essay here…&#10;&#10;Topic example: 'Some believe university education should be free for everyone. To what extent do you agree or disagree?'"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;color:var(--muted)">Words: <b id="wcCount">0</b></span>
+        <button class="btn btn-o" onclick="wcCheck()">Check My Essay →</button>
+      </div>
+    </div>
+    <div id="wcResult">
+      <div class="card" style="text-align:center;padding:40px;color:var(--muted)">
+        <div style="font-size:38px;margin-bottom:8px">📊</div>
+        <p>Your band report will appear here.<br>Task Response · Coherence · Lexical Resource · Grammar.</p>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: SPEAKING AI ================= -->
+<div class="page" id="page-speaking-ai">
+  <div class="pagehead"><div class="container">
+    <span class="pill" style="background:#FFF0E8;color:var(--orange);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">PRO FEATURE</span>
+    <h1 style="margin-top:12px">AI Speaking Room</h1>
+    <p>An AI examiner asks real Part 1–3 questions. You answer out loud. Get scored on all four speaking criteria in seconds.</p>
+  </div></div>
+  <section class="section" style="padding-top:36px"><div class="container">
+    <div class="grid-4">
+      <div class="card" style="text-align:center"><div class="ico i-b" style="margin:0 auto 12px">1️⃣</div><h4>AI Asks</h4><p>Realistic examiner voice asks Part 1, 2 or 3 questions — including the Part 2 cue card with 1-min prep.</p></div>
+      <div class="card" style="text-align:center"><div class="ico i-o" style="margin:0 auto 12px">🎙</div><h4>You Answer</h4><p>Speak naturally into your mic. The room handles recording, timing and follow-ups like a real examiner.</p></div>
+      <div class="card" style="text-align:center"><div class="ico i-g" style="margin:0 auto 12px">⚡</div><h4>Instant Bands</h4><p>Fluency & Coherence · Lexical Resource · Grammatical Range · Pronunciation — each scored with specifics.</p></div>
+      <div class="card" style="text-align:center"><div class="ico i-y" style="margin:0 auto 12px">🔁</div><h4>Compare & Retry</h4><p>Replay your audio side-by-side with a Band 9 model answer, then try again with 3 targeted fixes.</p></div>
+    </div>
+    <div class="card" style="margin-top:32px;background:var(--navy);color:#fff;border:none">
+      <div class="grid-2" style="align-items:center">
+        <div><h4 style="color:var(--gold)">Sample Cue Card — Part 2</h4><p style="color:#cbd5e1;margin-top:8px">"Describe a place you have visited that you would like to return to. You should say: where it is · when you visited it · what you did there · and explain why you would like to go back." <br><br><i style="font-size:12px">⏱ 1 minute preparation · 2 minutes speaking</i></p></div>
+        <div style="text-align:center"><button class="btn btn-o" onclick="openModal('mLogin')">🔒 Unlock with Pro — ₹1,499/mo</button></div>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: STUDY PLAN ================= -->
+<div class="page" id="page-study-plan">
+  <div class="pagehead"><div class="container">
+    <h1>AI Study Plan Generator</h1>
+    <p>A day-by-day plan that adapts every week based on what you actually complete.</p>
+  </div></div>
+  <section class="section" style="padding-top:36px"><div class="container grid-2" style="align-items:start">
+    <div class="card">
+      <h4>⚙ Build My Plan</h4>
+      <div class="field"><label>Current Band</label><select class="inp" id="spCur"><option>5.0</option><option>5.5</option><option selected>6.0</option><option>6.5</option><option>7.0</option></select></div>
+      <div class="field"><label>Target Band</label><select class="inp" id="spTar"><option>6.5</option><option selected>7.0</option><option>7.5</option><option>8.0</option></select></div>
+      <div class="field"><label>Weeks Until Exam</label><select class="inp" id="spWeeks"><option>4</option><option selected>8</option><option>12</option></select></div>
+      <div class="field"><label>Weakest Skill</label><select class="inp" id="spWeak"><option>Writing</option><option>Speaking</option><option>Reading</option><option>Listening</option></select></div>
+      <button class="btn btn-n btn-full" onclick="spGen()">✨ Generate My Plan</button>
+    </div>
+    <div id="spOut"><div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:36px;margin-bottom:8px">🗓</div>Your personalised weekly plan appears here.</div></div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: BAND PREDICTOR ================= -->
+<div class="page" id="page-band-predictor">
+  <div class="pagehead"><div class="container"><h1>Band Readiness Predictor</h1><p>Combine your mock scores, writing and speaking evaluations into one readiness score.</p></div></div>
+  <section class="section" style="padding-top:36px"><div class="container grid-2" style="align-items:start;max-width:900px">
+    <div class="card">
+      <h4>🎚 Your Inputs</h4><br>
+      <div class="field"><label>Average Mock Band (L+R): <b id="vMock">6.0</b></label><input type="range" min="4" max="9" step="0.5" value="6" class="inp" id="sMock" oninput="bpCalc()" style="padding:0"></div>
+      <div class="field"><label>AI Writing Band: <b id="vWri">5.5</b></label><input type="range" min="4" max="9" step="0.5" value="5.5" class="inp" id="sWri" oninput="bpCalc()" style="padding:0"></div>
+      <div class="field"><label>AI Speaking Band: <b id="vSpk">6.0</b></label><input type="range" min="4" max="9" step="0.5" value="6" class="inp" id="sSpk" oninput="bpCalc()" style="padding:0"></div>
+      <div class="note" style="margin:10px 0 0">AI estimate — actual exam may vary ±0.5 band.</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <h4>Exam Readiness</h4>
+      <div class="gauge" id="bpGauge" style="margin:24px auto"><b id="bpRead">0%</b></div>
+      <div style="font-size:14px;color:var(--muted)">Predicted band</div>
+      <div class="price" id="bpBand">6.0</div>
+      <div id="bpMsg" style="margin:10px 0 18px;font-size:14px"></div>
+      <a href="#dashboard" class="btn btn-n" style="display:none" id="bpCta">Find My Universities →</a>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: PRICING ================= -->
+<div class="page" id="page-pricing">
+  <div class="pagehead"><div class="container"><h1>Simple Pricing</h1><p>Start free. Upgrade when you're ready to move faster.</p></div></div>
+  <section class="section" style="padding-top:40px"><div class="container">
+    <div class="grid-3" style="align-items:stretch">
+      <div class="pcard">
+        <h3 style="color:var(--navy)">Free</h3>
+        <div class="price">₹0</div><small style="color:var(--muted)">forever</small>
+        <ul class="plist">
+          <li>15-min AI Diagnostic</li>
+          <li>2 mock tests / month</li>
+          <li>3 Writing checks / month</li>
+          <li class="n">AI Speaking Room</li>
+          <li class="n">University shortlist</li>
+          <li class="n">Counsellor access</li>
+        </ul>
+        <button class="btn btn-out btn-full" onclick="toast('You are already on Free 🙂')">Current Plan</button>
+      </div>
+      <div class="pcard hot">
+        <div class="tag">MOST POPULAR</div>
+        <h3 style="color:var(--navy)">IELTS Pro</h3>
+        <div class="price">₹1,499</div><small style="color:var(--muted)">per month</small>
+        <ul class="plist">
+          <li>Unlimited mock tests</li>
+          <li>Unlimited AI Writing checks</li>
+          <li>20 Speaking Room credits</li>
+          <li>AI Study Plan (auto-adapting)</li>
+          <li>Band Readiness Predictor</li>
+          <li class="n">Counsellor access</li>
+        </ul>
+        <button class="btn btn-o btn-full" onclick="toast('💳 Demo — connect Razorpay here')">Go Pro</button>
+      </div>
+      <div class="pcard">
+        <h3 style="color:var(--navy)">Pro+ <span style="font-size:12px;color:var(--muted)">(Band-to-Boarding-Pass)</span></h3>
+        <div class="price">₹3,999</div><small style="color:var(--muted)">per month</small>
+        <ul class="plist">
+          <li>Everything in Pro</li>
+          <li>AI University Shortlist + admit odds</li>
+          <li>Personal counsellor (weekly calls)</li>
+          <li>SOP / LOR review by experts</li>
+          <li>Visa filing support</li>
+          <li>Pre-departure assistance</li>
+        </ul>
+        <button class="btn btn-n btn-full" onclick="openModal('mCall')">Talk to an Expert</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div><b style="color:var(--navy)">🎙 Speaking Credit Pack</b><p style="font-size:13px;color:var(--muted)">20 AI speaking sessions · one-time</p></div>
+      <div style="display:flex;align-items:center;gap:16px"><b style="font-size:22px;color:var(--navy)">₹499</b><button class="btn btn-o btn-sm" onclick="toast('💳 Demo — connect Razorpay here')">Buy Pack</button></div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:26px">🎓 Study-abroad counselling is <b style="color:var(--green)">free for students</b> — The Foreign Express is compensated by partner universities.</p>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: STUDY ABROAD ================= -->
+<div class="page" id="page-study-abroad">
+  <section class="country-hero"><div class="container">
+    <h1>From IELTS to Boarding Pass</h1>
+    <p style="margin-top:10px">We handle everything after the score — country selection, shortlisting, applications, scholarships, loans, visa, flights and accommodation. End to end.</p>
+  </div></section>
+  <section class="section white"><div class="container">
+    <div class="section-t"><h2>What We Handle For You</h2><p>One team, one timeline, zero chasing.</p></div>
+    <div class="grid-3">
+      <div class="card"><div class="ico i-b">🌍</div><h4>Country Selection</h4><p>Data-driven comparison of cost, work rights, PR pathways and salaries — matched to your budget and goals.</p></div>
+      <div class="card"><div class="ico i-o">🎯</div><h4>University Shortlisting</h4><p>Your AI shortlist, reviewed by a human counsellor — ambitious, target and safe options.</p></div>
+      <div class="card"><div class="ico i-g">📄</div><h4>Application + SOP/LOR</h4><p>We prepare your complete application — SOP, LORs, transcripts — and submit within 48 hours of your go-ahead.</p></div>
+      <div class="card"><div class="ico i-y">💰</div><h4>Scholarship & Loan</h4><p>From document attestation to certified translations — we unlock scholarships up to ₹10 Lakhs and education loans.</p></div>
+      <div class="card"><div class="ico i-b">🛂</div><h4>Visa Filing</h4><p>Country-specific documentation, financial proof guidance, mock interviews and filing — with a 90%+ success rate.</p></div>
+      <div class="card"><div class="ico i-o">🧳</div><h4>Pre-Departure</h4><p>Health & travel insurance, flights, accommodation, forex, SIM — landed support, not just admission support.</p></div>
+    </div>
+    <div class="section-t" style="margin-top:56px"><h2>Your Journey, Step by Step</h2></div>
+    <div class="grid-2"><div class="timeline" style="max-width:560px">
+      <div class="tl-item"><b>Day 0 — Free Counselling Call</b><p>Profile evaluation, budget and country mapping with an expert.</p></div>
+      <div class="tl-item"><b>Day 1–2 — Application Ready</b><p>SOP, LORs and transcripts prepared and submitted to shortlisted universities.</p></div>
+      <div class="tl-item"><b>Day 3–7 — Offer Letter</b><p>Partner universities respond in as little as 48 hours; most within a week.</p></div>
+      <div class="tl-item"><b>Week 2–4 — Visa & Finance</b><p>Loan sanction, scholarship claims, visa filing and biometrics.</p></div>
+      <div class="tl-item"><b>Take-off ✈</b><p>Flights, accommodation, insurance, airport pickup. You focus on packing.</p></div>
+    </div>
+    <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
+      <h3>Start Your Journey</h3><div class="fs">Free 30-min expert session. No charges, no obligation.</div>
+      <div class="field"><label>Full Name*</label><input class="inp" placeholder="Your name"></div>
+      <div class="field"><label>Phone*</label><input class="inp" placeholder="+91 ·····"></div>
+      <div class="field"><label>Interested Country</label><select class="inp"><option>UK</option><option>Canada</option><option>Germany</option><option>Ireland</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+      <button class="btn btn-o btn-full" onclick="toast('✅ Session request received! Our expert will call within 24 hrs (demo)')">Book Free Consultation</button>
+    </div></div>
+  </div></section>
+  <div class="strip"><div class="container">
+    <div><b>850+</b><span>University partners</span></div><div><b>70%+</b><span>Application→offer rate</span></div><div><b>48 hrs</b><span>Fastest offer letter</span></div><div><b>90%+</b><span>Visa success rate</span></div>
+  </div></div>
+</div>
+
+<!-- ================= PAGE: COUNTRY (template, data-driven) ================= -->
+<div class="page" id="page-country">
+  <section class="country-hero"><div class="container">
+    <div class="tabs" style="justify-content:flex-start;margin-bottom:22px" id="ctyTabs"></div>
+    <h1 id="ctyTitle">Study in the UK</h1>
+    <p id="ctyBlurb" style="margin-top:10px"></p>
+  </div></section>
+  <section class="section"><div class="container">
+    <div class="bmetric">
+      <div class="bm"><b id="ctyUnis">—</b><span>Partner Universities</span></div>
+      <div class="bm"><b id="ctyTuition">—</b><span>Avg. Tuition / year</span></div>
+      <div class="bm"><b id="ctyWork">—</b><span>Post-Study Work</span></div>
+      <div class="bm"><b id="ctyVisa">—</b><span>Visa Success Rate</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h4>🎓 Popular Fields</h4><p id="ctyFields" style="margin-top:8px"></p>
+        <h4 style="margin-top:20px">🗓 Upcoming Intakes</h4><p id="ctyIntakes" style="margin-top:8px"></p>
+      </div>
+      <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
+        <h3>Get the <span id="ctyShort">UK</span> Shortlist</h3><div class="fs">Free · matched to your band + budget.</div>
+        <div class="field"><label>Name</label><input class="inp" placeholder="Your name"></div>
+        <div class="field"><label>Phone</label><input class="inp" placeholder="+91 ·····"></div>
+        <button class="btn btn-o btn-full" onclick="toast('✅ Request received (demo)')">Send Me Universities</button>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: UNIVERSITIES ================= -->
+<div class="page" id="page-universities">
+  <div class="pagehead"><div class="container"><h1>Find Your University</h1><p>Filter by country, field, budget and IELTS requirement. Live search.</p></div></div>
+  <section class="section" style="padding-top:32px"><div class="container">
+    <div class="card" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px">
+      <div class="field" style="margin:0"><label>Country</label><select class="inp" id="ufCountry" onchange="ufRender()"><option>All</option><option>UK</option><option>Canada</option><option>Germany</option><option>Ireland</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+      <div class="field" style="margin:0"><label>Field</label><select class="inp" id="ufField" onchange="ufRender()"><option>All</option><option>Business</option><option>Computing</option><option>Engineering</option><option>Health</option><option>Data & AI</option></select></div>
+      <div class="field" style="margin:0"><label>Max Tuition</label><select class="inp" id="ufTui" onchange="ufRender()"><option value="99">Any</option><option value="15">Under ₹15L/yr</option><option value="20">Under ₹20L/yr</option><option value="30">Under ₹30L/yr</option></select></div>
+      <div class="field" style="margin:0"><label>My IELTS Band</label><select class="inp" id="ufBand" onchange="ufRender()"><option value="9">Any</option><option value="6.0">6.0+</option><option value="6.5">6.5+</option><option value="7.0">7.0+</option></select></div>
+    </div>
+    <p style="color:var(--muted);font-size:13.5px;margin-bottom:16px">Showing <b id="ufCount">0</b> universities</p>
+    <div class="grid-3" id="ufGrid"></div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: SCHOLARSHIPS ================= -->
+<div class="page" id="page-scholarships">
+  <div class="pagehead"><div class="container"><h1>Scholarship Finder</h1><p>Check what you actually qualify for — before spending a rupee applying.</p></div></div>
+  <section class="section" style="padding-top:32px"><div class="container grid-2" style="align-items:start;max-width:920px">
+    <div class="card">
+      <h4>🔍 Eligibility Checker</h4><br>
+      <div class="field"><label>My IELTS Band</label><select class="inp" id="scBand"><option>6.0</option><option selected>6.5</option><option>7.0</option><option>7.5</option></select></div>
+      <div class="field"><label>My GPA / Percentage</label><select class="inp" id="scGpa"><option>70%+ (7.0 CGPA)</option><option selected>80%+ (8.0 CGPA)</option><option>90%+ (9.0 CGPA)</option></select></div>
+      <div class="field"><label>Target Country</label><select class="inp" id="scCountry"><option>Any</option><option>UK</option><option>Ireland</option><option>Germany</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+      <button class="btn btn-o btn-full" onclick="scCheck()">Check My Scholarships →</button>
+    </div>
+    <div id="scOut"><div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:36px;margin-bottom:8px">🏆</div>Your matching scholarships appear here.</div></div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: VISA ================= -->
+<div class="page" id="page-visa-support">
+  <div class="pagehead"><div class="container"><h1>Visa Support</h1><p>Country-specific documentation, financial proof, mock interviews and filing — handled by specialists.</p></div></div>
+  <section class="section" style="padding-top:32px"><div class="container">
+    <table>
+      <tr><th>Country</th><th>Visa Type</th><th>Processing Time</th><th>Our Success Rate</th><th>Financial Proof</th></tr>
+      <tr><td>🇬🇧 United Kingdom</td><td>Student Route</td><td>3 weeks</td><td>97%</td><td>28-day bank statement</td></tr>
+      <tr><td>🇨🇦 Canada</td><td>SDS Study Permit</td><td>4–6 weeks</td><td>94%</td><td>GIC ₹12L + tuition</td></tr>
+      <tr><td>🇩🇪 Germany</td><td>National Visa (§16b)</td><td>6–10 weeks</td><td>91%</td><td>Blocked account €11,904</td></tr>
+      <tr><td>🇮🇪 Ireland</td><td>Stamp 2</td><td>4 weeks</td><td>93%</td><td>€12,000 + fees</td></tr>
+      <tr><td>🇦🇺 Australia</td><td>Subclass 500</td><td>4–6 weeks</td><td>92%</td><td>Living + tuition funds</td></tr>
+    </table>
+    <div class="grid-3" style="margin-top:34px">
+      <div class="card"><div class="ico i-b">📋</div><h4>Document Checklist</h4><p>Country-wise checklist generated for your profile — nothing missed, nothing extra.</p></div>
+      <div class="card"><div class="ico i-o">🎤</div><h4>Mock Visa Interview</h4><p>Practice with recorded feedback on credibility questions before the real one.</p></div>
+      <div class="card"><div class="ico i-g">✅</div><h4>Filing & Follow-up</h4><p>We file, track and follow up until the stamp is on your passport.</p></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: DASHBOARD ================= -->
+<div class="page" id="page-dashboard">
+  <div class="dash-wrap">
+    <div class="dside">
+      <a class="on" onclick="dTab('ov',this)">🏠 Overview</a>
+      <a onclick="dTab('pr',this)">📈 Progress</a>
+      <a onclick="dTab('sl',this)">🎯 My Shortlist</a>
+      <a onclick="dTab('ap',this)">📄 Applications</a>
+      <a onclick="dTab('bk',this)">📅 Bookings</a>
+      <a onclick="toast('Settings (demo)')">⚙ Settings</a>
+    </div>
+    <div class="dmain">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px">
+        <div><h3 style="color:var(--navy)">Welcome back, Aarav 👋</h3><p style="font-size:13px;color:var(--muted)">Target: MSc Data Science, UK · Sept 2026 intake</p></div>
+        <span class="pill-s p-con">DEMO ACCOUNT</span>
+      </div>
+
+      <!-- Overview -->
+      <div id="dOv">
+        <div class="dgrid">
+          <div class="wcard"><h5>CURRENT BAND → TARGET</h5><div class="big">6.5 → 7.0</div><div class="pbar" style="margin-top:10px"><i style="width:65%"></i></div></div>
+          <div class="wcard"><h5>EXAM READINESS</h5><div class="big" style="color:var(--orange)">68%</div><div class="pbar" style="margin-top:10px"><i style="width:68%;background:var(--orange)"></i></div></div>
+          <div class="wcard"><h5>TODAY'S TASK</h5><p style="font-size:14px;margin-bottom:10px">📖 Reading: Matching Headings drill (20 min)</p><button class="btn btn-o btn-sm" onclick="toast('Task started (demo)')">Start Task</button></div>
+          <div class="wcard"><h5>UPCOMING MOCK</h5><p style="font-size:14px;margin-bottom:10px"><b style="color:var(--navy)">C17 Test 3 — Full</b><br>Saturday, 10:00 AM</p><button class="btn btn-n btn-sm" onclick="toast('Mock booked (demo)')">View Details</button></div>
+          <div class="wcard"><h5>AI SHORTLIST</h5><p style="font-size:14px;margin-bottom:10px">🎯 <b style="color:var(--navy)">12 universities</b> matched to your band & budget</p><a href="#" onclick="dTab('sl',document.querySelectorAll('.dside a')[2]);return false" class="btn btn-o btn-sm">Open Shortlist</a></div>
+          <div class="wcard"><h5>COUNSELLOR</h5><p style="font-size:14px;margin-bottom:10px">👩💼 Priya M.<br>Next: Sat, 4:00 PM</p><button class="btn btn-g btn-sm" onclick="toast('Rescheduled (demo)')">Reschedule</button></div>
+        </div>
+        <div class="wcard">
+          <h5>AI COACH SAYS</h5>
+          <p style="font-size:14.5px">Your Reading is stable at 7.0, but <b>Writing Task 2</b> is dragging your overall band (5.5). This week: 3× Task 2 essays with AI feedback + 1 Speaking Room session focusing on Lexical Resource. At your current trend you hit 7.0 overall in <b>~5 weeks</b>. 🚀</p>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div id="dPr" style="display:none">
+        <div class="grid-2">
+          <div class="wcard"><h5>BAND TRAJECTORY (last 6 mocks)</h5>
+            <svg viewBox="0 0 320 140" style="width:100%"><line x1="20" y1="120" x2="310" y2="120" stroke="#E2E8F0"/><line x1="20" y1="70" x2="310" y2="70" stroke="#E2E8F0"/><line x1="20" y1="20" x2="310" y2="20" stroke="#E2E8F0"/><text x="0" y="124" font-size="10" fill="#94A3B8">5.5</text><text x="0" y="74" font-size="10" fill="#94A3B8">6.5</text><text x="0" y="24" font-size="10" fill="#94A3B8">7.5</text>
+            <polyline points="40,105 90,105 140,85 190,85 240,62 290,45" fill="none" stroke="#FF6B35" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="290" cy="45" r="5" fill="#FF6B35"/></svg>
+          </div>
+          <div class="wcard"><h5>SKILL BREAKDOWN (current)</h5>
+            <div style="margin-top:8px">
+              <div class="crit"><div class="cl"><span>🎧 Listening</span><b>7.0</b></div><div class="pbar"><i style="width:78%"></i></div></div>
+              <div class="crit"><div class="cl"><span>📖 Reading</span><b>7.0</b></div><div class="pbar"><i style="width:78%"></i></div></div>
+              <div class="crit"><div class="cl"><span>✍ Writing</span><b>5.5</b></div><div class="pbar"><i style="width:61%;background:#EF4444"></i></div></div>
+              <div class="crit"><div class="cl"><span>🎙 Speaking</span><b>6.5</b></div><div class="pbar"><i style="width:72%;background:var(--gold)"></i></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="wcard" style="margin-top:18px"><h5>STREAK & HOURS</h5><div class="dgrid" style="margin:0"><div><div class="big">12 🔥</div><span style="font-size:12px;color:var(--muted)">day streak</span></div><div><div class="big">47h</div><span style="font-size:12px;color:var(--muted)">total practice</span></div><div><div class="big">18</div><span style="font-size:12px;color:var(--muted)">tests taken</span></div><div><div class="big">+1.0</div><span style="font-size:12px;color:var(--muted)">band gained</span></div></div></div>
+      </div>
+
+      <!-- Shortlist -->
+      <div id="dSl" style="display:none">
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">Generated from your band (6.5), budget (₹20L/yr) and field (Data & AI). Admit probability is an AI estimate.</p>
+        <div class="grid-3" id="dSlGrid"></div>
+      </div>
+
+      <!-- Applications -->
+      <div id="dAp" style="display:none">
+        <div class="kanban">
+          <div class="kcol"><h6>📝 Drafting</h6><div class="kitem"><b>University of Leeds</b>MSc Data Analytics · SOP in review</div></div>
+          <div class="kcol"><h6>📤 Submitted</h6><div class="kitem"><b>Coventry University</b>Submitted · awaiting decision</div><div class="kitem"><b>Cardiff University</b>Submitted · 3 days ago</div></div>
+          <div class="kcol"><h6>🎉 Offer</h6><div class="kitem" style="border-color:var(--green)"><b>University of Sheffield</b>Conditional offer · Band 6.5 ✓<br><span class="pill-s p-enr" style="margin-top:6px">ACCEPT OFFER</span></div></div>
+          <div class="kcol"><h6>🛂 Visa</h6><div class="kitem"><b>—</b><span style="color:var(--muted)">Accept an offer to begin visa filing</span></div></div>
+        </div>
+      </div>
+
+      <!-- Bookings -->
+      <div id="dBk" style="display:none">
+        <div class="grid-2">
+          <div class="wcard"><h5>UPCOMING SESSIONS</h5>
+            <div style="padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center"><span>👩💼 Counsellor — Priya M.<br><small style="color:var(--muted)">Sat, 4:00 PM · 30 min</small></span><button class="btn btn-out btn-sm" onclick="toast('Rescheduled (demo)')">Reschedule</button></div>
+            <div style="padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center"><span>🎙 AI Speaking Room — Part 2<br><small style="color:var(--muted)">Anytime · 20 credits left</small></span><button class="btn btn-o btn-sm" onclick="toast('Session started (demo)')">Start Now</button></div>
+            <div style="padding:10px 0;display:flex;justify-content:space-between;align-items:center"><span>📝 Full Mock C17 T3<br><small style="color:var(--muted)">Sat, 10:00 AM · 2h 45m</small></span><button class="btn btn-n btn-sm" onclick="toast('Reminder set (demo)')">Reminder</button></div>
+          </div>
+          <div class="wcard"><h5>BOOK NEW</h5><br>
+            <button class="btn btn-o btn-full" style="margin-bottom:12px" onclick="toast('Counsellor booking (demo)')">Book Counsellor Call</button>
+            <button class="btn btn-n btn-full" style="margin-bottom:12px" onclick="toast('Mock scheduled (demo)')">Schedule Mock Test</button>
+            <button class="btn btn-g btn-full" onclick="toast('Speaking session started (demo)')">Start Speaking Practice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAGE: ADMIN ================= -->
+<div class="page" id="page-admin">
+  <div class="dash-wrap">
+    <div class="dside">
+      <a class="on">📊 Overview</a>
+      <a onclick="toast('Leads CRM (demo)')">👥 Leads</a>
+      <a onclick="toast('Content CMS (demo)')">📚 Content</a>
+      <a onclick="toast('Counsellors (demo)')">🧑‍💼 Counsellors</a>
+      <a onclick="toast('AI costs (demo)')">🤖 AI Monitor</a>
+    </div>
+    <div class="dmain">
+      <h3 style="color:var(--navy);margin-bottom:20px">Operations Dashboard <span class="pill-s p-con">DEMO</span></h3>
+      <div class="dgrid" style="grid-template-columns:repeat(4,1fr)">
+        <div class="wcard"><h5>NEW LEADS TODAY</h5><div class="big" style="color:var(--orange)">38</div><small style="color:var(--green)">↑ 12% vs yesterday</small></div>
+        <div class="wcard"><h5>TESTS TAKEN TODAY</h5><div class="big">214</div><small style="color:var(--green)">↑ 8%</small></div>
+        <div class="wcard"><h5>LEAD → CALL RATE</h5><div class="big">64%</div><small style="color:var(--muted)">last 7 days</small></div>
+        <div class="wcard"><h5>AI COST TODAY</h5><div class="big">₹1,842</div><small style="color:var(--muted)">~₹6.2 / active user</small></div>
+      </div>
+      <h4 style="color:var(--navy);margin:10px 0 14px">Lead Pipeline</h4>
+      <table>
+        <tr><th>Name</th><th>Country</th><th>Band</th><th>Source</th><th>Status</th><th>Owner</th></tr>
+        <tr><td>Rohit Sharma</td><td>UK</td><td>6.0</td><td>Diagnostic</td><td><span class="pill-s p-new">NEW</span></td><td>Unassigned</td></tr>
+        <tr><td>Priya Nair</td><td>Canada</td><td>Not taken</td><td>Homepage form</td><td><span class="pill-s p-con">CONTACTED</span></td><td>Priya M.</td></tr>
+        <tr><td>Aman Gupta</td><td>Germany</td><td>6.5</td><td>Writing Checker</td><td><span class="pill-s p-qua">QUALIFIED</span></td><td>Rahul K.</td></tr>
+        <tr><td>Sneha Iyer</td><td>Ireland</td><td>7.0</td><td>Referral</td><td><span class="pill-s p-app">APPLIED</span></td><td>Priya M.</td></tr>
+        <tr><td>Vikram Singh</td><td>UK</td><td>6.5</td><td>Pro upgrade</td><td><span class="pill-s p-enr">ENROLLED ✦</span></td><td>Rahul K.</td></tr>
+      </table>
+      <div class="note">🔌 <b>Production note:</b> this panel is best built in Retool or a role-gated Next.js route wired to the real database. All numbers here are demo data.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAGE: ABOUT ================= -->
+<div class="page" id="page-about">
+  <div class="pagehead"><div class="container"><h1>About The Foreign Express</h1><p>Building global careers — from the first practice question to the first day abroad.</p></div></div>
+  <section class="section"><div class="container grid-2">
+    <div>
+      <h3 style="color:var(--navy);font-size:24px;margin-bottom:14px">Why we exist</h3>
+      <p style="color:#475569;margin-bottom:14px">Over 1.2 million Indian students pursue degrees abroad, and families spend ₹40–60 lakhs on a single postgraduate degree. Yet the journey is fragmented: one app for IELTS practice, one consultant for admissions, another agent for visas — and nothing connects them.</p>
+      <p style="color:#475569;margin-bottom:14px"><b>The Foreign Express connects them.</b> Your AI IELTS coach doesn't stop at a score — it converts your performance into a university shortlist, a scholarship estimate, and a live counsellor handoff inside the same dashboard.</p>
+      <p style="color:#475569">Preparation feeds admission. Admission feeds visa. Visa feeds your career. One account. One data trail. One team accountable end to end.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="text-align:center"><div class="big" style="font-family:'Poppins';font-size:30px;color:var(--orange);font-weight:800">12,400+</div><p>Students coached</p></div>
+      <div class="card" style="text-align:center"><div class="big" style="font-family:'Poppins';font-size:30px;color:var(--orange);font-weight:800">850+</div><p>University partners</p></div>
+      <div class="card" style="text-align:center"><div class="big" style="font-family:'Poppins';font-size:30px;color:var(--orange);font-weight:800">32</div><p>Countries of alumni</p></div>
+      <div class="card" style="text-align:center"><div class="big" style="font-family:'Poppins';font-size:30px;color:var(--orange);font-weight:800">96%</div><p>Would recommend us</p></div>
+    </div>
+  </div></section>
+  <div class="strip"><div class="container"><div><b>Our Promise</b></div><div><b>Transparent</b></div><div><b>Data-Driven</b></div><div><b>With You Till Landing</b></div></div></div>
+</div>
+
+<!-- ================= PAGE: STORIES ================= -->
+<div class="page" id="page-stories">
+  <div class="pagehead"><div class="container"><h1>Success Stories</h1><p>Real students. Real transformations.</p></div></div>
+  <section class="section" style="padding-top:36px"><div class="container grid-3" id="pgStories"></div></section>
+</div>
+
+<!-- ================= PAGE: BLOG ================= -->
+<div class="page" id="page-blog">
+  <div class="pagehead"><div class="container"><h1>Blog & Resources</h1><p>Guides, strategies and country intel — written by counsellors, not content farms.</p></div></div>
+  <section class="section" style="padding-top:36px"><div class="container grid-3">
+    <div class="card"><span class="pill" style="background:#E0F2FE;color:#0369A1;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">IELTS</span><h4 style="margin-top:12px">How to Move From Band 6 to 7 in Writing Task 2</h4><p>The 4 criterion breakdown, and the one mistake 80% of candidates make in Coherence.</p><p style="margin-top:10px;font-size:12px;color:var(--muted)">6 min read</p></div>
+    <div class="card"><span class="pill" style="background:#E7F8F1;color:#047857;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">UK</span><h4 style="margin-top:12px">The Real Cost of a UK Master's in 2026</h4><p>Tuition, living, visa fees and hidden costs — city by city, with a realistic monthly budget.</p><p style="margin-top:10px;font-size:12px;color:var(--muted)">9 min read</p></div>
+    <div class="card"><span class="pill" style="background:#FFF7E0;color:#B45309;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">Scholarships</span><h4 style="margin-top:12px">7 Scholarships Indians Overlook (and How to Win Them)</h4><p>From GOI-IES to DAAD — eligibility, deadlines and what actually makes an application win.</p><p style="margin-top:10px;font-size:12px;color:var(--muted)">7 min read</p></div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: CONTACT ================= -->
+<div class="page" id="page-contact">
+  <div class="pagehead"><div class="container"><h1>Contact Us</h1><p>Book a free 30-minute consultation or just ask us anything.</p></div></div>
+  <section class="section" style="padding-top:36px"><div class="container grid-2">
+    <div class="formcard" style="box-shadow:0 10px 30px rgba(10,31,68,.1)">
+      <h3>Book Your Free Consultation</h3><div class="fs">An expert will call you within 24 hours.</div>
+      <div class="field"><label>Full Name*</label><input class="inp" id="ctName" placeholder="Your name"></div>
+      <div class="field"><label>Email*</label><input class="inp" id="ctEmail" type="email" placeholder="you@email.com"></div>
+      <div class="field"><label>Phone*</label><input class="inp" id="ctPhone" placeholder="+91 ·····"></div>
+      <div class="field"><label>What do you need help with?</label><select class="inp" id="ctTopic"><option>IELTS preparation</option><option>Choosing a country</option><option>University shortlisting</option><option>Scholarship / loan</option><option>Visa filing</option><option>Something else</option></select></div>
+      <button class="btn btn-o btn-full" onclick="submitContact()">SUBMIT REQUEST</button>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:18px"><h4>📞 Call Us</h4><p style="font-size:17px;color:var(--navy);font-weight:700;margin-top:6px">+91 80693 61480</p><p style="font-size:13px">8:00 AM – 11:00 PM IST, all days</p></div>
+      <div class="card" style="margin-bottom:18px"><h4>✉ Email</h4><p style="margin-top:6px">hello@theforeignexpress.com</p></div>
+      <div class="card"><h4>📍 Experience Centre</h4><p style="margin-top:6px;color:var(--muted)">[Your office address here]<br>Walk-ins welcome, 10 AM – 7 PM</p></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= PAGE: LEGAL ================= -->
+<div class="page" id="page-privacy"><div class="pagehead"><div class="container"><h1>Privacy Policy</h1></div></div>
+  <section class="section"><div class="container" style="max-width:760px;color:#475569;font-size:14.5px">
+    <p style="margin-bottom:14px">The Foreign Express respects your privacy. This demo page is a placeholder — the production version must cover: data collection (test scores, audio recordings, application documents), storage and encryption standards, third-party processors (AI providers, payment gateways), cookie usage, retention periods, user rights under India's DPDP Act and GDPR where applicable, and grievance officer contact details.</p>
+    <div class="note">⚠ Replace this with legal-reviewed policy text before launch.</div>
+  </div></section>
+</div>
+<div class="page" id="page-terms"><div class="pagehead"><div class="container"><h1>Terms & Conditions</h1></div></div>
+  <section class="section"><div class="container" style="max-width:760px;color:#475569;font-size:14.5px">
+    <p style="margin-bottom:14px">Placeholder. Production terms must cover: service scope and refunds, AI band estimates being indicative (±0.5 band), university admission outcomes not guaranteed, payment and subscription terms, acceptable use, and dispute resolution jurisdiction.</p>
+    <div class="note">⚠ Replace this with legal-reviewed terms before launch.</div>
+  </div></section>
+</div>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer><div class="container">
+  <div class="fgrid">
+    <div>
+      <div class="logo" style="color:#fff;margin-bottom:12px"><span class="plane">✈</span> The Foreign Express</div>
+      <p style="font-size:13px">Building global careers for the AI economy of tomorrow. From Band 6 to boarding pass.</p>
+      <p style="margin-top:12px;font-size:13px"><b style="color:#fff">📞 +91 80693 61480</b><br>hello@theforeignexpress.com</p>
+      <p style="margin-top:12px;font-size:12px;color:#64748B">Proudly associated with:<br>ICEF Accredited · British Council · AIRC Certified</p>
+    </div>
+    <div><h5>STUDY GLOBAL</h5><a href="#country" onclick="setCountry('uk')">Study in the UK</a><a href="#country" onclick="setCountry('canada')">Study in Canada</a><a href="#country" onclick="setCountry('germany')">Study in Germany</a><a href="#country" onclick="setCountry('ireland')">Study in Ireland</a><a href="#country" onclick="setCountry('australia')">Study in Australia</a><a href="#country" onclick="setCountry('dubai')">Study in Dubai</a><a href="#country" onclick="setCountry('italy')">Study in Italy</a></div>
+    <div><h5>IELTS</h5><a href="#diagnostic">Free AI Diagnostic</a><a href="#mock-tests">Mock Tests</a><a href="#writing-checker">Writing Checker</a><a href="#speaking-ai">AI Speaking Room</a><a href="#study-plan">Study Plan</a><a href="#pricing">Pricing</a></div>
+    <div><h5>PLATFORM</h5><a href="#universities">University Search</a><a href="#scholarships">Scholarship Finder</a><a href="#visa-support">Visa Support</a><a href="#dashboard">Student Dashboard</a></div>
+    <div><h5>RESOURCES</h5><a href="#blog">Blog</a><a href="#band-predictor">Band Predictor</a><a href="#">SOP Guide</a><a href="#">LOR Guide</a><a href="#">Band Calculator</a></div>
+    <div><h5>COMPANY</h5><a href="#about">About Us</a><a href="#stories">Success Stories</a><a href="#contact">Contact</a><a href="#">Careers</a><a href="#">For Partners</a></div>
+    <div><h5>LEGAL</h5><a href="#privacy">Privacy Policy</a><a href="#terms">Terms & Conditions</a><a href="#">Refund Policy</a></div>
+  </div>
+</div>
+<div class="fbot">© 2026 The Foreign Express. All rights reserved. · Made with ❤ in India</div>
+</footer>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-bg" id="mLogin"><div class="modal">
+  <span class="mx" onclick="closeModals()">×</span>
+  <h3>Welcome Back 👋</h3>
+  <div class="field"><label>Email</label><input class="inp" placeholder="you@email.com"></div>
+  <div class="field"><label>Password</label><input class="inp" type="password" placeholder="••••••••"></div>
+  <button class="btn btn-o btn-full" style="margin-bottom:10px" onclick="closeModals();toast('Logged in (demo) → opening dashboard');setTimeout(()=>{location.hash='#dashboard'},600)">Log In</button>
+  <button class="btn btn-out btn-full" onclick="closeModals();toast('Google sign-in (demo)')">Continue with Google</button>
+  <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:12px">Demo build — connect NextAuth/Clerk in production.</p>
+</div></div>
+
+<div class="modal-bg" id="mCall"><div class="modal">
+  <span class="mx" onclick="closeModals()">×</span>
+  <h3>Talk to an Expert</h3>
+  <div class="field"><label>Your Name</label><input class="inp" placeholder="Full name"></div>
+  <div class="field"><label>Phone</label><input class="inp" placeholder="+91 ·····"></div>
+  <button class="btn btn-o btn-full" onclick="closeModals();toast('✅ We will call you within 24 hours (demo)')">Request Call Back</button>
+</div></div>
+
+<!-- ============ CHAT + TOAST ============ -->
+<button class="chatbtn" onclick="document.getElementById('chatbox').classList.toggle('show')">💬</button>
+<div class="chatbox" id="chatbox">
+  <div class="chat-h">🤖 Express Assistant — online</div>
+  <div class="chat-b">
+    <div class="chat-m">Hi! I'm the Express Assistant. Ask me anything about IELTS or studying abroad 👇</div>
+    <div>
+      <span class="chat-q" onclick="chatSay('The AI Diagnostic takes just 15 minutes — 6 quick questions — and gives you a provisional band estimate. It\'s completely free, no signup needed!')">How does the Diagnostic work?</span>
+      <span class="chat-q" onclick="chatSay('Counselling is 100% FREE for students — we\'re compensated by our 850+ partner universities. You pay only for IELTS Pro features if you choose them.')">Is counselling free?</span>
+      <span class="chat-q" onclick="chatSay('Band 6.5 opens doors to 500+ of our partner universities across UK, Canada, Ireland, Germany and more — and you may still qualify for scholarships! Try the Scholarship Finder.')">Can I get in with Band 6.5?</span>
+      <span class="chat-q" onclick="chatSay('Fastest offer letter: 48 hours from partner universities. Typical timeline: counselling Day 0 → application Day 2 → offers within a week → visa in 3-4 weeks. 🚀')">How fast can I get an offer?</span>
+      <span class="chat-q" onclick="chatSay('Our test interface is designed to be 90% identical to the real computer-based IELTS — timer, question navigator, highlight and note tools. You\'ll feel at home on exam day.')">Is the interface like real IELTS?</span>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ============ ROUTER ============ */
+const pages=document.querySelectorAll('.page');
+function route(){
+  const h=(location.hash||'#home').slice(1).split('?')[0];
+  const target=document.getElementById('page-'+h)?h:'home';
+  pages.forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+target).classList.add('active');
+  document.querySelectorAll('.navlinks a[data-nl]').forEach(a=>{
+    a.classList.toggle('on',a.getAttribute('href')==='#'+target);
+  });
+  window.scrollTo({top:0});
+}
+window.addEventListener('hashchange',route);
+
+/* ============ TOAST / MODALS ============ */
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600)}
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModals(){document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('show'))}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModals()}));
+
+/* ============ FORMS ============ */
+function submitLead(){
+  const n=document.getElementById('lfName').value.trim(),e=document.getElementById('lfEmail').value.trim();
+  if(!n||!e){toast('⚠ Please fill your name and email');return}
+  if(!document.getElementById('lfAgree').checked){toast('⚠ Please accept the terms to continue');return}
+  toast('✅ Thank you '+n.split(' ')[0]+'! Your Band Report request is in. (demo)');
+}
+function submitContact(){
+  const n=document.getElementById('ctName').value.trim();
+  if(!n){toast('⚠ Please enter your name');return}
+  toast('✅ Request received! Expert will call within 24 hrs (demo)');
+}
+
+/* ============ HOME: destinations + stories + faq ============ */
+const DESTS=[
+  {f:'🇬🇧',n:'United Kingdom',u:'120+ Universities',t:'₹15–30L / yr',p:'2-yr work visa'},
+  {f:'🇨🇦',n:'Canada',u:'90+ Universities',t:'₹12–25L / yr',p:'3-yr PGWP'},
+  {f:'🇩🇪',n:'Germany',u:'60+ Universities',t:'₹0–4L / yr',p:'18-mo job seeker'},
+  {f:'🇮🇪',n:'Ireland',u:'40+ Universities',t:'₹12–22L / yr',p:'2-yr stay back'},
+  {f:'🇦🇺',n:'Australia',u:'50+ Universities',t:'₹18–30L / yr',p:'2–4-yr work visa'},
+  {f:'🇦🇪',n:'Dubai (UAE)',u:'35+ Universities',t:'₹10–20L / yr',p:'2-yr visa'},
+  {f:'🇮🇹',n:'Italy',u:'45+ Universities',t:'₹4–12L / yr',p:'1-yr job search'},
+  {f:'🇺🇸',n:'United States',u:'80+ Universities',t:'₹25–45L / yr',p:'OPT 3-yr STEM'},
+];
+document.getElementById('homeDest').innerHTML=DESTS.map(d=>`
+<a class="dest" href="#country" onclick="setCountry('${d.n==='United Kingdom'?'uk':d.n==='Canada'?'canada':d.n==='Germany'?'germany':d.n==='Ireland'?'ireland':d.n==='Australia'?'australia':d.n==='Dubai (UAE)'?'dubai':'italy'}')">
+<div class="flag">${d.f}</div><div class="db"><h4>${d.n}</h4><div class="meta">${d.u} · ${d.t}</div><span class="pill">✈ ${d.p}</span></div></a>`).join('');
+
+const STORIES=[
+  {i:'PS',n:'Priya Sharma',r:'Band 5.5 → 7.0 · University of Leeds, UK',t:'The AI coach told me exactly why my Writing was stuck at 5.5 — task response. Six weeks of targeted drills and I jumped a full band. The shortlist feature then matched me to Leeds with a ₹3L scholarship.'},
+  {i:'AK',n:'Arun Kumar',r:'Band 6.0 → 7.5 · TU Munich, Germany',t:'I had no idea public universities in Germany charge almost nothing. The Express team handled my blocked account, APS and visa. I just practiced on the test engine and packed my bags.'},
+  {i:'SM',n:'Sana Mirza',r:'Band 6.5 → 7.5 · Trinity College Dublin, Ireland',t:'Speaking was my nightmare. The AI Speaking Room felt awkward for two days, then magical. Hearing my own recordings next to the Band 9 model was the wake-up call I needed.'},
+  {i:'RJ',n:'Rahul Jain',r:'Offer in 36 hours · Coventry University, UK',t:'I uploaded my documents on Monday evening and had a conditional offer by Wednesday morning. 36 hours. My previous consultant took 6 weeks for less.'},
+  {i:'NP',n:'Neha Patel',r:'Band 6.0 → 7.0 · University of Toronto, Canada',t:'The mock interface is scary-real. On actual test day I was calmer than the invigilator. Readiness predictor said 82% the week before — it was right.'},
+  {i:'VD',n:'Vikram Desai',r:'Band 5.0 → 6.5 · Wollongong Dubai, UAE',t:'Started from scratch in English confidence. The study plan kept me honest — 45 minutes a day, streaks, tiny wins. Five months later I had my offer and visa.'},
+];
+const storyCard=s=>`<div class="story"><div class="q">"</div><p>${s.t}</p><div class="who"><div class="avat">${s.i}</div><div><b>${s.n}</b><span>${s.r}</span></div></div></div>`;
+document.getElementById('homeStories').innerHTML=STORIES.slice(0,3).map(storyCard).join('');
+document.getElementById('pgStories').innerHTML=STORIES.map(storyCard).join('');
+
+const FAQS=[
+ ['What services does The Foreign Express offer?','Everything from IELTS preparation to landing abroad: AI diagnostic and mock tests, Writing/Speaking evaluation, study plans, university shortlisting, applications, scholarships, loans, visa filing and pre-departure support — all in one account.'],
+ ['How is the AI band score calculated?','Your answers are scored against the official IELTS band descriptors for each criterion. It is an AI estimate — actual exam results may vary by ±0.5 band. Writing and Speaking evaluations are cross-checked by a second model for reliability.'],
+ ['Is the test interface the same as the real exam?','It is designed to be 90% identical to computer-based IELTS — timer, question navigator, highlight and note tools. The real interface is actually simpler, so you will be well prepared.'],
+ ['Which countries can I apply to?','UK, USA, Canada, Germany, Ireland, Australia, Dubai, Italy and more — with 850+ partner universities across them.'],
+ ['Can I get a scholarship with Band 6.5?','Yes — many scholarships accept 6.5, and some accept 6.0. Use the Scholarship Finder to check your exact eligibility by band, GPA and country.'],
+ ['Do you charge for counselling?','No. Study-abroad counselling is completely free for students — The Foreign Express is compensated by partner universities. You only pay for optional IELTS Pro features.'],
+ ['What happens after I land abroad?','Support continues: airport pickup coordination, accommodation help, SIM, forex, part-time job guidance and a local alumni community.'],
+ ['Is my data safe?','Your test scores, recordings and documents are encrypted and never sold. See our Privacy Policy for full details on storage, processors and your rights.'],
+];
+document.getElementById('faqHome').innerHTML=FAQS.map(f=>`<details class="acc"><summary>${f[0]}</summary><div class="ab">${f[1]}</div></details>`).join('');
+
+/* ============ DIAGNOSTIC ============ */
+const DQ=[
+ {q:'By the time we arrived, the match ______ already finished.',o:['has','had','was','would'],a:1},
+ {q:'Choose the closest meaning of "meticulous":',o:['Very careless','Very careful and precise','Very fast','Very loud'],a:1},
+ {q:'Reading: "Although urban populations grew rapidly during the industrial era, rural communities continued to supply the majority of new workers." — True/False/Not Given: "All new workers came from cities."',o:['True','False','Not Given'],a:1},
+ {q:'Neither of the two answers ______ correct.',o:['are','is','were','have'],a:1},
+ {q:'The number of students applying abroad ______ rising every year.',o:['are','is','have','were'],a:1},
+ {q:'Reading: "Few universities publish employment data for their graduates, making comparison difficult for applicants." — What does the passage suggest?',o:['Applicants refuse to compare universities','Employment data is easy to find','Lack of published data makes comparing universities hard','Universities ban data publication'],a:2},
+];
+let dgi=0,dgScore=0;
+function dgStart(){dgi=0;dgScore=0;document.getElementById('dgIntro').style.display='none';document.getElementById('dgQuiz').style.display='block';dgShow()}
+function dgShow(){
+  const q=DQ[dgi];
+  document.getElementById('dgNum').textContent=dgi+1;
+  document.getElementById('dgBar').style.width=((dgi)/6*100+16)+'%';
+  document.getElementById('dgQ').textContent=q.q;
+  document.getElementById('dgOpts').innerHTML=q.o.map((o,i)=>`<div class="opt" style="cursor:pointer;padding:12px 14px;font-size:14.5px" onclick="dgAns(${i},this)">${String.fromCharCode(65+i)}. ${o}</div>`).join('');
+}
+function dgAns(i,el){
+  if(i===DQ[dgi].a){dgScore++;el.style.borderColor='var(--green)';el.style.background='#E7F8F1'}
+  else{el.style.borderColor='#EF4444';el.style.background='#FEE2E2'}
+  document.querySelectorAll('#dgOpts .opt').forEach(o=>o.style.pointerEvents='none');
+  setTimeout(()=>{dgi++; dgi<6?dgShow():dgEnd()},700);
+}
+function dgEnd(){
+  document.getElementById('dgQuiz').style.display='none';
+  document.getElementById('dgResult').style.display='block';
+  const band={6:'7.5',5:'7.0',4:'6.5',3:'6.0',2:'5.5',1:'5.0',0:'4.5'}[dgScore];
+  document.getElementById('dgBand').textContent=band;
+  const pct=Math.round(dgScore/6*100);
+  document.getElementById('dgRead').textContent=pct+'%';
+  document.getElementById('dgGauge').style.background=`conic-gradient(var(--green) ${pct*3.6}deg, var(--line) 0deg)`;
+}
+
+/* ============ MOCK TEST LIBRARY ============ */
+const MT={full:[],lr:[],ws:[]};
+for(let c=11;c<=14;c++)for(let t=1;t<=4;t++){
+  MT.full.push({n:`C${c} Full Test ${t} AC`,m:'2h 45m · All 4 skills'});
+  MT.lr.push({n:`C${c} Listening Test ${t} AC`,m:'30 min · 40 Q'});
+  MT.lr.push({n:`C${c} Reading Test ${t} AC`,m:'60 min · 40 Q'});
+  MT.ws.push({n:`C${c} Writing Test ${t} AC`,m:'60 min · Task 1 + 2'});
+}
+for(let t=1;t<=4;t++){MT.full.push({n:`Actual Test ${t} — Full AC`,m:'2h 45m · Past paper'});MT.lr.push({n:`Actual Test ${t} Listening AC`,m:'30 min'},{n:`Actual Test ${t} Reading AC`,m:'60 min'});MT.ws.push({n:`Actual Test ${t} Writing AC`,m:'60 min'})}
+function mtTab(k,el){
+  document.querySelectorAll('#page-mock-tests .tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  document.getElementById('mtGrid').innerHTML=MT[k].slice(0,24).map(t=>`
+  <div class="tcard"><b>${t.n}</b><span class="tm">⏱ ${t.m}</span>
+  <div><div class="pbar"><i style="width:0%"></i></div><span class="tm">0% complete</span></div>
+  <button class="btn btn-o btn-sm" onclick="openModal('mLogin')">Take Test →</button></div>`).join('')
+  + (MT[k].length>24?`<div style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px">+ ${MT[k].length-24} more tests in the full library</div>`:'');
+}
+mtTab('full',document.querySelector('#page-mock-tests .tab'));
+
+/* ============ WRITING CHECKER ============ */
+document.getElementById('wcText').addEventListener('input',e=>{
+  const w=e.target.value.trim()?e.target.value.trim().split(/\s+/).length:0;
+  document.getElementById('wcCount').textContent=w;
+});
+function wcCheck(){
+  const txt=document.getElementById('wcText').value.trim();
+  const words=txt?txt.split(/\s+/).length:0;
+  const out=document.getElementById('wcResult');
+  if(words<50){out.innerHTML='<div class="card" style="border-color:#EF4444;text-align:center;padding:30px"><h4>✍ Keep going…</h4><p style="margin-top:8px">A Task 2 essay needs at least <b>250 words</b>. You have '+words+'. Paste more text and try again.</p></div>';return}
+  const sents=txt.split(/[.!?]+/).filter(s=>s.trim().length>2).length||1;
+  const avgLen=Math.round(words/sents);
+  const para=txt.split(/\n\s*\n/).filter(p=>p.trim()).length||1;
+  // Heuristic demo scoring
+  const TR=Math.min(9,5+(words>=250?1:0)+(words>=320?0.5:0)+(para>=4?0.5:0));
+  const CC=Math.min(9,5.5+(para>=4?0.5:0)+(para>=5?0.5:0));
+  const LR=Math.min(9,5+(avgLen>=15?0.5:0)+(avgLen>=20?0.5:0));
+  const GR=Math.min(9,5.5+(avgLen>=12?0.5:0)+(avgLen<=25?0.5:0));
+  const OV=Math.round((TR+CC+LR+GR)/4*2)/2;
+  const bar=(v,c)=>`<div class="crit"><div class="cl"><span>${c}</span><b>${v}</b></div><div class="pbar"><i style="width:${v/9*100}%;${v<6?'background:#EF4444':v<7?'background:var(--gold)':''}"></i></div></div>`;
+  out.innerHTML=`<div class="card">
+    <div style="text-align:center;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:18px">
+      <span style="font-size:13px;color:var(--muted)">AI BAND ESTIMATE</span>
+      <div class="price" style="font-size:46px">${OV}</div>
+      <span style="font-size:12px;color:var(--muted)">${words} words · ${sents} sentences · ${para} paragraphs</span>
+    </div>
+    ${bar(TR,'Task Response')}${bar(CC,'Coherence & Cohesion')}${bar(LR,'Lexical Resource')}${bar(GR,'Grammatical Range & Accuracy')}
+    <div class="note" style="margin:14px 0">⚠ AI estimate — actual exam may vary ±0.5 band.</div>
+    <h4 style="margin-bottom:8px">Top 3 Fixes</h4>
+    <ul style="font-size:13.5px;color:#475569;padding-left:18px">
+      <li>${words<270?'Your essay is under length — aim for 270–320 words to protect Task Response.':'Good length. Now sharpen your position in the introduction — state it in one clear sentence.'}</li>
+      <li>${para<4?'Add a clear 4-paragraph structure: intro, body 1, body 2, conclusion.':'Structure looks solid. Add linking phrases ("Consequently", "In contrast") between ideas.'}</li>
+      <li>Replace 5 common words with precise academic vocabulary (e.g., "a lot of" → "a substantial proportion of").</li>
+    </ul>
+    <button class="btn btn-o btn-full" style="margin-top:16px" onclick="toast('🔓 Unlimited checks + full rewrite = IELTS Pro (demo)')">Get Full Rewrite & Unlimited Checks</button>
+  </div>`;
+}
+
+/* ============ STUDY PLAN ============ */
+function spGen(){
+  const cur=parseFloat(document.getElementById('spCur').value),tar=parseFloat(document.getElementById('spTar').value);
+  const w=parseInt(document.getElementById('spWeeks').value),weak=document.getElementById('spWeak').value;
+  const gap=(tar-cur).toFixed(1);
+  const days=[['Mon',`📖 ${weak} micro-lesson (20m) + drill (25m)`],['Tue','🎧 Listening Section 2 practice + AI review'],['Wed',`✍ ${weak==='Writing'?'Full Task 2 + AI check':'Vocab: 15 academic collocations + usage'} `],['Thu',`🎙 Speaking Room: Part ${weak==='Speaking'?'1+2':'1'} session`],['Fri','📖 Reading: timed passage + error log'],['Sat','🎯 Full mock test (exam simulation)'],['Sun','😴 Rest + 20-min flashcard review']];
+  document.getElementById('spOut').innerHTML=`<div class="card">
+    <div style="text-align:center;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:16px">
+      <h4>Your ${w}-Week Express Plan</h4>
+      <p style="font-size:13px;color:var(--muted)">${cur} → <b style="color:var(--orange)">${tar}</b> · gap of ${gap} bands · emphasis: ${weak}</p>
+    </div>
+    ${days.map(d=>`<div style="display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px"><b style="min-width:42px;color:var(--navy)">${d[0]}</b><span>${d[1]}</span></div>`).join('')}
+    <div class="note" style="margin:16px 0 0">📅 This weekly template repeats with rising difficulty. In production, the AI re-plans every Sunday based on your actual completion and mock scores.</div>
+    <button class="btn btn-o btn-full" style="margin-top:14px" onclick="toast('✅ Plan activated (demo — save to account in production)')">Activate This Plan</button>
+  </div>`;
+}
+
+/* ============ BAND PREDICTOR ============ */
+function bpCalc(){
+  const m=+document.getElementById('sMock').value,wr=+document.getElementById('sWri').value,sp=+document.getElementById('sSpk').value;
+  document.getElementById('vMock').textContent=m.toFixed(1);
+  document.getElementById('vWri').textContent=wr.toFixed(1);
+  document.getElementById('vSpk').textContent=sp.toFixed(1);
+  const pred=Math.round((m*0.5+wr*0.3+sp*0.2)*2)/2;
+  const read=Math.min(97,Math.round(pred/9*100));
+  document.getElementById('bpRead').textContent=read+'%';
+  document.getElementById('bpGauge').style.background=`conic-gradient(${read>=80?'var(--green)':read>=60?'var(--gold)':'#EF4444'} ${read*3.6}deg, var(--line) 0deg)`;
+  document.getElementById('bpBand').textContent=pred.toFixed(1);
+  document.getElementById('bpMsg').innerHTML=read>=80?'🎉 <b style="color:var(--green)">You\'re ready.</b> Let\'s find your university.':read>=60?'📈 Close! Focus on your weakest skill for 3–4 more weeks.':'📚 Keep building — your study plan will get you there.';
+  document.getElementById('bpCta').style.display=read>=80?'inline-block':'none';
+}
+bpCalc();
+
+/* ============ COUNTRY PAGES ============ */
+const COUNTRIES={
+ uk:{f:'🇬🇧',t:'Study in the UK',b:'One-year masters, 2-year Graduate Route work visa, and the world\'s densest cluster of ranked universities — the UK remains the #1 choice for Indian students.',u:'120+',tu:'₹15–30L',w:'2 years',v:'97%',fields:'Business & Management · Computing & AI · Health & Nursing · Engineering · Law',intakes:'January · September (main) · Some May intakes'},
+ canada:{f:'🇨🇦',t:'Study in Canada',b:'Affordable tuition, 3-year post-graduation work permit, and one of the clearest PR pathways in the world.',u:'90+',tu:'₹12–25L',w:'3 years (PGWP)',v:'94%',fields:'Data & Computing · Business · Health · Hospitality · Skilled Trades',intakes:'January · May · September'},
+ germany:{f:'🇩🇪',t:'Study in Germany',b:'Public universities charge zero to minimal tuition. Strong engineering, an 18-month job-seeker visa, and the heart of the EU job market.',u:'60+',tu:'₹0–4L',w:'18 months',v:'91%',fields:'Mechanical & Automotive Engineering · Computer Science · Renewable Energy · Management',intakes:'April · October (main)'},
+ ireland:{f:'🇮🇪',t:'Study in Ireland',b:'European HQ of every major tech and pharma company, 2-year stay back, and English-taught masters everywhere.',u:'40+',tu:'₹12–22L',w:'2 years',v:'93%',fields:'Data & AI · Pharma & Biotech · Fintech · Software · Business Analytics',intakes:'January · September'},
+ australia:{f:'🇦🇺',t:'Study in Australia',b:'2–4 year post-study work visas, strong part-time wages, and in-demand fields with migration points.',u:'50+',tu:'₹18–30L',w:'2–4 years',v:'92%',fields:'Nursing & Health · IT · Engineering · Accounting · Construction',intakes:'February · July · November'},
+ dubai:{f:'🇦🇪',t:'Study in Dubai',b:'Close to home, tax-free part-time work, global branch campuses, and a booming job market 3 hours from India.',u:'35+',tu:'₹10–20L',w:'2 years',v:'95%',fields:'Business & Aviation · Hospitality · Engineering · Media & Design',intakes:'January · September'},
+ italy:{f:'🇮🇹',t:'Study in Italy',b:'Among Europe\'s lowest tuition, iconic design and architecture schools, and post-study job-search permits.',u:'45+',tu:'₹4–12L',w:'12 months',v:'90%',fields:'Design & Fashion · Architecture · Mechanical Engineering · Culinary & Hospitality',intakes:'September (main) · Some February'},
+};
+let curCty='uk';
+function setCountry(k){curCty=k;location.hash='#country';renderCountry()}
+function renderCountry(){
+  const c=COUNTRIES[curCty];
+  document.getElementById('ctyTabs').innerHTML=Object.keys(COUNTRIES).map(k=>`<div class="tab ${k===curCty?'on':''}" onclick="setCountry('${k}')" style="background:rgba(255,255,255,.1);color:${k===curCty?'#fff':'#cbd5e1'};border-color:transparent">${COUNTRIES[k].f} ${k}</div>`).join('');
+  document.getElementById('ctyTitle').textContent=c.t;
+  document.getElementById('ctyBlurb').textContent=c.b;
+  document.getElementById('ctyUnis').textContent=c.u;
+  document.getElementById('ctyTuition').textContent=c.tu;
+  document.getElementById('ctyWork').textContent=c.w;
+  document.getElementById('ctyVisa').textContent=c.v;
+  document.getElementById('ctyFields').textContent=c.fields;
+  document.getElementById('ctyIntakes').textContent=c.intakes;
+  document.getElementById('ctyShort').textContent=c.t.replace('Study in ','');
+}
+renderCountry();
+
+/* ============ UNIVERSITIES ============ */
+const UNIS=[
+ {n:'University of Leeds',c:'UK',f:'Business',t:22,iel:6.5,r:'#75',s:'MSc Data Analytics · MSc International Business'},
+ {n:'University of Sheffield',c:'UK',f:'Computing',t:24,iel:6.5,r:'#104',s:'MSc AI · MSc Software Engineering'},
+ {n:'Coventry University',c:'UK',f:'Engineering',t:16,iel:6.0,r:'#601',s:'MSc Automotive · MSc Civil'},
+ {n:'Cardiff University',c:'UK',f:'Business',t:20,iel:6.5,r:'#151',s:'MSc Finance · MBA'},
+ {n:'University of Toronto',c:'Canada',f:'Data & AI',t:32,iel:7.0,r:'#21',s:'MScAC · MEng Data'},
+ {n:'Seneca Polytechnic',c:'Canada',f:'Computing',t:12,iel:6.0,r:'College',s:'Diploma Cloud · BA Data Analytics'},
+ {n:'University of Waterloo',c:'Canada',f:'Engineering',t:28,iel:6.5,r:'#115',s:'MEng ECE · MDataSci'},
+ {n:'TU Munich',c:'Germany',f:'Engineering',t:2,iel:6.5,r:'#28',s:'MSc Mechanical · MSc Informatics'},
+ {n:'RWTH Aachen',c:'Germany',f:'Engineering',t:2,iel:6.5,r:'#90',s:'MSc Automotive · MSc ME'},
+ {n:'Trinity College Dublin',c:'Ireland',f:'Data & AI',t:24,iel:6.5,r:'#87',s:'MSc Computer Science · MSc Data'},
+ {n:'University College Dublin',c:'Ireland',f:'Business',t:22,iel:6.5,r:'#126',s:'MSc Management · MSc FinTech'},
+ {n:'University of Melbourne',c:'Australia',f:'Business',t:30,iel:7.0,r:'#13',s:'MSc Management · MFin'},
+ {n:'Monash University',c:'Australia',f:'Computing',t:27,iel:6.5,r:'#37',s:'MSc AI · MSc Cybersecurity'},
+ {n:'University of Wollongong Dubai',c:'Dubai',f:'Business',t:15,iel:6.0,r:'Campus',s:'MBA · MSc Logistics'},
+ {n:'Politecnico di Milano',c:'Italy',f:'Engineering',t:6,iel:6.0,r:'#111',s:'MSc Architectural · MSc Management Eng'},
+ {n:'Istituto Marangoni',c:'Italy',f:'Business',t:20,iel:6.0,r:'Design',s:'MA Fashion · Luxury Brand Mgmt'},
+];
+function ufRender(){
+  const c=document.getElementById('ufCountry').value,f=document.getElementById('ufField').value;
+  const tm=parseFloat(document.getElementById('ufTui').value),b=parseFloat(document.getElementById('ufBand').value);
+  const res=UNIS.filter(u=>(c==='All'||u.c===c)&&(f==='All'||u.f===f)&&u.t<=tm&&u.iel<=b);
+  document.getElementById('ufCount').textContent=res.length;
+  document.getElementById('ufGrid').innerHTML=res.length?res.map(u=>`
+   <div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><h4>${u.n}</h4><span class="pill" style="background:#E8F0FE;color:var(--navy);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700">${u.c}</span></div>
+   <p><b style="color:var(--navy)">${u.r}</b> · IELTS ${u.iel}+ · ~₹${u.t}L/yr</p>
+   <p style="margin-top:6px">${u.s}</p>
+   <button class="btn btn-o btn-sm" style="margin-top:14px" onclick="openModal('mCall')">Apply via Express →</button></div>`).join('')
+  :'<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No matches — widen your filters or take the diagnostic to boost your band 📈</div>';
+}
+ufRender();
+
+/* ============ SCHOLARSHIPS ============ */
+const SCHOL=[
+ {n:'Chevening Scholarship',c:'UK',a:'Full tuition + living stipend',b:6.5,g:8,d:'Nov (annual)'},
+ {n:'Commonwealth Master\'s Scholarship',c:'UK',a:'Full tuition + airfare + stipend',b:6.5,g:8,d:'Oct (annual)'},
+ {n:'DAAD Study Scholarships',c:'Germany',a:'€992 / month + insurance',b:6.0,g:7.5,d:'Varies by course'},
+ {n:'Australia Awards Scholarship',c:'Australia',a:'Full tuition + travel + stipend',b:6.5,g:8,d:'April'},
+ {n:'UOW Dubai Merit Scholarship',c:'Dubai',a:'Up to 50% tuition',b:6.0,g:7,d:'Rolling'},
+ {n:'Invest Your Talent in Italy',c:'Italy',a:'€8,000 grant + internship',b:6.0,g:7.5,d:'February'},
+];
+function scCheck(){
+  const b=parseFloat(document.getElementById('scBand').value);
+  const gTxt=document.getElementById('scGpa').value;
+  const g=gTxt.startsWith('90')?9:gTxt.startsWith('80')?8:7;
+  const ctry=document.getElementById('scCountry').value;
+  const res=SCHOL.filter(s=>s.b<=b&&s.g<=g&&(ctry==='Any'||s.c===ctry));
+  document.getElementById('scOut').innerHTML=res.length?`
+   <div style="font-size:13.5px;color:var(--muted);margin-bottom:14px">🎯 <b style="color:var(--green)">${res.length} scholarships</b> match your profile (Band ${b}, ${gTxt}, ${ctry}):</div>
+   ${res.map(s=>`<div class="card" style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h4>${s.n}</h4><p><b style="color:var(--green)">${s.a}</b></p><p style="margin-top:4px;font-size:12px">Deadline: ${s.d} · Min. Band ${s.b} · Min. ${s.g} CGPA</p></div><span class="pill" style="background:#E8F0FE;color:var(--navy);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700">${s.c}</span></div>
+   <button class="btn btn-o btn-sm" style="margin-top:12px" onclick="toast('📄 Application support request sent (demo)')">Apply with Express Support →</button></div>`).join('')}
+   <div class="note">💡 Odds shown in production are AI estimates from historical admit data.</div>
+  `:'<div class="card" style="text-align:center;padding:36px;color:var(--muted)"><div style="font-size:34px">🔍</div><p style="margin-top:8px">No matches yet. Raising your band to 6.5+ typically unlocks 5+ major scholarships. Your AI study plan can get you there.</p><a href="#study-plan" class="btn btn-o" style="margin-top:14px">Build My Study Plan</a></div>';
+}
+
+/* ============ DASHBOARD SHORTLIST + TABS ============ */
+document.getElementById('dSlGrid').innerHTML=[
+ {n:'Coventry University',p:86,c:'MSc Data Analytics · ₹16L/yr · IELTS 6.0 ✓'},
+ {n:'University of Leeds',p:71,c:'MSc Data Analytics · ₹22L/yr · IELTS 6.5 ✓'},
+ {n:'Cardiff University',p:68,c:'MSc Data Science · ₹20L/yr · IELTS 6.5 ✓'},
+ {n:'University of Sheffield',p:64,c:'MSc AI · ₹24L/yr · IELTS 6.5 ✓'},
+ {n:'Durham University',p:52,c:'MSc Data Science · ₹26L/yr · IELTS 6.5 ✓'},
+ {n:'University of Edinburgh',p:38,c:'MSc AI · ₹31L/yr · IELTS 7.0 ⚠',warn:1},
+].map(u=>`<div class="wcard"><h5>${u.n}</h5><div class="big" style="color:${u.p>=70?'var(--green)':u.p>=50?'var(--gold)':'#EF4444'}">${u.p}%</div><small style="color:var(--muted)">admit probability (AI)</small><div class="pbar" style="margin:10px 0"><i style="width:${u.p}%;background:${u.p>=70?'var(--green)':u.p>=50?'var(--gold)':'#EF4444'}"></i></div><p style="font-size:12.5px;color:#475569">${u.c}</p><button class="btn ${u.warn?'btn-out':'btn-o'} btn-sm" style="margin-top:12px;width:100%" onclick="toast('${u.warn?'Reach Band 7.0 first — your plan targets it in 4 weeks':'Added to applications (demo)'}')">${u.warn?'Band 7.0 needed':'Start Application →'}</button></div>`).join('');
+
+function dTab(k,el){
+  document.querySelectorAll('.dside a').forEach(a=>a.classList.remove('on'));el.classList.add('on');
+  ['ov','pr','sl','ap','bk'].forEach(x=>{const d=document.getElementById('d'+x.charAt(0).toUpperCase()+x.slice(1));if(d)d.style.display=(x===k)?'block':'none'});
+  window.scrollTo({top:0});
+}
+
+/* ============ CHAT ============ */
+function chatSay(t){
+  const b=document.querySelector('.chat-b');
+  const m=document.createElement('div');m.className='chat-m';m.style.background='#FFF0E8';m.style.marginLeft='30px';m.textContent='🤖 '+t;
+  b.insertBefore(m,b.children[1]||null);
+}
+</script>
+</body>
+</html>

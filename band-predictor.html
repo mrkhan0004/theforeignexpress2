@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Band Readiness Predictor — The Foreign Express</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="pagehead"><div class="container"><h1>Band Readiness Predictor</h1><p>Combine mocks, writing and speaking evaluations into one readiness score.</p></div></div>
+<section class="section" style="padding-top:34px"><div class="container grid-2" style="align-items:start;max-width:900px">
+  <div class="card"><h4>🎚 Your Inputs</h4><br>
+    <div class="field"><label>Average Mock Band (L+R): <b id="vMock">6.0</b></label><input type="range" min="4" max="9" step="0.5" value="6" class="inp" id="sMock" style="padding:0"></div>
+    <div class="field"><label>AI Writing Band: <b id="vWri">5.5</b></label><input type="range" min="4" max="9" step="0.5" value="5.5" class="inp" id="sWri" style="padding:0"></div>
+    <div class="field"><label>AI Speaking Band: <b id="vSpk">6.0</b></label><input type="range" min="4" max="9" step="0.5" value="6" class="inp" id="sSpk" style="padding:0"></div>
+    <div class="note" style="margin:8px 0 0">AI estimate — actual exam may vary ±0.5 band.</div></div>
+  <div class="card" style="text-align:center"><h4>Exam Readiness</h4>
+    <div class="gauge" id="bpGauge" style="margin:22px auto"><b id="bpRead">0%</b></div>
+    <div style="font-size:14px;color:var(--muted)">Predicted band</div><div class="price" id="bpBand">6.0</div>
+    <div id="bpMsg" style="margin:8px 0 16px;font-size:14px"></div>
+    <a href="dashboard.html" class="btn btn-n" style="display:none" id="bpCta">Find My Universities →</a></div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div><script src="js/app.js"></script>
+<script>
+function bpCalc(){const m=+sMock.value,wr=+sWri.value,sp=+sSpk.value;
+ vMock.textContent=m.toFixed(1);vWri.textContent=wr.toFixed(1);vSpk.textContent=sp.toFixed(1);
+ const pred=Math.round((m*0.5+wr*0.3+sp*0.2)*2)/2;const read=Math.min(97,Math.round(pred/9*100));
+ bpRead.textContent=read+'%';bpGauge.style.background=`conic-gradient(${read>=80?'var(--green)':read>=60?'var(--gold)':'#EF4444'} ${read*3.6}deg,var(--line) 0deg)`;
+ bpBand.textContent=pred.toFixed(1);
+ bpMsg.innerHTML=read>=80?'🎉 <b style="color:var(--green)">You\'re ready.</b> Let\'s find your university.':read>=60?'📈 Close! Focus on your weakest skill 3–4 more weeks.':'📚 Keep building — your plan will get you there.';
+ bpCta.style.display=read>=80?'inline-block':'none';}
+['sMock','sWri','sSpk'].forEach(id=>document.getElementById(id).addEventListener('input',bpCalc));bpCalc();
+</script></body></html>

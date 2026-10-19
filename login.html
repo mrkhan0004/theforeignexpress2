@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<main><div class="container"><div class="auth">
+  <div style="text-align:center;margin-bottom:22px"><div class="logo" style="justify-content:center;font-size:24px"><span class="plane">✈</span> The Foreign Express</div><p style="color:var(--muted);font-size:14px;margin-top:6px">One account for IELTS + Study Abroad</p></div>
+  <div class="demo-creds">🧪 <b>Demo Student:</b> aarav@demo.com / demo123<br>🛡 <b>Admin?</b> <a href="admin.html" style="color:var(--orange);font-weight:700">Go to Admin Login →</a></div>
+  <div class="tabs"><div class="tab on" id="tabLogin" onclick="sw('l')">Log In</div><div class="tab" id="tabSign" onclick="sw('s')">Sign Up</div></div>
+  <div class="formcard" id="cardLogin">
+    <h3>Welcome back 👋</h3><div class="fs">Log in to your dashboard, tests and shortlist.</div>
+    <div class="field"><label>Email*</label><input class="inp" id="liEmail" type="email" placeholder="you@email.com"></div>
+    <div class="field"><label>Password*</label><input class="inp" id="liPass" type="password" placeholder="••••••••"></div>
+    <button class="btn btn-o btn-full" onclick="doLogin()">Log In →</button>
+  </div>
+  <div class="formcard" id="cardSign" style="display:none">
+    <h3>Create your free account</h3><div class="fs">Free diagnostic, mock tests and progress tracking included.</div>
+    <div class="field"><label>Full Name*</label><input class="inp" id="suName" placeholder="Your full name"></div>
+    <div class="field"><label>Email*</label><input class="inp" id="suEmail" type="email" placeholder="you@email.com"></div>
+    <div class="field"><label>Phone</label><input class="inp" id="suPhone" placeholder="+91 ·····"></div>
+    <div class="field"><label>Password*</label><input class="inp" id="suPass" type="password" placeholder="Min. 6 characters"></div>
+    <div class="grid-2" style="gap:10px">
+      <div class="field"><label>Target Country</label><select class="inp" id="suCountry"><option>UK</option><option>Canada</option><option>Germany</option><option>Ireland</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+      <div class="field"><label>Current Band</label><select class="inp" id="suBand"><option>Not taken</option><option>5.0</option><option>5.5</option><option>6.0</option><option>6.5</option><option>7.0+</option></select></div>
+    </div>
+    <button class="btn btn-o btn-full" onclick="doSignup()">Create Account →</button>
+  </div>
+</div></div></main>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
+function sw(w){document.getElementById('tabLogin').classList.toggle('on',w==='l');document.getElementById('tabSign').classList.toggle('on',w==='s');
+  document.getElementById('cardLogin').style.display=w==='l'?'block':'none';document.getElementById('cardSign').style.display=w==='s'?'block':'none';}
+function next(){const n=new URLSearchParams(location.search).get('next');return n?n:'dashboard.html'}
+function doLogin(){const r=FE.login(document.getElementById('liEmail').value.trim(),document.getElementById('liPass').value);
+  if(!r.ok){FE.toast('⚠ '+r.msg);return}FE.toast('✅ Welcome back, '+r.user.name.split(' ')[0]+'!');setTimeout(()=>location.href=next(),700);}
+function doSignup(){const r=FE.register({name:document.getElementById('suName').value.trim(),email:document.getElementById('suEmail').value.trim(),pass:document.getElementById('suPass').value,phone:document.getElementById('suPhone').value,country:document.getElementById('suCountry').value,band:document.getElementById('suBand').value});
+  if(!r.ok){FE.toast('⚠ '+r.msg);return}FE.toast('✅ Account created! Opening your dashboard…');setTimeout(()=>location.href=next(),800);}
+</script></body></html>

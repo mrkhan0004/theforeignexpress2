@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scholarship Finder — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="pagehead"><div class="container"><h1>Scholarship Finder</h1><p>Check what you actually qualify for — before spending a rupee applying.</p></div></div>
+<section class="section" style="padding-top:30px"><div class="container grid-2" style="align-items:start;max-width:920px">
+  <div class="card"><h4>🔍 Eligibility Checker</h4><br>
+    <div class="field"><label>My IELTS Band</label><select class="inp" id="scBand"><option>6.0</option><option selected>6.5</option><option>7.0</option><option>7.5</option></select></div>
+    <div class="field"><label>My GPA / Percentage</label><select class="inp" id="scGpa"><option>70%+ (7.0 CGPA)</option><option selected>80%+ (8.0 CGPA)</option><option>90%+ (9.0 CGPA)</option></select></div>
+    <div class="field"><label>Target Country</label><select class="inp" id="scCountry"><option>Any</option><option>UK</option><option>Ireland</option><option>Germany</option><option>Australia</option><option>Dubai</option><option>Italy</option></select></div>
+    <button class="btn btn-o btn-full" id="scBtn">Check My Scholarships →</button></div>
+  <div id="scOut"><div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:36px;margin-bottom:8px">🏆</div>Your matching scholarships appear here.</div></div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script><script>FE.renderScholarPage();</script></body></html>

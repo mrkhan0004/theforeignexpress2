@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free AI Writing Checker — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<div class="pagehead"><div class="container"><span class="pill">FREE · POWERED BY AI</span><h1 style="margin-top:10px">IELTS Writing Checker</h1><p>Paste your Task 2 essay. Get an instant band estimate across the 4 official criteria.</p></div></div>
+<section class="section" style="padding-top:34px"><div class="container grid-2" style="align-items:start">
+  <div class="card"><h4>✍ Your Task 2 Essay</h4>
+    <textarea class="inp" id="wcText" rows="14" style="margin:12px 0;font-size:14px" placeholder="Paste or type your essay here…"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">Words: <b id="wcCount">0</b></span>
+    <button class="btn btn-o" id="wcBtn">Check My Essay →</button></div></div>
+  <div id="wcOut"><div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:38px;margin-bottom:8px">📊</div><p>Your band report will appear here.<br>Task Response · Coherence · Lexical Resource · Grammar.</p></div></div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
+document.getElementById('wcText').addEventListener('input',e=>{const w=e.target.value.trim()?e.target.value.trim().split(/\s+/).length:0;document.getElementById('wcCount').textContent=w});
+document.getElementById('wcBtn').addEventListener('click',()=>{
+  const txt=document.getElementById('wcText').value;
+  if(txt.trim().split(/\s+/).length<50){document.getElementById('wcOut').innerHTML='<div class="card" style="border-color:#EF4444;text-align:center;padding:30px"><h4>✍ Keep going…</h4><p style="margin-top:8px">Paste at least ~50 words to see a meaningful estimate (real Task 2 needs 250+).</p></div>';return}
+  const g=FE.gradeEssay(txt);
+  const bar=(v,c)=>`<div class="crit"><div class="cl"><span>${c}</span><b>${v}</b></div><div class="pbar"><i style="width:${v/9*100}%;${v<6?'background:#EF4444':v<7?'background:var(--gold)':''}"></i></div></div>`;
+  document.getElementById('wcOut').innerHTML=`<div class="card">
+    <div style="text-align:center;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:16px"><span style="font-size:13px;color:var(--muted)">AI BAND ESTIMATE</span><div class="price" style="font-size:46px">${g.overall}</div><span style="font-size:12px;color:var(--muted)">${g.words} words · ${g.sents} sentences · ${g.paras} paragraphs · ${g.links} linking phrases</span></div>
+    ${bar(g.TR,'Task Response')}${bar(g.CC,'Coherence & Cohesion')}${bar(g.LR,'Lexical Resource')}${bar(g.GR,'Grammatical Range & Accuracy')}
+    <div class="note" style="margin:12px 0">⚠ AI estimate — actual exam may vary ±0.5 band.</div>
+    <h4 style="margin-bottom:8px">Top 3 Fixes</h4><ul style="font-size:13.5px;color:#475569;padding-left:18px">
+    <li>${g.words<270?'Your essay is under length — aim for 270–320 words.':'Good length. Sharpen your position in one clear thesis sentence.'}</li>
+    <li>${g.paras<4?'Use the 4-paragraph structure: intro, body 1, body 2, conclusion.':'Structure is solid — add richer linking phrases between ideas.'}</li>
+    <li>Replace common words with precise academic vocabulary ("a lot of" → "a substantial proportion of").</li></ul>
+    <button class="btn btn-o btn-full" style="margin-top:14px" onclick="FE.toast('🔓 Unlimited checks + full rewrite = IELTS Pro')">Get Full Rewrite & Unlimited Checks</button></div>`;
+  if(FE.me())FE.saveLead('Writing Checker',{name:FE.me().name,email:FE.me().email,phone:FE.me().phone,country:FE.me().country,band:'Used checker'});
+});
+</script></body></html>

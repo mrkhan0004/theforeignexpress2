@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free AI Diagnostic — The Foreign Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"></head><body>
+<div id="site-header"></div>
+<section class="section white" style="min-height:70vh"><div class="container" style="max-width:720px">
+  <div class="section-t"><span class="pill">FREE · NO SIGNUP NEEDED</span><h2 style="margin-top:12px">15-Minute AI Diagnostic</h2><p>Six quick questions across grammar, vocabulary and reading. Get a provisional band estimate instantly.</p></div>
+  <div class="card" id="dgIntro" style="text-align:center;padding:40px"><div style="font-size:44px;margin-bottom:10px">🧪</div>
+    <h4 style="font-size:19px">Ready? 6 questions · ~3 minutes</h4>
+    <p style="margin:8px 0 22px">No signup, no payment. Your result unlocks a personalised study plan.</p>
+    <button class="btn btn-o" style="padding:13px 34px" onclick="dgStart()">Start Diagnostic →</button></div>
+  <div class="card" id="dgQuiz" style="display:none;padding:30px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px"><span>Question <b id="dgNum">1</b> of 6</span><span>Grammar · Vocabulary · Reading</span></div>
+    <div class="pbar" style="margin-bottom:22px"><i id="dgBar" style="width:16%"></i></div>
+    <h4 id="dgQ" style="font-size:17px;color:var(--navy);margin-bottom:18px"></h4><div id="dgOpts"></div></div>
+  <div class="card" id="dgResult" style="display:none;text-align:center;padding:36px"><div style="font-size:40px">🎉</div>
+    <h4 style="color:var(--muted)">Your provisional band estimate</h4>
+    <div class="price" id="dgBand" style="font-size:52px">6.0</div>
+    <p style="color:var(--muted);font-size:14px;max-width:440px;margin:0 auto 22px">AI estimate — actual exam may vary ±0.5 band. Create a free account to save your report and unlock your study plan.</p>
+    <a href="login.html" class="btn btn-o">Save My Report — Sign Up Free</a>
+    <a href="study-plan.html" class="btn btn-out" style="margin-left:8px">Preview Study Plan</a></div>
+</div></section>
+<div id="site-footer"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script>
+const DQ=[
+ {q:'By the time we arrived, the match ______ already finished.',o:['has','had','was','would'],a:1},
+ {q:'Closest meaning of "meticulous":',o:['Very careless','Very careful and precise','Very fast','Very loud'],a:1},
+ {q:'"Although urban populations grew rapidly, rural communities continued to supply the majority of new workers." — "All new workers came from cities."',o:['True','False','Not Given'],a:1},
+ {q:'Neither of the two answers ______ correct.',o:['are','is','were','have'],a:1},
+ {q:'The number of students applying abroad ______ rising every year.',o:['are','is','have','were'],a:1},
+ {q:'"Few universities publish employment data for their graduates, making comparison difficult." What does this suggest?',o:['Applicants refuse to compare','Data is easy to find','Lack of published data makes comparing hard','Universities ban data'],a:2}];
+let dgi=0,dgScore=0;
+function dgStart(){dgi=0;dgScore=0;document.getElementById('dgIntro').style.display='none';document.getElementById('dgQuiz').style.display='block';dgShow()}
+function dgShow(){const q=DQ[dgi];document.getElementById('dgNum').textContent=dgi+1;document.getElementById('dgBar').style.width=((dgi)/6*100+16)+'%';document.getElementById('dgQ').textContent=q.q;
+ document.getElementById('dgOpts').innerHTML=q.o.map((o,i)=>`<div class="qb" style="cursor:pointer;padding:12px 14px;font-size:14.5px" onclick="dgAns(${i},this)">${String.fromCharCode(65+i)}. ${o}</div>`).join('')}
+function dgAns(i,el){if(i===DQ[dgi].a){dgScore++;el.style.borderColor='var(--green)';el.style.background='#E7F8F1'}else{el.style.borderColor='#EF4444';el.style.background='#FEE2E2'}
+ document.querySelectorAll('#dgOpts .qb').forEach(o=>o.style.pointerEvents='none');
+ setTimeout(()=>{dgi++;dgi<6?dgShow():dgEnd()},700)}
+function dgEnd(){document.getElementById('dgQuiz').style.display='none';document.getElementById('dgResult').style.display='block';
+ document.getElementById('dgBand').textContent={6:'7.5',5:'7.0',4:'6.5',3:'6.0',2:'5.5',1:'5.0',0:'4.5'}[dgScore]}
+</script></body></html>
