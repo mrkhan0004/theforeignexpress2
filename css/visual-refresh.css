@@ -4,44 +4,45 @@
  * Images are generic Unsplash images; no Roveia assets are reused.
  */
 :root {
-  --navy: #102a43;
-  --navy2: #183b56;
-  --orange: #e66d42;
-  --gold: #f0b66a;
-  --green: #168a76;
-  --bg: #f6f7f4;
-  --text: #172b3a;
-  --muted: #647582;
-  --line: #e3e9e7;
+  --navy: #003498;
+  --navy2: #002570;
+  --orange: #0096fa;
+  --gold: #38bdf8;
+  --green: #10b981;
+  --bg: #f8fafc;
+  --text: #0f1f38;
+  --muted: #5a6e87;
+  --line: #e2eaf4;
   --card: #ffffff;
   --radius-lg: 22px;
-  --shadow-soft: 0 18px 48px rgba(16, 42, 67, .08);
-  --shadow-card: 0 8px 26px rgba(16, 42, 67, .055);
+  --shadow-soft: 0 18px 48px rgba(0, 52, 152, .07);
+  --shadow-card: 0 8px 26px rgba(0, 52, 152, .045);
 }
 html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 body { background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-::selection { background: rgba(230,109,66,.22); color: var(--navy); }
+::selection { background: rgba(0,150,250,.2); color: var(--navy); }
 .container { max-width: 1240px; }
 .section { padding: 86px 0; }
 .section.white { background: #fff; }
 .section-t { margin-bottom: 48px; }
-.section-t h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.14; letter-spacing: -.035em; }
-.section-t p { font-size: 15.5px; line-height: 1.75; max-width: 620px; margin: 12px auto 0; }
+.section-t h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.14; letter-spacing: -.035em; color: var(--navy); }
+.section-t p { font-size: 15.5px; line-height: 1.75; max-width: 620px; margin: 12px auto 0; color: var(--muted); }
 h1, h2, h3, h4, h5 { letter-spacing: -.025em; }
 
 /* Top chrome */
-.topbar { background: #0a1e2c; color: #b8c9d1; font-size: 12px; padding: 8px 0; }
+.topbar { background: #002366; color: #b8c9d1; font-size: 12px; padding: 8px 0; }
 .topbar b { color: #fff; font-weight: 600; }
-nav.main { background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(16,42,67,.07); box-shadow: 0 8px 28px rgba(16,42,67,.04); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+nav.main { background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(0,52,152,.08); box-shadow: 0 8px 28px rgba(0,52,152,.04); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .nav-in { min-height: 78px; height: auto; gap: 20px; }
 .logo { font-size: 19px; letter-spacing: -.045em; white-space: nowrap; }
-.logo .plane { width: 39px; height: 39px; border-radius: 13px; background: var(--orange); box-shadow: 0 6px 15px rgba(230,109,66,.23); }
+.logo img { height: 48px; width: auto; display: block; object-fit: contain; }
+.logo .plane { width: 39px; height: 39px; border-radius: 13px; background: var(--orange); box-shadow: 0 6px 15px rgba(0,150,250,.23); }
 .navlinks { gap: 17px; font-size: 13.5px; }
 .navlinks a { transition: color .18s ease, border-color .18s ease; }
 .navlinks a:hover, .navlinks a.on { color: var(--orange); }
 .navlinks a .btn { vertical-align: middle; }
 .nav-toggle { display: none; flex: 0 0 auto; width: 44px; height: 42px; border-radius: 12px; border: 1px solid var(--line); background: white; color: var(--navy); font-size: 22px; line-height: 1; cursor: pointer; }
-.nav-toggle:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid rgba(230,109,66,.55); outline-offset: 3px; }
+.nav-toggle:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid rgba(0,150,250,.55); outline-offset: 3px; }
 
 /* Hero: high-contrast editorial layout with generic campus imagery */
 .hero {

@@ -4,6 +4,18 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f5ef">
   <title>Academic IELTS Test Library — The Foreign Express</title>
+  <!-- PRE-RENDER GATE: check localStorage before any HTML paints -->
+  <script>
+    (function(){
+      var sess = null, adm = false;
+      try { sess = localStorage.getItem('fe_session'); } catch(e){}
+      try { adm = !!JSON.parse(localStorage.getItem('fe_admin')); } catch(e){}
+      if(!sess && !adm){
+        document.documentElement.style.visibility = 'hidden';
+        window.location.replace('login.html?next=tests.html');
+      }
+    }());
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/visual-refresh.css"><link rel="stylesheet" href="css/roveia-theme.css"><link rel="stylesheet" href="css/ielts-player.css">
@@ -24,6 +36,10 @@
   <script>
     (function(){
       const target=document.getElementById('mtGrid');
+      if(!FE.hasIeltsAccess()){
+        target.innerHTML = FE.renderIeltsGateHtml();
+        return;
+      }
       const available=Object.values(FE_TESTS);
       const icon={Full:'▤',Listening:'◖',Reading:'Aa',Writing:'✎',Speaking:'◉'};
       target.innerHTML=available.map(t=>{

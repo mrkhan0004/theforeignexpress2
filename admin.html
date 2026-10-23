@@ -5,6 +5,10 @@
 <div id="site-header"></div>
 <div id="adminRoot"></div>
 <div id="site-footer"></div><div id="toast"></div>
+
+<!-- Admin Modals Container -->
+<div id="adminModalHolder"></div>
+
 <script src="js/app.js"></script>
 <script>
 const root=document.getElementById('adminRoot');
@@ -30,6 +34,7 @@ function panel(){
   <div class="dside">
     <a class="on" onclick="aTab('ov',this)">📊 Overview</a>
     <a onclick="aTab('ld',this)">👥 Leads (CRM)</a>
+    <a onclick="aTab('ielts',this)">🎓 IELTS Permissions</a>
     <a onclick="aTab('us',this)">🧑‍🎓 Users</a>
     <a onclick="aTab('rs',this)">📝 Test Results</a>
     <a onclick="aTab('st',this)">⚙ Site Settings</a>
@@ -46,17 +51,19 @@ function renderA(k){
     const today=L.filter(l=>new Date(l.created).toDateString()===new Date().toDateString()).length;
     const enrolled=L.filter(l=>l.status==='Enrolled').length;
     const conv=L.length?Math.round(enrolled/L.length*100):0;
+    const ieltsUnlocked=U.filter(u=>u.ieltsUnlocked).length;
     m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:20px">📊 Operations Overview</h3>
     <div class="dgrid" style="grid-template-columns:repeat(4,1fr)">
       <div class="wcard"><h5>TOTAL LEADS</h5><div class="big" style="color:var(--orange)">${L.length}</div><small style="color:var(--green)">+${today} today</small></div>
       <div class="wcard"><h5>REGISTERED USERS</h5><div class="big">${U.length}</div><small style="color:var(--muted)">platform signups</small></div>
-      <div class="wcard"><h5>TESTS TAKEN</h5><div class="big">${RS.length}</div><small style="color:var(--muted)">all attempts</small></div>
+      <div class="wcard"><h5>IELTS PERMITTED</h5><div class="big" style="color:var(--green)">${ieltsUnlocked}</div><small style="color:var(--muted)">unlocked students</small></div>
       <div class="wcard"><h5>LEAD → ENROLLED</h5><div class="big">${conv}%</div><small style="color:var(--muted)">${enrolled} enrolled</small></div>
     </div>
-    <h4 style="color:var(--navy);margin:8px 0 12px">Pipeline Snapshot</h4>
+    <h4 style="color:var(--navy);margin:16px 0 12px">Pipeline Snapshot</h4>
     <div class="dgrid" style="grid-template-columns:repeat(5,1fr)">
     ${STAT.map(s=>`<div class="wcard" style="text-align:center"><h5>${s.toUpperCase()}</h5><div class="big">${L.filter(l=>l.status===s).length}</div></div>`).join('')}</div>`;
   }
+
   if(k==='ld'){
     const L=FE.leads();
     m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">👥 Lead Pipeline (CRM)</h3>
@@ -66,52 +73,365 @@ function renderA(k){
     <td><select class="inp" style="padding:5px 8px;font-size:12px" onchange="FE.updateLead('${l.id}',{status:this.value});FE.toast('Status → '+this.value)">${STAT.map(s=>`<option ${l.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
     <td><input class="inp" style="padding:5px 8px;font-size:12px;width:100px" value="${FE.esc(l.owner)}" onchange="FE.updateLead('${l.id}',{owner:this.value})"></td>
     <td><button class="btn btn-red btn-sm" style="padding:4px 10px;font-size:11px" onclick="FE.delLead('${l.id}');renderA('ld');FE.toast('Lead deleted')">✕</button></td></tr>`).join('')}</table>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:12px">💡 Status dropdown aur owner field live update hote hain — homepage/contact forms se aane wale leads yahan instantly dikhte hain.</p>`;
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px">💡 Status and owner fields update in real time — leads arriving from the homepage, Razorpay, and staff permission forms appear here instantly.</p>`;
   }
+
+  /* ---------- DEDICATED IELTS PERMISSIONS TAB ---------- */
+  if(k==='ielts'){
+    const U=FE.users();
+    const unlocked=U.filter(u=>u.ieltsUnlocked).length;
+    const locked=U.length-unlocked;
+    m.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px">
+      <div>
+        <h3 style="color:var(--navy);margin:0 0 4px">🎓 IELTS Permissions &amp; Enrolment Management</h3>
+        <p style="color:var(--muted);font-size:13px;margin:0">No permission can be granted without the Master Permission Password. All student data is fully editable by Admin.</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-o btn-sm" onclick="modalEnrollNewStudent()">➕ Enroll Student Manually</button>
+      </div>
+    </div>
+
+    <div class="dgrid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+      <div class="wcard"><h5>TOTAL STUDENTS</h5><div class="big">${U.length}</div><small style="color:var(--muted)">registered</small></div>
+      <div class="wcard"><h5>🔓 PERMISSION UNLOCKED</h5><div class="big" style="color:var(--green)">${unlocked}</div><small style="color:var(--green)">active test access</small></div>
+      <div class="wcard"><h5>🔒 ACCESS LOCKED</h5><div class="big" style="color:#e11d48">${locked}</div><small style="color:#e11d48">awaiting permission</small></div>
+      <div class="wcard"><h5>🛡 MASTER PASSWORD</h5><div class="big" style="font-size:16px;margin:8px 0;color:var(--navy)">Required</div><small style="color:var(--muted)">2-step security active</small></div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Contact</th>
+          <th>Target</th>
+          <th>IELTS Access Status</th>
+          <th>Unlocked By</th>
+          <th>Date</th>
+          <th style="text-align:right">Actions (Password Protected)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${U.map(u=>{
+          const isUn=!!u.ieltsUnlocked;
+          const statusBadge = isUn
+            ? `<span class="pill" style="background:#e6f9f0;color:#059669;font-weight:800;font-size:11px;padding:4px 10px">🔓 UNLOCKED</span>`
+            : `<span class="pill" style="background:#fef2f2;color:#dc2626;font-weight:800;font-size:11px;padding:4px 10px">🔒 LOCKED</span>`;
+          return `<tr>
+            <td><b>${FE.esc(u.name)}</b><br><small style="color:var(--muted)">Plan: ${FE.esc(u.plan||'free')}</small></td>
+            <td>${FE.esc(u.email)}<br><small style="color:var(--muted)">${FE.esc(u.phone||'No phone')}</small></td>
+            <td>${FE.esc(u.country||'—')} · Band: <b>${FE.esc(u.target||u.band||'—')}</b></td>
+            <td>${statusBadge}</td>
+            <td><small>${FE.esc(u.ieltsUnlockedBy||'—')}</small></td>
+            <td><small style="color:var(--muted)">${u.ieltsUnlockedAt?new Date(u.ieltsUnlockedAt).toLocaleDateString():'—'}</small></td>
+            <td style="text-align:right">
+              ${isUn
+                ? `<button class="btn btn-out btn-sm" style="padding:5px 9px;font-size:11px;margin-right:4px;color:#dc2626;border-color:#fecaca" onclick="modalRevoke('${FE.esc(u.email)}','${FE.esc(u.name)}')">🔒 Revoke Access</button>`
+                : `<button class="btn btn-o btn-sm" style="padding:5px 10px;font-size:11px;margin-right:4px" onclick="modalGrant('${FE.esc(u.email)}','${FE.esc(u.name)}')">🔓 Grant Permission</button>`}
+              <button class="btn btn-n btn-sm" style="padding:5px 9px;font-size:11px;margin-right:4px" onclick="modalEditStudent('${FE.esc(u.email)}')">✏️ Edit</button>
+              <button class="btn btn-red btn-sm" style="padding:5px 8px;font-size:11px" onclick="if(confirm('Delete user ${FE.esc(u.name)}?')){FE.delUser('${u.email}');renderA('ielts');FE.toast('Student removed')}">✕</button>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    <div style="background:#f0f6fd;border-radius:12px;padding:14px 18px;margin-top:20px;border:1px solid #dce6f2">
+      <b style="color:var(--navy);font-size:12.5px">🔑 Security Notice:</b>
+      <p style="font-size:12px;color:var(--muted);margin:4px 0 0">
+        Admin cannot grant permission without the <b>Master Permission Password</b>. Default password: <code style="background:#fff;padding:2px 6px;border-radius:4px;color:#003498;font-weight:800">express@ielts2026</code>.
+        You can update it under <a onclick="aTab('st',document.querySelectorAll('.dside a')[5])" style="color:var(--navy);font-weight:800;cursor:pointer;text-decoration:underline">Site Settings</a> — the previous password must be verified before any change is saved.
+      </p>
+    </div>`;
+  }
+
   if(k==='us'){
     const U=FE.users();
-    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">🧑‍🎓 Registered Users</h3>
-    <table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>Band</th><th>Plan</th><th>Joined</th><th></th></tr>
-    ${U.map(x=>`<tr><td><b>${FE.esc(x.name)}</b></td><td>${FE.esc(x.email)}</td><td>${FE.esc(x.phone||'—')}</td><td>${FE.esc(x.country||'—')}</td><td>${FE.esc(x.band||'—')}</td><td style="text-transform:capitalize">${x.plan}</td><td>${new Date(x.created).toLocaleDateString()}</td>
-    <td><button class="btn btn-red btn-sm" style="padding:4px 10px;font-size:11px" onclick="if(confirm('Delete user?')){FE.delUser('${x.email}');renderA('us');FE.toast('User deleted')}">✕</button></td></tr>`).join('')}</table>`;
+    m.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="color:var(--navy);margin:0">🧑‍🎓 Registered Users</h3>
+      <button class="btn btn-o btn-sm" onclick="modalEnrollNewStudent()">➕ Add User</button>
+    </div>
+    <table><tr><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>Band</th><th>IELTS Access</th><th>Plan</th><th>Actions</th></tr>
+    ${U.map(x=>`<tr><td><b>${FE.esc(x.name)}</b></td><td>${FE.esc(x.email)}</td><td>${FE.esc(x.phone||'—')}</td><td>${FE.esc(x.country||'—')}</td><td>${FE.esc(x.band||'—')}</td>
+    <td>${x.ieltsUnlocked?'<span style="color:#059669;font-weight:800">🔓 Unlocked</span>':'<span style="color:#dc2626;font-weight:700">🔒 Locked</span>'}</td>
+    <td style="text-transform:capitalize">${FE.esc(x.plan||'free')}</td>
+    <td>
+      <button class="btn btn-n btn-sm" style="padding:4px 8px;font-size:11px" onclick="modalEditStudent('${FE.esc(x.email)}')">✏️ Edit</button>
+      <button class="btn btn-red btn-sm" style="padding:4px 8px;font-size:11px" onclick="if(confirm('Delete user?')){FE.delUser('${x.email}');renderA('us');FE.toast('User deleted')}">✕</button>
+    </td></tr>`).join('')}</table>`;
   }
+
   if(k==='rs'){
     const RS=FE.results();
     m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">📝 All Test Results</h3>
     ${RS.length?`<table><tr><th>User</th><th>Test</th><th>Band</th><th>Detail</th><th>Date</th></tr>
     ${RS.map(r=>`<tr><td>${r.user==='guest'?'👤 Guest':FE.esc(r.user)}</td><td>${FE.esc(r.name)}</td><td><b>${r.band}</b></td><td>${FE.esc(r.detail||'')}</td><td>${new Date(r.created).toLocaleDateString()}</td></tr>`).join('')}</table>`:'<div class="wcard" style="text-align:center;padding:40px;color:var(--muted)">No test attempts yet.</div>'}`;
   }
+
   if(k==='st'){
     const s=FE.settings();
-    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">⚙ Site Settings — live poori site par apply hote hain</h3>
-    <div class="grid-2" style="max-width:860px"><div class="wcard">
-      <div class="field"><label>Phone (header/footer)</label><input class="inp" id="stPhone" value="${FE.esc(s.phone)}"></div>
-      <div class="field"><label>Email</label><input class="inp" id="stEmail" value="${FE.esc(s.email)}"></div>
-      <div class="field"><label>Homepage Hero Title (HTML allowed)</label><textarea class="inp" id="stHero" rows="3">${FE.esc(s.heroTitle)}</textarea></div>
-      <div class="grid-2" style="gap:10px">
-        <div class="field"><label>Stat 1 value</label><input class="inp" id="s1" value="${FE.esc(s.s1)}"></div>
-        <div class="field"><label>Stat 1 label</label><input class="inp" id="s1l" value="${FE.esc(s.s1l)}"></div>
-        <div class="field"><label>Stat 2 value</label><input class="inp" id="s2" value="${FE.esc(s.s2)}"></div>
-        <div class="field"><label>Stat 2 label</label><input class="inp" id="s2l" value="${FE.esc(s.s2l)}"></div>
-        <div class="field"><label>Stat 3 value</label><input class="inp" id="s3" value="${FE.esc(s.s3)}"></div>
-        <div class="field"><label>Stat 3 label</label><input class="inp" id="s3l" value="${FE.esc(s.s3l)}"></div>
-        <div class="field"><label>Stat 4 value</label><input class="inp" id="s4" value="${FE.esc(s.s4)}"></div>
-        <div class="field"><label>Stat 4 label</label><input class="inp" id="s4l" value="${FE.esc(s.s4l)}"></div>
+    m.innerHTML=`<h3 style="color:var(--navy);margin-bottom:16px">⚙ Site Settings &amp; Security Controls</h3>
+    <div class="grid-2" style="max-width:980px">
+      
+      <!-- General site settings -->
+      <div class="wcard">
+        <h5 style="color:var(--navy);margin-bottom:14px">📞 CONTACT &amp; CONTENT SETTINGS</h5>
+        <div class="field"><label>Phone (header/footer/staff call)</label><input class="inp" id="stPhone" value="${FE.esc(s.phone)}"></div>
+        <div class="field"><label>Email (header/footer/staff email)</label><input class="inp" id="stEmail" value="${FE.esc(s.email)}"></div>
+        <div class="field"><label>Office Staff WhatsApp Number (e.g. 918069361480)</label><input class="inp" id="stWA" value="${FE.esc(s.officeStaffWhatsApp||'918069361480')}"></div>
+        <div class="field"><label>Homepage Hero Title (HTML allowed)</label><textarea class="inp" id="stHero" rows="2">${FE.esc(s.heroTitle)}</textarea></div>
+        <button class="btn btn-o btn-full" onclick="saveSite()">💾 Save General Settings</button>
       </div>
-      <button class="btn btn-o btn-full" onclick="saveSite()">💾 Save & Apply Site-Wide</button>
-    </div>
-    <div>
-      <div class="wcard" style="margin-bottom:16px"><h5>🔐 CHANGE ADMIN PASSWORD</h5>
-        <div class="field"><label>New Password</label><input class="inp" id="newPass" type="password"></div>
-        <button class="btn btn-n btn-full" onclick="const p=document.getElementById('newPass').value;if(p.length<6){FE.toast('⚠ Min 6 characters');return}FE.saveSettings({adminPass:p});FE.toast('✅ Admin password changed')">Update Password</button></div>
-      <div class="wcard"><h5>🧪 DATA TOOLS</h5>
-        <button class="btn btn-out btn-full" style="margin-bottom:8px" onclick="exportData()">⬇ Export All Data (JSON)</button>
-        <button class="btn btn-red btn-full" onclick="if(confirm('Reset ALL data to demo state? This cannot be undone.')){localStorage.clear();location.reload()}">🔄 Reset Demo Data</button></div>
-    </div></div>`;
+
+      <div>
+        <!-- Master Permission Password Card -->
+        <div class="wcard" style="margin-bottom:18px;border:2px solid #0096fa;background:#f8fafc">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <h5 style="color:#003498;margin:0">🔐 IELTS PERMISSION MASTER PASSWORD</h5>
+            <span class="pill" style="background:#e0effe;color:#003498;font-size:10px;font-weight:800">SECURITY</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px">
+            The Admin must enter this password each time IELTS access is granted or revoked. To update the password, the current password must be verified first.
+          </p>
+          <div class="field"><label>Previous / Current Password*</label><input class="inp" id="oldPermPass" type="password" placeholder="Enter previous permission password"></div>
+          <div class="field"><label>New Permission Password* (min 6 chars)</label><input class="inp" id="newPermPass" type="password" placeholder="Enter new master password"></div>
+          <div class="field"><label>Confirm New Password*</label><input class="inp" id="confirmPermPass" type="password" placeholder="Re-type new password"></div>
+          <button class="btn btn-n btn-full" onclick="doUpdatePermissionPass()">Update Permission Password</button>
+        </div>
+
+        <!-- Razorpay Settings Card -->
+        <div class="wcard" style="margin-bottom:18px">
+          <h5 style="color:var(--navy);margin-bottom:10px">💳 RAZORPAY PAYMENT SETTINGS</h5>
+          <div class="field"><label>Razorpay Key ID</label><input class="inp" id="stRzpKey" value="${FE.esc(s.razorpayKey||'rzp_test_51MockForeignExpress')}"></div>
+          <div class="field"><label>IELTS Practice Suite Enrolment Fee (₹)</label><input class="inp" id="stFee" type="number" value="${s.ieltsFee||1499}"></div>
+          <button class="btn btn-o btn-full btn-sm" onclick="FE.saveSettings({razorpayKey:document.getElementById('stRzpKey').value.trim(),ieltsFee:Number(document.getElementById('stFee').value)||1499});FE.toast('✅ Razorpay settings saved')">Save Payment Settings</button>
+        </div>
+
+        <!-- Admin Login Password Card -->
+        <div class="wcard" style="margin-bottom:18px">
+          <h5 style="color:var(--navy);margin-bottom:10px">🔑 ADMIN PANEL LOGIN PASSWORD</h5>
+          <div class="field"><label>New Admin Password</label><input class="inp" id="newAdminPass" type="password"></div>
+          <button class="btn btn-out btn-full btn-sm" onclick="const p=document.getElementById('newAdminPass').value;if(p.length<6){FE.toast('⚠ Min 6 characters');return}FE.saveSettings({adminPass:p});FE.toast('✅ Admin login password changed')">Update Admin Password</button>
+        </div>
+
+        <div class="wcard">
+          <h5>🧪 DATA TOOLS</h5>
+          <button class="btn btn-out btn-full btn-sm" style="margin-bottom:8px" onclick="exportData()">⬇ Export All Data (JSON)</button>
+          <button class="btn btn-red btn-full btn-sm" onclick="if(confirm('Reset ALL data to demo state? This cannot be undone.')){localStorage.clear();location.reload()}">🔄 Reset Demo Data</button>
+        </div>
+      </div>
+    </div>`;
   }
 }
-function saveSite(){FE.saveSettings({phone:document.getElementById('stPhone').value,email:document.getElementById('stEmail').value,heroTitle:document.getElementById('stHero').value,s1:document.getElementById('s1').value,s1l:document.getElementById('s1l').value,s2:document.getElementById('s2').value,s2l:document.getElementById('s2l').value,s3:document.getElementById('s3').value,s3l:document.getElementById('s3l').value,s4:document.getElementById('s4').value,s4l:document.getElementById('s4l').value});FE.toast('✅ Settings saved — visible on every page!');}
-function exportData(){const data={};['fe_users','fe_leads','fe_results','fe_progress','fe_apps','fe_settings'].forEach(k=>data[k]=localStorage.getItem(k));
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='foreign-express-data.json';a.click();}
+
+/* ---------- ADMIN MODALS ---------- */
+const holder = document.getElementById('adminModalHolder');
+
+function modalGrant(email, name){
+  holder.innerHTML = `<div class="modal-bg show"><div class="modal" style="max-width:440px;border-radius:18px;text-align:left">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span class="pill" style="background:#e0effe;color:var(--navy);font-weight:800;font-size:11px">SECURITY VERIFICATION</span>
+      <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="closeAdminModal()">✕</button>
+    </div>
+    <h3 style="color:var(--navy);font-size:20px;margin-bottom:6px">Grant IELTS Permission</h3>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px">
+      Unlocking computer-based practice suite for student: <b style="color:var(--navy)">${FE.esc(name)}</b> (${FE.esc(email)}).
+    </p>
+    <div class="field">
+      <label>Enter Master Permission Password*</label>
+      <input class="inp" id="grantPassInput" type="password" placeholder="Master permission password" autofocus>
+      <small style="color:var(--muted);font-size:11px;display:block;margin-top:4px">Default: <code style="color:#003498;font-weight:700">express@ielts2026</code></small>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+      <button class="btn btn-out" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn btn-o" onclick="doGrantPermission('${FE.esc(email)}')">Verify &amp; Unlock →</button>
+    </div>
+  </div></div>`;
+  setTimeout(()=>{ const inp=document.getElementById('grantPassInput'); if(inp) inp.focus(); }, 100);
+}
+
+function doGrantPermission(email){
+  const pass = (document.getElementById('grantPassInput')||{}).value;
+  const res = FE.grantIeltsPermission(email, pass);
+  if(res.ok){
+    closeAdminModal();
+    FE.toast('✅ Permission granted! Student IELTS access is now active.');
+    renderA('ielts');
+  } else {
+    FE.toast('❌ ' + res.msg);
+  }
+}
+
+function modalRevoke(email, name){
+  holder.innerHTML = `<div class="modal-bg show"><div class="modal" style="max-width:440px;border-radius:18px;text-align:left">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span class="pill" style="background:#fee2e2;color:#dc2626;font-weight:800;font-size:11px">REVOKE ACCESS</span>
+      <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="closeAdminModal()">✕</button>
+    </div>
+    <h3 style="color:#dc2626;font-size:20px;margin-bottom:6px">Revoke IELTS Access</h3>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px">
+      Are you sure you want to lock IELTS practice for: <b style="color:var(--navy)">${FE.esc(name)}</b> (${FE.esc(email)})?
+    </p>
+    <div class="field">
+      <label>Enter Master Permission Password to Confirm*</label>
+      <input class="inp" id="revokePassInput" type="password" placeholder="Master permission password">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+      <button class="btn btn-out" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn btn-red" onclick="doRevokePermission('${FE.esc(email)}')">Revoke Access</button>
+    </div>
+  </div></div>`;
+}
+
+function doRevokePermission(email){
+  const pass = (document.getElementById('revokePassInput')||{}).value;
+  const res = FE.revokeIeltsPermission(email, pass);
+  if(res.ok){
+    closeAdminModal();
+    FE.toast('🔒 Access revoked. IELTS is now locked for this student.');
+    renderA('ielts');
+  } else {
+    FE.toast('❌ ' + res.msg);
+  }
+}
+
+function modalEnrollNewStudent(){
+  holder.innerHTML = `<div class="modal-bg show"><div class="modal" style="max-width:480px;border-radius:18px;text-align:left">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span class="pill" style="background:#e0effe;color:var(--navy);font-weight:800;font-size:11px">MANUAL ENROLMENT</span>
+      <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="closeAdminModal()">✕</button>
+    </div>
+    <h3 style="color:var(--navy);font-size:20px;margin-bottom:6px">Enrol Student &amp; Grant Access</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Enter the student's details and the Master Permission Password to create the account and grant access.</p>
+    
+    <div class="field"><label>Full Name*</label><input class="inp" id="mEnrName" placeholder="Student name"></div>
+    <div class="field"><label>Email Address*</label><input class="inp" id="mEnrEmail" type="email" placeholder="student@example.com"></div>
+    <div class="field"><label>Phone Number</label><input class="inp" id="mEnrPhone" placeholder="+91 ··········"></div>
+    <div class="grid-2" style="gap:10px">
+      <div class="field"><label>Target Country</label><input class="inp" id="mEnrCountry" placeholder="e.g. UK, Canada"></div>
+      <div class="field"><label>Target Band</label><input class="inp" id="mEnrBand" placeholder="e.g. 7.5"></div>
+    </div>
+    <div class="field" style="background:#f0f6fd;padding:12px;border-radius:10px;border:1px solid #dce6f2">
+      <label style="color:#003498;font-weight:800">Master Permission Password*</label>
+      <input class="inp" id="mEnrPermPass" type="password" placeholder="Required to grant access">
+      <small style="color:var(--muted);font-size:10.5px">Default: express@ielts2026</small>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+      <button class="btn btn-out" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn btn-o" onclick="doAdminEnrollNew()">Enrol &amp; Unlock →</button>
+    </div>
+  </div></div>`;
+}
+
+function doAdminEnrollNew(){
+  const name = (document.getElementById('mEnrName')||{}).value.trim();
+  const email = (document.getElementById('mEnrEmail')||{}).value.trim();
+  const phone = (document.getElementById('mEnrPhone')||{}).value.trim();
+  const country = (document.getElementById('mEnrCountry')||{}).value.trim();
+  const target = (document.getElementById('mEnrBand')||{}).value.trim();
+  const pass = (document.getElementById('mEnrPermPass')||{}).value;
+
+  if(!name || !email){
+    FE.toast('⚠ Name and email are required');
+    return;
+  }
+  const res = FE.enrollStudentByAdmin({name, email, phone, country, target}, pass);
+  if(res.ok){
+    closeAdminModal();
+    FE.toast('✅ Student enrolled and IELTS suite unlocked!');
+    renderA('ielts');
+  } else {
+    FE.toast('❌ ' + res.msg);
+  }
+}
+
+function modalEditStudent(email){
+  const u = FE.users().find(x=>x.email === email);
+  if(!u){ FE.toast('Student not found'); return; }
+  holder.innerHTML = `<div class="modal-bg show"><div class="modal" style="max-width:480px;border-radius:18px;text-align:left">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span class="pill" style="background:#e0effe;color:var(--navy);font-weight:800;font-size:11px">EDIT STUDENT DATA</span>
+      <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="closeAdminModal()">✕</button>
+    </div>
+    <h3 style="color:var(--navy);font-size:20px;margin-bottom:4px">Edit Student Details</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">All student details are fully editable by the Admin.</p>
+
+    <div class="field"><label>Full Name</label><input class="inp" id="edName" value="${FE.esc(u.name)}"></div>
+    <div class="field"><label>Email Address</label><input class="inp" id="edEmail" value="${FE.esc(u.email)}" disabled style="background:#f1f5f9"></div>
+    <div class="field"><label>Phone</label><input class="inp" id="edPhone" value="${FE.esc(u.phone||'')}"></div>
+    <div class="grid-2" style="gap:10px">
+      <div class="field"><label>Country</label><input class="inp" id="edCountry" value="${FE.esc(u.country||'')}"></div>
+      <div class="field"><label>Current / Target Band</label><input class="inp" id="edBand" value="${FE.esc(u.target||u.band||'')}"></div>
+    </div>
+    <div class="field"><label>Plan Name</label><input class="inp" id="edPlan" value="${FE.esc(u.plan||'free')}"></div>
+    <div class="field"><label>IELTS Access Override</label>
+      <select class="inp" id="edIelts">
+        <option value="true" ${u.ieltsUnlocked?'selected':''}>🔓 Unlocked (Access Active)</option>
+        <option value="false" ${!u.ieltsUnlocked?'selected':''}>🔒 Locked (Access Restricted)</option>
+      </select>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+      <button class="btn btn-out" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn btn-o" onclick="doSaveEditedStudent('${FE.esc(u.email)}')">Save Student Changes</button>
+    </div>
+  </div></div>`;
+}
+
+function doSaveEditedStudent(email){
+  const name = document.getElementById('edName').value.trim();
+  const phone = document.getElementById('edPhone').value.trim();
+  const country = document.getElementById('edCountry').value.trim();
+  const target = document.getElementById('edBand').value.trim();
+  const plan = document.getElementById('edPlan').value.trim();
+  const ieltsUnlocked = document.getElementById('edIelts').value === 'true';
+
+  FE.updateUser(email, {
+    name, phone, country, target, plan,
+    ieltsUnlocked,
+    ieltsUnlockedBy: ieltsUnlocked ? 'Admin Override' : null
+  });
+  closeAdminModal();
+  FE.toast('✅ Student details updated successfully!');
+  renderA('ielts');
+}
+
+function closeAdminModal(){
+  holder.innerHTML = '';
+}
+
+function doUpdatePermissionPass(){
+  const oldPass = document.getElementById('oldPermPass').value;
+  const newPass = document.getElementById('newPermPass').value;
+  const confirmPass = document.getElementById('confirmPermPass').value;
+
+  const res = FE.changePermissionPass(oldPass, newPass, confirmPass);
+  if(res.ok){
+    FE.toast('✅ Master Permission Password updated successfully!');
+    renderA('st');
+  } else {
+    FE.toast('❌ ' + res.msg);
+  }
+}
+
+function saveSite(){
+  FE.saveSettings({
+    phone:document.getElementById('stPhone').value,
+    email:document.getElementById('stEmail').value,
+    officeStaffWhatsApp:document.getElementById('stWA').value,
+    heroTitle:document.getElementById('stHero').value
+  });
+  FE.toast('✅ General settings saved!');
+}
+
+function exportData(){
+  const data={};
+  ['fe_users','fe_leads','fe_results','fe_progress','fe_apps','fe_settings'].forEach(k=>data[k]=localStorage.getItem(k));
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='foreign-express-data.json';
+  a.click();
+}
+
 FE.isAdmin()?panel():loginGate();
 </script></body></html>

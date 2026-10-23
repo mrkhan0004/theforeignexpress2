@@ -21,6 +21,11 @@
     return;
   }
 
+  if (typeof FE !== 'undefined' && FE.hasIeltsAccess && !FE.hasIeltsAccess()) {
+    root.innerHTML = FE.renderIeltsGateHtml();
+    return;
+  }
+
   const sections = test.secs.map(id => FE_SECTIONS[id]).filter(Boolean);
   if (!sections.length) {
     root.innerHTML = `<section class="lp-empty"><h1>Test content missing</h1><p>The selected test has no connected sections. Check the test-data file before publishing it.</p><a href="ielts.html#library">Return to library</a></section>`;

@@ -13,7 +13,9 @@ const FE = (function(){
     heroTitle:'Where ambitious students<br><span>find their next campus.</span>',
     s1:'12,400+',s1l:'Students coached',s2:'4.9★',s2l:'Average rating',
     s3:'850+',s3l:'Partner universities',s4:'₹8.2 Cr',s4l:'Scholarships won',
-    adminEmail:'admin@theforeignexpress.com',adminPass:'express@2026'};
+    adminEmail:'admin@theforeignexpress.com',adminPass:'express@2026',
+    permissionPass:'express@ielts2026',razorpayKey:'rzp_test_51MockForeignExpress',ieltsFee:1499,
+    officeStaffPhone:'+91 80693 61480',officeStaffEmail:'hello@theforeignexpress.com',officeStaffWhatsApp:'918069361480'};
   function settings(){return Object.assign({},DEF_SET,R(K.set,{}))}
   function saveSettings(p){W(K.set,Object.assign(settings(),p));chrome();}
 
@@ -21,7 +23,10 @@ const FE = (function(){
   function seed(){
     if(R(K.sd,false))return;
     const now=Date.now();
-    W(K.u,[{id:uid(),name:'Aarav Mehta',email:'aarav@demo.com',phone:'+91 98765 43210',pass:'demo123',country:'United Kingdom',band:'6.5',target:'7.0',plan:'pro',created:now-86400e3*12}]);
+    W(K.u,[
+      {id:uid(),name:'Aarav Mehta',email:'aarav@demo.com',phone:'+91 98765 43210',pass:'demo123',country:'United Kingdom',band:'6.5',target:'7.0',plan:'pro',ieltsUnlocked:true,ieltsUnlockedBy:'Admin',ieltsUnlockedAt:now-86400e3*10,created:now-86400e3*12},
+      {id:uid(),name:'Rohit Sharma',email:'rohit@demo.com',phone:'+91 90000 11111',pass:'demo123',country:'United Kingdom',band:'6.0',target:'7.0',plan:'free',ieltsUnlocked:false,created:now-86400e3*2}
+    ]);
     W(K.l,[
       {id:uid(),name:'Rohit Sharma',email:'rohit@gmail.com',phone:'+91 90000 11111',country:'United Kingdom',band:'6.0',source:'Homepage form',status:'New',owner:'Unassigned',created:now-3600e3},
       {id:uid(),name:'Priya Nair',email:'priya@gmail.com',phone:'+91 90000 22222',country:'Canada',band:'Not taken',source:'Contact page',status:'Contacted',owner:'Priya M.',created:now-86400e3},
@@ -140,13 +145,445 @@ const FE = (function(){
   function addApp(item){const a=R(K.ap,{});const e=(me()||{}).email;if(!e)return;a[e]=a[e]||[];a[e].push(Object.assign({stage:'drafting'},item));W(K.ap,a)}
   function delUser(email){W(K.u,users().filter(x=>x.email!==email));if(R(K.s,null)===email)localStorage.removeItem(K.s)}
 
+  /* ---------- IELTS PERMISSIONS, ENROLLMENT & RAZORPAY ---------- */
+  function hasIeltsAccess(email){
+    if(isAdmin()) return true;
+    const u = email ? users().find(x=>x.email===email.toLowerCase()) : me();
+    return !!(u && (u.ieltsUnlocked === true));
+  }
+
+  function grantIeltsPermission(email, enteredPass){
+    const s = settings();
+    if(!enteredPass || enteredPass.trim() !== s.permissionPass){
+      return {ok:false, msg:'Invalid Permission Password! Access denied.'};
+    }
+    const U = users();
+    const i = U.findIndex(x=>x.email === email.toLowerCase());
+    if(i === -1) return {ok:false, msg:'User not found'};
+    U[i].ieltsUnlocked = true;
+    U[i].ieltsUnlockedBy = 'Admin';
+    U[i].ieltsUnlockedAt = Date.now();
+    U[i].plan = 'IELTS Enrolled (Staff)';
+    W(K.u, U);
+    saveLead('IELTS Admin Unlock', {
+      name: U[i].name,
+      email: U[i].email,
+      phone: U[i].phone,
+      country: U[i].country,
+      band: U[i].band,
+      status: 'Enrolled',
+      owner: 'Admin'
+    });
+    return {ok:true, user: U[i]};
+  }
+
+  function revokeIeltsPermission(email, enteredPass){
+    const s = settings();
+    if(!enteredPass || enteredPass.trim() !== s.permissionPass){
+      return {ok:false, msg:'Invalid Permission Password! Access denied.'};
+    }
+    const U = users();
+    const i = U.findIndex(x=>x.email === email.toLowerCase());
+    if(i === -1) return {ok:false, msg:'User not found'};
+    U[i].ieltsUnlocked = false;
+    U[i].ieltsUnlockedBy = null;
+    U[i].ieltsUnlockedAt = null;
+    U[i].plan = 'free';
+    W(K.u, U);
+    return {ok:true, user: U[i]};
+  }
+
+  function updateUser(email, patch){
+    const U = users();
+    const i = U.findIndex(x=>x.email === email.toLowerCase());
+    if(i === -1) return {ok:false, msg:'User not found'};
+    U[i] = Object.assign(U[i], patch);
+    W(K.u, U);
+    return {ok:true, user: U[i]};
+  }
+
+  function changePermissionPass(oldPass, newPass, confirmPass){
+    const s = settings();
+    if(!oldPass || oldPass.trim() !== s.permissionPass){
+      return {ok:false, msg:'Previous password does not match!'};
+    }
+    if(!newPass || newPass.trim().length < 6){
+      return {ok:false, msg:'New password must be at least 6 characters'};
+    }
+    if(confirmPass !== undefined && newPass.trim() !== (confirmPass||'').trim()){
+      return {ok:false, msg:'New password and confirmation do not match'};
+    }
+    saveSettings({permissionPass: newPass.trim()});
+    return {ok:true};
+  }
+
+  function enrollStudentByAdmin(d, enteredPass){
+    const s = settings();
+    if(!enteredPass || enteredPass.trim() !== s.permissionPass){
+      return {ok:false, msg:'Invalid Permission Password! Access denied.'};
+    }
+    if(!d.name || !d.email){
+      return {ok:false, msg:'Student name and email are required'};
+    }
+    const existing = users().find(x=>x.email === d.email.toLowerCase());
+    if(existing){
+      return grantIeltsPermission(existing.email, enteredPass);
+    }
+    const u = {
+      id: uid(),
+      name: d.name,
+      email: d.email.toLowerCase(),
+      phone: d.phone || '',
+      pass: d.pass || 'student@123',
+      country: d.country || '',
+      band: d.band || 'Not taken',
+      target: d.target || '7.0',
+      plan: 'IELTS Enrolled (Staff)',
+      ieltsUnlocked: true,
+      ieltsUnlockedBy: 'Admin',
+      ieltsUnlockedAt: Date.now(),
+      created: Date.now()
+    };
+    W(K.u, users().concat(u));
+    saveLead('Staff Manual Enrolment', {
+      name: u.name,
+      email: u.email,
+      phone: u.phone,
+      country: u.country,
+      band: u.band,
+      status: 'Enrolled',
+      owner: 'Admin'
+    });
+    return {ok:true, user:u};
+  }
+
+  function unlockByRazorpay(paymentId, userDetails){
+    let u = me();
+    if(!u && userDetails && userDetails.email){
+      const existing = users().find(x=>x.email === userDetails.email.toLowerCase());
+      if(existing){
+        u = existing;
+        W(K.s, u.email);
+      } else {
+        const reg = register({
+          name: userDetails.name || 'Enrolled Student',
+          email: userDetails.email,
+          phone: userDetails.phone || '',
+          pass: 'student@123'
+        });
+        u = reg.user;
+      }
+    }
+    if(!u) return {ok:false, msg:'User account required'};
+    const U = users();
+    const i = U.findIndex(x=>x.email === u.email);
+    if(i > -1){
+      U[i].ieltsUnlocked = true;
+      U[i].ieltsUnlockedBy = 'Razorpay (' + paymentId + ')';
+      U[i].ieltsUnlockedAt = Date.now();
+      U[i].paymentId = paymentId;
+      U[i].plan = 'IELTS Pro (Razorpay)';
+      W(K.u, U);
+    }
+    saveLead('Razorpay Online Enrolment', {
+      name: u.name,
+      email: u.email,
+      phone: u.phone,
+      status: 'Enrolled',
+      owner: 'Razorpay Payment (' + paymentId + ')'
+    });
+    return {ok:true, user: U[i]};
+  }
+
+  function requestStaffPermission(data){
+    saveLead('IELTS Permission Request', {
+      name: data.name || (me()||{}).name || 'Student',
+      email: data.email || (me()||{}).email || '',
+      phone: data.phone || (me()||{}).phone || '',
+      country: data.country || '',
+      band: data.band || '',
+      status: 'New',
+      owner: 'Office Staff'
+    });
+    return {ok:true};
+  }
+
+  function showStaffContactModal(reason){
+    const s = settings();
+    const phone = s.officeStaffPhone || s.phone;
+    const email = s.officeStaffEmail || s.email;
+    const wa = s.officeStaffWhatsApp || phone.replace(/\D/g,'');
+    let m = document.getElementById('staffModal');
+    if(!m){
+      m = document.createElement('div');
+      m.id = 'staffModal';
+      m.className = 'modal-bg';
+      document.body.appendChild(m);
+    }
+    const curU = me() || {};
+    m.innerHTML = `<div class="modal" style="max-width:500px;border-radius:18px;border:1px solid var(--line);box-shadow:0 25px 70px rgba(0,52,152,.15);text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span class="pill" style="background:#e0effe;color:var(--navy);font-weight:800;font-size:11px;padding:6px 12px">📞 OFFICE STAFF PERMISSION</span>
+        <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="FE.closeModal()">✕</button>
+      </div>
+      <h3 style="color:var(--navy);font-size:20px;margin-bottom:8px">Contact Office Staff to do Permission for IELTS test</h3>
+      <div style="background:#fff4e5;border-left:4px solid #f59e0b;padding:11px 13px;border-radius:4px;margin-bottom:16px;font-size:12.5px;color:#92400e;line-height:1.65">
+        📢 <b>Notice:</b> ${esc(reason || 'If you are unable to complete the online payment, or wish to enrol offline, please contact the office team directly.')}
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+        <a href="tel:${esc(phone)}" class="btn btn-n" style="padding:11px;font-size:12px;gap:8px;text-align:center">
+          📞 Call: ${esc(phone)}
+        </a>
+        <a href="https://wa.me/${esc(wa)}?text=Hello%20Foreign%20Express,%20I%20want%20Permission%20for%20IELTS%20Test%20practice.%20My%20email:%20${encodeURIComponent(curU.email||'')}" target="_blank" class="btn btn-o" style="padding:11px;font-size:12px;gap:8px;text-align:center">
+          💬 WhatsApp Staff
+        </a>
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px">
+        <b style="font-size:12px;color:var(--navy);display:block;margin-bottom:8px">📩 Or send an instant request to Admin:</b>
+        <div style="display:grid;gap:8px">
+          <input class="inp" id="reqStaffName" placeholder="Your Full Name" value="${esc(curU.name||'')}">
+          <input class="inp" id="reqStaffEmail" placeholder="Your Email Address" value="${esc(curU.email||'')}">
+          <input class="inp" id="reqStaffPhone" placeholder="Your Phone Number" value="${esc(curU.phone||'')}">
+          <button class="btn btn-o btn-full" style="font-size:12.5px" onclick="FE.submitStaffRequestFromModal()">Submit Permission Request to Staff →</button>
+        </div>
+      </div>
+
+      <div style="text-align:center">
+        <small style="color:var(--muted);font-size:11px">Staff Support Email: <a href="mailto:${esc(email)}" style="color:var(--navy);font-weight:700">${esc(email)}</a></small>
+      </div>
+    </div>`;
+    m.classList.add('show');
+  }
+
+  function submitStaffRequestFromModal(){
+    const name = (document.getElementById('reqStaffName')||{}).value||'';
+    const email = (document.getElementById('reqStaffEmail')||{}).value||'';
+    const phone = (document.getElementById('reqStaffPhone')||{}).value||'';
+    if(!email && !phone){
+      toast('⚠ Please enter your email or phone number');
+      return;
+    }
+    requestStaffPermission({name, email, phone});
+    closeModal();
+    toast('✅ Request submitted! Office staff will review and grant permission.');
+  }
+
+  function promptEnrollmentDetails(callback){
+    let m = document.getElementById('enrollPromptModal');
+    if(!m){
+      m = document.createElement('div');
+      m.id = 'enrollPromptModal';
+      m.className = 'modal-bg';
+      document.body.appendChild(m);
+    }
+    m.innerHTML = `<div class="modal" style="max-width:440px;border-radius:18px;box-shadow:0 25px 70px rgba(0,52,152,.15);text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span class="pill" style="background:#e0effe;color:var(--navy);font-weight:800;font-size:11px">STUDENT ENROLMENT</span>
+        <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="FE.closeModal()">✕</button>
+      </div>
+      <h3 style="color:var(--navy);font-size:20px;margin-bottom:6px">Enrol in IELTS Practice Suite</h3>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px">Enter your details so your account can be created and unlocked upon payment.</p>
+      
+      <div class="field"><label>Full Name*</label><input class="inp" id="enrName" placeholder="Your name"></div>
+      <div class="field"><label>Email Address*</label><input class="inp" id="enrEmail" type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Phone Number</label><input class="inp" id="enrPhone" placeholder="+91 ··········"></div>
+      
+      <button class="btn btn-o btn-full" style="margin-top:8px" onclick="FE.submitEnrollPrompt()">Proceed to Razorpay Payment →</button>
+      <div style="text-align:center;margin-top:12px">
+        <a href="login.html?next=ielts.html" style="font-size:12px;color:var(--navy);font-weight:700">Already registered? Log In →</a>
+      </div>
+    </div>`;
+    m.classList.add('show');
+    window._enrollCb = callback;
+  }
+
+  function submitEnrollPrompt(){
+    const name = (document.getElementById('enrName')||{}).value.trim();
+    const email = (document.getElementById('enrEmail')||{}).value.trim();
+    const phone = (document.getElementById('enrPhone')||{}).value.trim();
+    if(!name || !email){
+      toast('⚠ Please enter your name and email');
+      return;
+    }
+    closeModal();
+    if(window._enrollCb) window._enrollCb({name, email, phone});
+  }
+
+  function showRazorpaySimulator(fee, u){
+    let m = document.getElementById('rzpSimModal');
+    if(!m){
+      m = document.createElement('div');
+      m.id = 'rzpSimModal';
+      m.className = 'modal-bg';
+      document.body.appendChild(m);
+    }
+    m.innerHTML = `<div class="modal" style="max-width:440px;border-radius:20px;border:1px solid #dce6f2;box-shadow:0 30px 80px rgba(0,52,152,.18);text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e1eaf5;padding-bottom:14px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:8px;background:#003498;color:#fff;display:grid;place-items:center;font-weight:900;font-size:16px">₹</div>
+          <div><b style="color:#003498;font-size:14px;display:block">Razorpay Checkout</b><small style="color:var(--muted);font-size:10px">Official Payment Gateway</small></div>
+        </div>
+        <button style="border:none;background:none;font-size:22px;cursor:pointer;color:var(--muted)" onclick="FE.closeModal();FE.showStaffContactModal('Payment window closed. Contact office staff to do Permission for IELTS test.')">✕</button>
+      </div>
+      
+      <div style="background:#f0f6fd;border-radius:12px;padding:14px;margin-bottom:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12.5px;color:#4b627d">IELTS Academic Practice Suite</span>
+          <b style="font-size:22px;color:#003498">₹${fee}</b>
+        </div>
+        <small style="color:var(--muted);font-size:11px;display:block;margin-top:4px">Full computer-based test platform + AI tools</small>
+      </div>
+
+      <div style="margin-bottom:18px;font-size:12px;color:var(--muted)">
+        Enrolling student: <b style="color:var(--navy)">${esc(u.name)}</b> (${esc(u.email)})
+      </div>
+
+      <div style="display:grid;gap:10px">
+        <button class="btn btn-o btn-full" style="padding:14px;font-size:13.5px;font-weight:800" onclick="FE.completeSimulatedPayment('${esc(u.email)}', ${fee})">
+          💳 Complete Razorpay Payment (₹${fee}) →
+        </button>
+        <button class="btn btn-out btn-full" style="padding:11px;font-size:12px" onclick="FE.closeModal();FE.showStaffContactModal('Contact office staff to do Permission for IELTS test.');">
+          ⚠ Payment not going through? Contact Office Staff
+        </button>
+      </div>
+      <p style="text-align:center;font-size:10.5px;color:var(--muted);margin-top:14px">🔒 256-bit secure transaction powered by Razorpay</p>
+    </div>`;
+    m.classList.add('show');
+  }
+
+  function completeSimulatedPayment(email, fee){
+    const u = users().find(x=>x.email === (email||'').toLowerCase()) || me();
+    const pid = 'pay_rzp_' + uid();
+    unlockByRazorpay(pid, u);
+    closeModal();
+    toast('🎉 Razorpay Payment Verified! IELTS Practice Suite Unlocked.');
+    setTimeout(()=>location.reload(), 900);
+  }
+
+  function startRazorpayPayment(customUser){
+    const s = settings();
+    const fee = Number(s.ieltsFee || 1499);
+    let u = customUser || me();
+
+    if(!u){
+      promptEnrollmentDetails(function(details){
+        startRazorpayPayment(details);
+      });
+      return;
+    }
+
+    function launchGateway(){
+      if(window.Razorpay && s.razorpayKey && !s.razorpayKey.includes('Mock')){
+        try{
+          const rzp = new window.Razorpay({
+            key: s.razorpayKey,
+            amount: fee * 100,
+            currency: "INR",
+            name: "The Foreign Express",
+            description: "IELTS Academic Practice Suite",
+            image: "logo.png",
+            prefill: { name: u.name, email: u.email, contact: u.phone },
+            theme: { color: "#003498" },
+            handler: function(response){
+              unlockByRazorpay(response.razorpay_payment_id || ('pay_' + uid()), u);
+              toast('🎉 Payment successful! IELTS suite unlocked.');
+              setTimeout(()=>location.reload(), 900);
+            },
+            modal: {
+              ondismiss: function(){
+                showStaffContactModal("Payment was not completed. Contact office staff to do Permission for IELTS test.");
+              }
+            }
+          });
+          rzp.open();
+          return;
+        }catch(e){
+          console.warn('Razorpay open fallback:', e);
+        }
+      }
+      showRazorpaySimulator(fee, u);
+    }
+
+    if(!window.Razorpay && !document.getElementById('rzpScript')){
+      const sc = document.createElement('script');
+      sc.id = 'rzpScript';
+      sc.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      sc.onload = launchGateway;
+      sc.onerror = function(){ showRazorpaySimulator(fee, u); };
+      document.body.appendChild(sc);
+    } else {
+      launchGateway();
+    }
+  }
+
+  function renderIeltsGateHtml(){
+    const s = settings();
+    const fee = s.ieltsFee || 1499;
+    const phone = s.officeStaffPhone || s.phone;
+    const wa = s.officeStaffWhatsApp || phone.replace(/\D/g,'');
+    const u = me();
+    return `<div class="ielts-gate-wrapper" style="padding:48px 20px;max-width:860px;margin:30px auto;text-align:center">
+      <div style="width:76px;height:76px;border-radius:50%;background:#e0effe;color:#003498;font-size:34px;display:grid;place-items:center;margin:0 auto 20px;box-shadow:0 14px 34px rgba(0,52,152,.12)">🔒</div>
+      <span class="pill" style="background:#e0effe;color:#003498;font-size:11px;font-weight:800;letter-spacing:.14em;padding:6px 14px">ACCESS RESTRICTED · STAFF PERMISSION REQUIRED</span>
+      <h2 style="font-size:clamp(30px,4vw,44px);color:var(--navy);margin:16px 0 12px;letter-spacing:-.045em">IELTS Practice Tools &amp; Mock Tests are Locked</h2>
+      <p style="font-size:15px;line-height:1.8;color:var(--muted);max-width:640px;margin:0 auto 32px">
+        This computer-based IELTS practice suite is available to enrolled students only. To gain access, complete the online enrolment below or contact the office team for a staff permission.
+      </p>
+
+      <div class="grid-2" style="gap:22px;text-align:left;margin-bottom:32px">
+        <!-- Option 1: Razorpay Payment -->
+        <div class="card" style="border:2px solid #0096fa;position:relative;background:#fff;box-shadow:0 18px 45px rgba(0,150,250,.12);border-radius:18px">
+          <span style="position:absolute;top:-12px;right:20px;background:#0096fa;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.1em;padding:4px 10px;border-radius:999px">OPTION 1 · INSTANT UNLOCK</span>
+          <h4 style="color:#003498;font-size:19px;margin-bottom:6px">⚡ Instant Online Enrolment</h4>
+          <div style="font-size:29px;font-weight:900;color:#003498;margin-bottom:8px">₹${fee} <small style="font-size:12px;font-weight:500;color:var(--muted)">Full Academic Suite</small></div>
+          <ul style="font-size:13px;line-height:1.9;color:#3b4e68;padding-left:18px;margin-bottom:20px">
+            <li>Listening, Reading, Writing &amp; Speaking</li>
+            <li>Split-screen Computer-Based IELTS Player</li>
+            <li>Timed mock exams &amp; progress tracking</li>
+            <li>Instant automatic unlock via Razorpay</li>
+          </ul>
+          <button class="btn btn-o btn-full" style="padding:14px;font-weight:800;font-size:13.5px" onclick="FE.startRazorpayPayment()">💳 Enrol with Razorpay (₹${fee}) →</button>
+        </div>
+
+        <!-- Option 2: Office Staff Permission -->
+        <div class="card" style="border:1px solid #dce6f2;background:#f8fafc;position:relative;border-radius:18px">
+          <span style="position:absolute;top:-12px;right:20px;background:#003498;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.1em;padding:4px 10px;border-radius:999px">OPTION 2 · OFFICE STAFF</span>
+          <h4 style="color:#0a1c3d;font-size:19px;margin-bottom:6px">🛡 Admin &amp; Staff Permission</h4>
+          <p style="font-size:13px;line-height:1.75;color:var(--muted);margin-bottom:14px">
+            If the online payment is unavailable, or you are already an enrolled student, please contact the office team to have your access unlocked:
+          </p>
+          <div style="background:#eef6ff;border-left:4px solid #0096fa;padding:12px 14px;border-radius:4px;margin-bottom:18px;font-size:12.5px;color:#003498;font-weight:800;line-height:1.5">
+            📢 Contact office staff to do Permission for IELTS test
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+            <a href="tel:${esc(phone)}" class="btn btn-n btn-sm" style="text-align:center;padding:10px 8px">📞 Call Staff</a>
+            <a href="https://wa.me/${esc(wa)}?text=Hello%20Foreign%20Express,%20I%20want%20Permission%20for%20IELTS%20Test%20practice" target="_blank" class="btn btn-o btn-sm" style="text-align:center;padding:10px 8px">💬 WhatsApp</a>
+          </div>
+          <button class="btn btn-out btn-full btn-sm" onclick="FE.showStaffContactModal('Contacting staff for manual IELTS permission.')">📝 Request Permission Online →</button>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <small style="color:var(--muted);font-size:12px">
+          ${u?`Logged in as: <b>${esc(u.email)}</b> · Status: <span style="color:#ef4444;font-weight:700">🔒 Not Permitted</span>`:`Already registered? <a href="login.html?next=ielts.html" style="color:var(--navy);font-weight:800">Log In here →</a>`}
+        </small>
+        <span style="color:var(--line)">|</span>
+        <small><a href="admin.html" style="color:var(--navy);font-weight:800">Staff / Admin Login →</a></small>
+      </div>
+    </div>`;
+  }
+
   /* ---------- SITE CHROME (header + footer) ---------- */
   function chrome(){
     const s=settings();const file=(location.pathname.split('/').pop()||'index.html');
     const h=document.getElementById('site-header');
     if(h){const u=me();
       h.innerHTML=`<nav class="main rv-nav"><div class="container nav-in">
-        <a href="index.html" class="logo" aria-label="The Foreign Express home"><span class="plane" aria-hidden="true">↗</span><span>The Foreign <span class="brand-last">Express</span></span></a>
+        <a href="index.html" class="logo" aria-label="The Foreign Express home" style="display:inline-flex;align-items:center;">
+          <img src="logo.png" alt="The Foreign Express" style="height:48px;max-height:48px;width:auto;display:block;" />
+        </a>
         <div class="navlinks" id="primary-navigation">
           <a href="index.html#approach">Why us</a>
           <a href="ielts.html" class="${['ielts.html','diagnostic.html','tests.html','test.html','writing-checker.html','speaking-ai.html','study-plan.html','band-predictor.html'].includes(file)?'on':''}">IELTS tools</a>
@@ -160,7 +597,7 @@ const FE = (function(){
       </div></nav>`;}
     const f=document.getElementById('site-footer');
     if(f){f.innerHTML=`<footer><div class="container"><div class="fgrid">
-      <div><a href="index.html" class="logo" style="color:#f7f8f1;margin-bottom:15px"><span class="plane">↗</span><span>The Foreign <span class="brand-last">Express</span></span></a><p style="font-size:12px;line-height:1.85;max-width:280px">A connected place to practise IELTS, explore universities and organise your next study-abroad steps.</p><p style="margin-top:16px;font-size:11px;color:#a2a79b">${esc(s.phone)}<br>${esc(s.email)}</p></div>
+      <div><a href="index.html" class="logo" style="margin-bottom:15px;display:inline-flex;align-items:center;"><img src="logo.png" alt="The Foreign Express" style="height:42px;max-height:42px;width:auto;display:block;" /></a><p style="font-size:12px;line-height:1.85;max-width:280px">A connected place to practise IELTS, explore universities and organise your next study-abroad steps.</p><p style="margin-top:16px;font-size:11px;color:var(--muted)">${esc(s.phone)}<br>${esc(s.email)}</p></div>
       <div><h5>STUDY ABROAD</h5>${Object.keys(COUNTRIES).map(k=>`<a href="country.html?c=${k}">Study in ${COUNTRIES[k].short}</a>`).join('')}<a href="universities.html">Find universities</a><a href="scholarships.html">Scholarships</a></div>
       <div><h5>IELTS TOOLS</h5><a href="diagnostic.html">AI Diagnostic</a><a href="tests.html">Mock Tests</a><a href="writing-checker.html">Writing Checker</a><a href="speaking-ai.html">Speaking Practice</a><a href="study-plan.html">Study Plan</a></div>
       <div><h5>DISCOVER</h5><a href="about.html">About us</a><a href="stories.html">Student stories</a><a href="blog.html">Resources</a><a href="contact.html">Contact</a></div>
@@ -247,6 +684,9 @@ const FE = (function(){
 
   return{settings,saveSettings,me,users,register,login,logout,requireAuth,updateProfile,isAdmin,adminLogin,adminLogout,
     leads,saveLead,updateLead,delLead,results,addResult,delResult,progress,setProgress,apps,moveApp,addApp,delUser,
+    hasIeltsAccess,grantIeltsPermission,revokeIeltsPermission,updateUser,changePermissionPass,enrollStudentByAdmin,
+    unlockByRazorpay,requestStaffPermission,showStaffContactModal,submitStaffRequestFromModal,promptEnrollmentDetails,
+    submitEnrollPrompt,completeSimulatedPayment,startRazorpayPayment,renderIeltsGateHtml,
     chrome,DESTS,COUNTRIES,UNIS,SCHOL,STORIES,FAQS,esc,toggleMenu,
     renderDests,renderStories,renderFAQs,renderStats,renderHero,renderUnisPage,renderCountryPage,renderScholarPage,
     gradeEssay,bandFromRaw,toast,openModal,closeModal,uid};

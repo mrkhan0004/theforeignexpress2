@@ -13,9 +13,22 @@
   <link rel="stylesheet" href="css/visual-refresh.css">
   <link rel="stylesheet" href="css/roveia-theme.css">
   <link rel="stylesheet" href="css/roveia-ielts.css">
+  <!-- PRE-RENDER ACCESS GATE: runs before any HTML paints -->
+  <script>
+  (function(){
+    var sess = null, adm = false;
+    try { sess = localStorage.getItem('fe_session'); } catch(e){}
+    try { adm = !!JSON.parse(localStorage.getItem('fe_admin')); } catch(e){}
+    if(!sess && !adm){
+      document.documentElement.style.visibility = 'hidden';
+      window.location.replace('login.html?next=ielts.html');
+    }
+  }());
+  </script>
 </head>
 <body>
   <div id="site-header"></div>
+  <div id="ieltsAccessBanner"></div>
   <main class="rv-ielts">
     <!-- Editorial hero: same visual system as the redesigned homepage. -->
     <section class="rv-hero rv-ielts-hero">
@@ -24,7 +37,7 @@
           <p class="rv-kicker"><span class="rv-kicker-dot"></span> THE FOREIGN EXPRESS <span class="rv-kicker-rule"></span> IELTS PRACTICE</p>
           <h1>Make every practice session <span>count.</span></h1>
           <p class="rv-hero-sub">Build familiarity with computer-based IELTS tasks, practise the skills you need most and keep your next step clear. Start with an available test or choose one skill to focus on.</p>
-          <div class="rv-hero-actions">
+          <div class="rv-hero-actions" id="heroActions">
             <a class="rv-btn rv-btn-dark" href="#library">Explore test library <span aria-hidden="true">↗</span></a>
             <a class="rv-link-arrow" href="diagnostic.html">Start with a diagnostic <span aria-hidden="true">→</span></a>
           </div>
@@ -178,6 +191,28 @@
   <script src="js/app.js"></script>
   <script src="js/roveia-motion.js"></script>
   <script>
+    /* ── POST-APP.JS ACCESS GATE ──────────────────────────────────────────────
+       Handles the "logged in but no IELTS permission" case.
+       The "not logged in" case is already handled by the <head> gate above.
+       At this point (bottom of <body>) the DOM is fully ready — no event
+       listener needed; just replace <main> directly.
+    ────────────────────────────────────────────────────────────────────────── */
+    (function(){
+      if(typeof FE === 'undefined') return;
+      if(!FE.hasIeltsAccess()){
+        // Wipe page content; show the enrolment / staff-permission gate
+        const main = document.querySelector('main');
+        const banner = document.getElementById('ieltsAccessBanner');
+        if(banner) banner.remove();
+        if(main){
+          main.className = '';
+          main.innerHTML = '<div class="rv-shell" style="padding:40px 20px 80px">' + FE.renderIeltsGateHtml() + '</div>';
+        }
+        return; // skip the library render below
+      }
+    }());
+    /* Library render — only runs when user has valid IELTS access */
+    if(typeof FE !== 'undefined' && FE.hasIeltsAccess())
     (function () {
       'use strict';
       const SKILLS = {
@@ -235,6 +270,35 @@
         })).filter(group => group.items.length > 0);
       }
       function renderLibrary() {
+        if (!FE.hasIeltsAccess()) {
+          const banner = document.getElementById('ieltsAccessBanner');
+          if(banner){
+            banner.innerHTML = `<div style="background:#fff3cd;border-bottom:1px solid #ffeeba;padding:12px 20px;text-align:center;font-size:13px;color:#856404;font-weight:700">
+              🔒 IELTS Practice Suite &amp; Tests are Locked — enrolment or staff permission required.
+              <a href="#library" onclick="FE.startRazorpayPayment();return false" style="margin-left:10px;color:#003498;text-decoration:underline">Enrol via Razorpay (₹1,499) →</a>
+              <span style="margin:0 8px">|</span>
+              <a href="#library" onclick="FE.showStaffContactModal('Contact office staff to do Permission for IELTS test');return false" style="color:#003498;text-decoration:underline">Contact Office Staff →</a>
+            </div>`;
+          }
+          const heroAct = document.getElementById('heroActions');
+          if(heroAct){
+            heroAct.innerHTML = `<a class="rv-btn rv-btn-lime" href="#library" onclick="FE.startRazorpayPayment();return false">Enrol with Razorpay (₹1,499) <span aria-hidden="true">💳</span></a>
+            <a class="rv-btn rv-btn-dark" href="#library" onclick="FE.showStaffContactModal('Contact office staff to do Permission for IELTS test');return false">Office Staff Permission <span aria-hidden="true">📞</span></a>`;
+          }
+          const librarySec = document.getElementById('library');
+          if (librarySec) {
+            librarySec.innerHTML = `<div class="rv-shell">${FE.renderIeltsGateHtml()}</div>`;
+          }
+          return;
+        } else {
+          const banner = document.getElementById('ieltsAccessBanner');
+          if(banner){
+            banner.innerHTML = `<div style="background:#d1fae5;border-bottom:1px solid #a7f3d0;padding:10px 20px;text-align:center;font-size:12.5px;color:#065f46;font-weight:700">
+              🔓 IELTS Academic Practice Suite Unlocked — Full computer-based test platform is active.
+            </div>`;
+          }
+        }
+
         const visibleGroups = groupList();
         const pageCount = Math.max(1, Math.ceil(visibleGroups.length / PER_PAGE));
         if (page > pageCount) page = pageCount;
