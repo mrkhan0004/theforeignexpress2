@@ -102,16 +102,21 @@
     activeWriteTask = 'w1';
     activeSpeakingPart = 0;
     const section = current();
+    const singleColumnListening = section.type === 'listening';
     const panes = renderPanes(section);
+    const splitMarkup = singleColumnListening
+      ? `<div class="lp-split-screen lp-single-pane-listening"><section class="lp-pane lp-pane-right" id="qPane">${panes.left}${panes.right}</section></div>`
+      : `<div class="lp-split-screen"><section class="lp-pane lp-pane-left" id="srcPane">${panes.left}</section><section class="lp-pane lp-pane-right" id="qPane">${panes.right}</section></div>`;
+    const showSectionTimer = section.type !== 'speaking';
     root.innerHTML = `<div class="lp-topbar">
         <div class="lp-topbar-title"><small>THE FOREIGN EXPRESS · ACADEMIC TEST PLAYER</small><strong>${esc(test.name)} · ${index + 1}/${sections.length} — ${esc(section.title)}</strong></div>
-        <div class="lp-topbar-controls"><span class="lp-mode-label">${mode === 'exam' ? 'EXAM MODE' : 'PRACTICE'}</span><span class="lp-timer" id="teTimer">${formatTime(sectionSeconds)}</span>
-          ${mode === 'practice' ? '<button class="lp-control-btn" type="button" data-action="toggle-pause">Pause timer</button>' : ''}
+        <div class="lp-topbar-controls"><span class="lp-mode-label">${mode === 'exam' ? 'EXAM MODE' : 'PRACTICE'}</span>${showSectionTimer ? `<span class="lp-timer" id="teTimer">${formatTime(sectionSeconds)}</span>` : ''}
+          ${mode === 'practice' && showSectionTimer ? '<button class="lp-control-btn" type="button" data-action="toggle-pause">Pause timer</button>' : ''}
           <button class="lp-control-btn" type="button" data-action="submit-section">${index === sections.length - 1 ? 'Finish section' : 'Submit & continue'}</button>
           <a class="lp-control-btn lp-danger" href="ielts.html#library">Exit</a>
         </div>
       </div>
-      <div class="lp-split-screen"><section class="lp-pane lp-pane-left" id="srcPane">${panes.left}</section><section class="lp-pane lp-pane-right" id="qPane">${panes.right}</section></div>
+      ${splitMarkup}
       <nav class="lp-question-nav" id="qNav" aria-label="Question navigation"></nav>`;
 
     if (section.type === 'reading') {
@@ -126,7 +131,7 @@
       document.getElementById('qNav').style.display = 'none';
       refreshMicState();
     }
-    startSectionTimer();
+    if (showSectionTimer) startSectionTimer();
   }
 
   function renderPanes(section) {
@@ -142,8 +147,8 @@
       const left = `<p class="lp-pane-kicker">Academic Listening · Audio sample</p><h2>${esc(section.title)}</h2>
         <div class="lp-tool-row"><button type="button" class="lp-tool is-active" data-action="play-audio">▶ Play read-aloud</button><button type="button" class="lp-tool" data-action="pause-audio" id="pauseAudioBtn">Ⅱ Pause</button><button type="button" class="lp-tool" data-action="stop-audio">■ Stop</button>${practiceTranscript}</div>
         <p class="lp-muted">This demonstration reads the original sample script with your browser's speech synthesis. It is not a licensed IELTS audio recording. Replays: <b id="repN">0</b> / ${mode === 'exam' ? '1' : '3'}.</p>
-        <div id="transcript" class="lp-passage" style="display:${mode === 'practice' ? 'none' : 'none'}">${section.chunks.map((chunk, index) => `<p data-ch="${index}">${esc(chunk)}</p>`).join('')}</div><div id="liveChunks" class="lp-passage" aria-live="polite"></div>`;
-      const right = `<p class="lp-pane-kicker">Academic Listening · Answer sheet</p><h2>Listen for the detail</h2><p class="lp-muted">Play the sample once before answering. In practice mode, reveal the transcript after trying the questions.</p>${section.questions.map((question, qIndex) => renderQuestion(question, qIndex)).join('')}`;
+        <div id="transcript" class="lp-passage" style="display:none">${section.chunks.map((chunk, index) => `<p data-ch="${index}">${esc(chunk)}</p>`).join('')}</div><div id="liveChunks" class="lp-passage" aria-live="polite" style="display:none"></div>`;
+      const right = `<p class="lp-pane-kicker">Academic Listening · Answer sheet</p><h2>Listen for the detail</h2><p class="lp-muted">Play the sample once before answering.</p>${section.questions.map((question, qIndex) => renderQuestion(question, qIndex)).join('')}`;
       return { left, right };
     }
     if (section.type === 'writing') return { left: renderWritingPrompt(section), right: renderWritingEditor(section) };
