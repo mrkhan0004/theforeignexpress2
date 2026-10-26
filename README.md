@@ -1,90 +1,85 @@
-# The Foreign Express — Roveia-inspired rebuild
+# The Foreign Express — Security and Production Readiness
 
-This build makes a substantial visual and layout change to the supplied static site. It uses the public Roveia Health homepage as a **design reference** for section hierarchy, typography scale, spacing, proof/service card patterns and motion—not as a source of copied brand assets or health-marketing copy.
+## Current status
+
+This repository is a **static HTML/CSS/JavaScript website**. It currently uses browser `localStorage` as a demo data store for accounts, sessions, settings, leads, and permissions. GitHub Pages can host static files, but it cannot securely run authentication, role checks, payment verification, or private database operations.
+
+The changes in this package improve layout and make the payment flow fail closed rather than showing a fake successful payment. **This is not yet an enterprise-secure production application.** Do not use it to collect real payments or sensitive student information until the backend work below is completed.
+
+## Changes in this update
+
+- Reduced and standardised left/right page gutters and added overflow protection for responsive layouts.
+- Removed the visible demo credential panel from the login page.
+- Added a temporary starter admin login for local preview only; see the separately supplied credentials note. This is NOT secure for production because frontend credentials can be inspected.
+- Disabled the simulated payment-success path. A simulated checkout can no longer unlock IELTS access.
+- Changed the browser-side Razorpay callback so it does not grant access merely because the checkout callback ran.
+- Made the public payment-unlock helper fail closed because a static browser cannot verify Razorpay payment signatures.
+- Added an IELTS page re-check when the browser restores the page from its back/forward cache.
+- Kept user-facing messaging in plain English.
+
+## Important security limitation
+
+Client-side checks are not an authorization boundary. A visitor can inspect or modify JavaScript, use browser developer tools, or change `localStorage`. Because this project has no trusted server, it cannot securely guarantee that:
+- only an administrator can grant IELTS access;
+- a student has paid before using IELTS;
+- administrator permissions are enforced;
+- session expiry and logout invalidate all access;
+- passwords or student records are safely stored;
+- lead and application data remain private between users.
+
+Do not put production passwords, Razorpay secrets, API keys, or personal data in HTML, JavaScript, Git history, or `localStorage`. Any secret previously committed must be rotated; deleting it from the latest file does not remove it from Git history.
+
+## Required production architecture
+
+Before launch, migrate authentication, payments, and authorization to a trusted backend. A recommended architecture is:
+
+1. **Frontend:** this site, served over HTTPS.
+2. **Backend API:** a maintained server application (for example, FastAPI or Node.js) deployed on a server platform. Every protected endpoint must authenticate the request and enforce permissions on the server.
+3. **Database:** PostgreSQL or another managed database. Store password hashes using Argon2id or an equivalent established password-hashing implementation; never store plain-text passwords.
+4. **Sessions:** secure server-managed sessions using `HttpOnly`, `Secure`, and appropriate `SameSite` cookies, CSRF protection, session expiry, and server-side revocation. Rotate session identifiers after login and privilege changes.
+5. **Role-based access control:** define least-privilege roles such as `student`, `staff`, and `admin`. Check permissions on every protected API request, not only by hiding buttons or pages. Log administrative changes.
+6. **Razorpay:** create orders on the backend; use the official checkout on the frontend; verify the payment signature on the backend using a secret stored only in server environment variables; verify payment status with Razorpay where appropriate; process webhooks with signature verification and idempotency. Grant IELTS entitlement only after trusted verification. Never trust a payment ID or a browser callback by itself.
+7. **IELTS authorization:** the backend must return content and test data only after checking the authenticated user's active entitlement. A frontend redirect is helpful UX, not security.
+8. **Admin security:** the starter credentials in this preview are hard-coded in frontend JavaScript and are public to anyone who can load the site. They are for local preview only. Before public deployment, remove them and use a server-side first-admin bootstrap, password hashing, optional MFA, rate limiting, login throttling, audit logs, re-authentication for sensitive actions, and tested account recovery.
+9. **Privacy:** collect only required data, document retention/deletion, restrict staff access, encrypt traffic, protect backups, redact secrets and personal data from logs, and publish accurate privacy and retention policies.
+10. **Operational controls:** validate inputs server-side, apply security headers and a restrictive Content Security Policy, dependency scanning, backups and restore tests, monitoring/alerting, error handling, and a documented incident-response process.
+
+## Razorpay setup checklist
+
+- Create a Razorpay account and configure test mode first.
+- Store the **Key ID** and **Key Secret** in the backend's environment/secret manager; never expose the Key Secret in the website.
+- Implement a backend order-creation endpoint and signature-verification endpoint.
+- Configure and verify webhooks on the backend.
+- Test success, failure, cancellation, duplicate webhook, delayed payment, refund, and forged-callback cases.
+- Move to live mode only after reconciliation and end-to-end security tests pass.
+
+The current static project does not include a backend payment endpoint, so the real payment flow is intentionally not represented as complete. Do not deploy this version as a paid-access system.
+
+## Layout and accessibility checks
+
+Test at 320px, 375px, 768px, 1024px, 1366px, and 1920px widths. Check all pages for horizontal scrolling, keyboard focus, readable contrast, labels on form controls, mobile navigation, and errors announced accessibly. A CSS change cannot guarantee that every page is perfectly aligned at every browser zoom; verify with real-browser testing.
 
 ## Run locally
-
-From this directory:
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Open <http://localhost:8080/>. A local static server is recommended instead of opening the HTML file directly.
+Open <http://localhost:8080/>.
 
-## What changed
+## Deployment note
 
-- Reworked the homepage into an editorial landing page with a large two-column hero, moving service strip, three audience/needs cards, destination imagery, student-story cards, six service tiles, a three-step journey, an interactive-looking IELTS preview, FAQ and lead-capture CTA.
-- Replaced the previous orange/navy UI with a graphite, warm-white and lime palette; updated heading scale, page rhythm, card borders, button styling, controls, footer and page headers across the existing HTML pages.
-- Reworked the shared navigation and footer in `js/app.js` to use a single-row, sticky navigation and responsive mobile panel while retaining the current routes and login-state link.
-- Bundled generic AI-generated campus and library imagery in `assets/images/`; did not use Roveia's proprietary images, logos or written case studies.
-- Added `js/roveia-motion.js` for scroll reveals, staggered entrance, FAQ single-open behaviour and accessible mobile navigation close behaviour. CSS respects `prefers-reduced-motion`.
-- Homepage lead form still validates the required fields and uses the existing `FE.saveLead` mechanism. It displays an explicit demo notice because the code stores leads in browser `localStorage`, not in a server-side CRM/database.
-- Rebuilt `ielts.html` to use the same graphite / warm-white / lime design system as the new homepage, including an editorial hero, sample computer-test visual, skill filters, paginated test groups, learning-mode cards, a three-step practice journey, FAQ and a clear final CTA. The page preserves existing test player routes and the three currently wired test IDs (`L-11-1`, `R-11-1`, `W-11-1`).
-- Removed hard-coded IELTS user-count statistics and sample testimonials from the rebuilt IELTS page because they were not independently substantiated. Unavailable test sets are labelled as such instead of implying that they can be played.
-- Kept the supplied IELTS, study-abroad, country, universities, scholarship, pricing, login, dashboard and admin routes in the package.
+GitHub Pages is suitable for a public static frontend only. Keep the frontend on GitHub Pages if desired, but deploy the authentication/payment/data API separately and connect it using HTTPS. Do not store privileged data in a public repository or treat frontend-only access checks as enterprise security.
 
-## IELTS page motion / transition count
+## Temporary admin preview login
 
-The rebuilt IELTS page has **19 visible motion/interaction behaviour groups**. These are behaviour groups rather than a count of individual CSS declarations:
+The starter admin login is provided separately for convenience. Treat it as public and temporary. Anyone who can inspect the static website can discover or bypass client-side checks. Do not use it for real student data or public production access.
 
-1. Sticky, blurred shared navigation.
-2. Navigation underline animation for hover/active states.
-3. Responsive mobile menu open/close motion, including Escape and link-close behaviour.
-4. Continuously moving lime service strip that pauses on hover.
-5. Slow hero photograph drift/zoom.
-6. Sample interface card entrance animation.
-7. Floating hero callout cards.
-8. Scroll-triggered section reveals with staggered delays.
-9. CTA/button lift and arrow movement.
-10. Audience card lift, lime underline reveal and arrow movement.
-11. Skill filter hover and active-state transitions.
-12. Test card lift and lime underline reveal.
-13. Saved-progress bar width transition.
-14. Pagination hover and active-state styling.
-15. Practice-interface perspective tilt on hover.
-16. Practice-mode card lift and link-arrow movement.
-17. Three-step process-line reveal on scroll.
-18. FAQ icon rotation, single-open behaviour and answer entrance.
-19. Final CTA link colour and arrow movement.
 
-Reduced-motion preferences are respected by the shared theme and IELTS-specific CSS. These effects improve feedback and hierarchy, but they are not a substitute for testing on real devices.
+## IELTS permission master password (starter default)
 
-## Academic IELTS player update
+**Initial password:** `TFE-Ielts@2026#Access`
 
-- Added Academic-only source tabs for Express demo content, Cambridge Academic (volumes 11–19) and Actual Tests (Academic). Cambridge/Actual entries are intentionally disabled until the owner supplies the underlying test data and has rights to use it.
-- Added an original Express Academic Speaking practice session with three parts, cue-card preparation, browser microphone recording, playback/download, and autosaved self-review notes.
-- Reworked the test player into a two-pane desktop layout for Reading, Listening, Writing Task 1/2, and Speaking. On narrow screens the panes stack vertically.
-- Fixed True/False/Not Given options in the sample Reading set; answer navigation and objective answer review work against the bundled original questions.
-- Writing Task 1 now has an original sample transport table and a separate Task 2 prompt. Text drafts are autosaved to this browser's local storage.
-- Listening uses browser speech synthesis for the original demo script; it is not an official recording. Writing and Speaking do not return an automatic band estimate because no validated AI/scoring service is connected. Speaking audio remains in page memory unless the user downloads it.
-- Updated `tests.html` and `speaking-ai.html` so their routes lead to the same Academic-only experience. Added a link to the external LexiBot Writing Checker.
+Use this value in the **Previous / Current Password** field the first time you change the IELTS permission master password. Choose a new password, confirm it, and click **Update Permission Password**. The code also falls back to this default when an older browser installation has an empty saved permission password.
 
-## Validation performed
-
-- `node --check js/app.js`
-- `node --check js/roveia-motion.js`
-- `node --check js/tests-data.js`
-- `node --check js/ielts-player.js`
-- Inline JavaScript syntax checks for the rebuilt IELTS page
-- Checked the rebuilt IELTS page has one HTML root/head/body, no duplicate IDs, no legacy nested document, no old `lx-` page classes, and no missing relative links
-- Verified all five available IELTS demo IDs exist in `js/tests-data.js`
-- Checked `ielts.html`, `test.html`, `tests.html` and `speaking-ai.html` for a single document structure, duplicate IDs and unresolved local asset links
-- Verified the IELTS routes contain no General Training links/cards
-- Full browser screenshot and interaction testing was attempted, but Chromium navigation was blocked by the environment policy; this is not claimed as a browser-tested build
-
-A real browser interaction screenshot pass could not run in this container because Chromium navigation was blocked by the environment's administrator policy. Please run the site locally and review the result at desktop, tablet and phone widths before deployment.
-
-## Production limitations
-
-This is still a static front-end demo, not a production backend or security review:
-
-- Homepage leads and demo data are kept in the visitor's own browser and are not sent to your team.
-- Login/session/admin controls in the original project are client-side, and demo credentials/data in browser JavaScript are not suitable for private student records.
-- Destination-card photography uses remote Unsplash URLs in `js/app.js`; those cards need internet access. The hero and CTA photographs are bundled locally.
-- Google Fonts is remotely loaded with system fallbacks. If full offline operation is needed, bundle properly licensed font files.
-- Existing claims in legacy pages and sample datasets were inherited from the supplied project and have not been independently verified. Confirm them before publishing.
-
-## Design/source notes
-
-See [`SOURCES.md`](SOURCES.md) for specific design and image references. Reference site: <https://www.roveia.com/>.
+**Security warning:** this is a temporary convenience password in a static frontend, not a secret. Anyone who can inspect the public JavaScript can discover it, and browser `localStorage` can be changed. Do not rely on this password to protect real student data or paid IELTS access. Before public production use, move permission checks and password storage to a trusted backend; use a unique server-managed secret/password and never commit production credentials.

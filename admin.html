@@ -15,7 +15,6 @@ const root=document.getElementById('adminRoot');
 function loginGate(){
   root.innerHTML=`<div class="auth"><div class="formcard">
   <h3>🛡 Admin Login</h3><div class="fs">Restricted area — staff only.</div>
-  <div class="demo-creds">Demo credentials: <b>admin@theforeignexpress.com</b> / <b>express@2026</b></div>
   <div class="field"><label>Email</label><input class="inp" id="aEmail" type="email"></div>
   <div class="field"><label>Password</label><input class="inp" id="aPass" type="password"></div>
   <button class="btn btn-n btn-full" onclick="doAdminLogin()">Login to Admin Panel</button>
@@ -137,7 +136,7 @@ function renderA(k){
     <div style="background:#f0f6fd;border-radius:12px;padding:14px 18px;margin-top:20px;border:1px solid #dce6f2">
       <b style="color:var(--navy);font-size:12.5px">🔑 Security Notice:</b>
       <p style="font-size:12px;color:var(--muted);margin:4px 0 0">
-        Admin cannot grant permission without the <b>Master Permission Password</b>. Default password: <code style="background:#fff;padding:2px 6px;border-radius:4px;color:#003498;font-weight:800">express@ielts2026</code>.
+        Admin permissions must be configured securely on the server before production use. Do not use a shared master password.
         You can update it under <a onclick="aTab('st',document.querySelectorAll('.dside a')[5])" style="color:var(--navy);font-weight:800;cursor:pointer;text-decoration:underline">Site Settings</a> — the previous password must be verified before any change is saved.
       </p>
     </div>`;
@@ -238,7 +237,7 @@ function modalGrant(email, name){
     <div class="field">
       <label>Enter Master Permission Password*</label>
       <input class="inp" id="grantPassInput" type="password" placeholder="Master permission password" autofocus>
-      <small style="color:var(--muted);font-size:11px;display:block;margin-top:4px">Default: <code style="color:#003498;font-weight:700">express@ielts2026</code></small>
+      <small style="color:var(--muted);font-size:11px;display:block;margin-top:4px">Do not use a shared password. Production permissions must be enforced by the backend.</small>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
       <button class="btn btn-out" onclick="closeAdminModal()">Cancel</button>
@@ -312,7 +311,7 @@ function modalEnrollNewStudent(){
     <div class="field" style="background:#f0f6fd;padding:12px;border-radius:10px;border:1px solid #dce6f2">
       <label style="color:#003498;font-weight:800">Master Permission Password*</label>
       <input class="inp" id="mEnrPermPass" type="password" placeholder="Required to grant access">
-      <small style="color:var(--muted);font-size:10.5px">Default: express@ielts2026</small>
+      <small style="color:var(--muted);font-size:10.5px">Use a unique, securely managed credential. Production checks must run on the server.</small>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">

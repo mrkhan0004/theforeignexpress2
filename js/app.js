@@ -13,20 +13,24 @@ const FE = (function(){
     heroTitle:'Where ambitious students<br><span>find their next campus.</span>',
     s1:'12,400+',s1l:'Students coached',s2:'4.9★',s2l:'Average rating',
     s3:'850+',s3l:'Partner universities',s4:'₹8.2 Cr',s4l:'Scholarships won',
-    adminEmail:'admin@theforeignexpress.com',adminPass:'express@2026',
-    permissionPass:'express@ielts2026',razorpayKey:'rzp_test_51MockForeignExpress',ieltsFee:1499,
+    adminEmail:'admin@theforeignexpress.com',adminPass:'TFE-Admin-2026!Start',
+    permissionPass:'TFE-Ielts@2026#Access',razorpayKey:'',ieltsFee:1499,
     officeStaffPhone:'+91 80693 61480',officeStaffEmail:'hello@theforeignexpress.com',officeStaffWhatsApp:'918069361480'};
-  function settings(){return Object.assign({},DEF_SET,R(K.set,{}))}
+  function settings(){
+    const merged = Object.assign({}, DEF_SET, R(K.set, {}));
+    // Migrate older installs that saved an empty permission password.
+    if(typeof merged.permissionPass !== 'string' || !merged.permissionPass.trim()){
+      merged.permissionPass = DEF_SET.permissionPass;
+    }
+    return merged;
+  }
   function saveSettings(p){W(K.set,Object.assign(settings(),p));chrome();}
 
   /* ---------- SEED DEMO DATA (first run) ---------- */
   function seed(){
     if(R(K.sd,false))return;
     const now=Date.now();
-    W(K.u,[
-      {id:uid(),name:'Aarav Mehta',email:'aarav@demo.com',phone:'+91 98765 43210',pass:'demo123',country:'United Kingdom',band:'6.5',target:'7.0',plan:'pro',ieltsUnlocked:true,ieltsUnlockedBy:'Admin',ieltsUnlockedAt:now-86400e3*10,created:now-86400e3*12},
-      {id:uid(),name:'Rohit Sharma',email:'rohit@demo.com',phone:'+91 90000 11111',pass:'demo123',country:'United Kingdom',band:'6.0',target:'7.0',plan:'free',ieltsUnlocked:false,created:now-86400e3*2}
-    ]);
+    W(K.u,[]); // Never create accounts with publicly known demo passwords.
     W(K.l,[
       {id:uid(),name:'Rohit Sharma',email:'rohit@gmail.com',phone:'+91 90000 11111',country:'United Kingdom',band:'6.0',source:'Homepage form',status:'New',owner:'Unassigned',created:now-3600e3},
       {id:uid(),name:'Priya Nair',email:'priya@gmail.com',phone:'+91 90000 22222',country:'Canada',band:'Not taken',source:'Contact page',status:'Contacted',owner:'Priya M.',created:now-86400e3},
@@ -127,7 +131,7 @@ const FE = (function(){
   function requireAuth(){if(!me())location.href='login.html?next='+encodeURIComponent(location.pathname.split('/').pop()||'dashboard.html')}
   function updateProfile(patch){const u=me();if(!u)return;const U=users();const i=U.findIndex(x=>x.email===u.email);U[i]=Object.assign(U[i],patch);W(K.u,U)}
   const isAdmin=()=>!!R(K.a,false);
-  function adminLogin(email,pass){const s=settings();if(email.toLowerCase()===s.adminEmail&&pass===s.adminPass){W(K.a,true);return true}return false}
+  function adminLogin(email,pass){const s=settings();const configuredEmail=(s.adminEmail||'admin@theforeignexpress.com').toLowerCase();const configuredPass=s.adminPass||'TFE-Admin-2026!Start';if(String(email||'').trim().toLowerCase()===configuredEmail&&String(pass||'')===configuredPass){W(K.a,true);return true}return false}
   function adminLogout(){localStorage.removeItem(K.a);location.href='index.html'}
 
   /* ---------- LEADS / RESULTS / PROGRESS / APPS ---------- */
@@ -257,42 +261,9 @@ const FE = (function(){
     return {ok:true, user:u};
   }
 
-  function unlockByRazorpay(paymentId, userDetails){
-    let u = me();
-    if(!u && userDetails && userDetails.email){
-      const existing = users().find(x=>x.email === userDetails.email.toLowerCase());
-      if(existing){
-        u = existing;
-        W(K.s, u.email);
-      } else {
-        const reg = register({
-          name: userDetails.name || 'Enrolled Student',
-          email: userDetails.email,
-          phone: userDetails.phone || '',
-          pass: 'student@123'
-        });
-        u = reg.user;
-      }
-    }
-    if(!u) return {ok:false, msg:'User account required'};
-    const U = users();
-    const i = U.findIndex(x=>x.email === u.email);
-    if(i > -1){
-      U[i].ieltsUnlocked = true;
-      U[i].ieltsUnlockedBy = 'Razorpay (' + paymentId + ')';
-      U[i].ieltsUnlockedAt = Date.now();
-      U[i].paymentId = paymentId;
-      U[i].plan = 'IELTS Pro (Razorpay)';
-      W(K.u, U);
-    }
-    saveLead('Razorpay Online Enrolment', {
-      name: u.name,
-      email: u.email,
-      phone: u.phone,
-      status: 'Enrolled',
-      owner: 'Razorpay Payment (' + paymentId + ')'
-    });
-    return {ok:true, user: U[i]};
+  function unlockByRazorpay(){
+    // Static frontend cannot verify Razorpay signatures. Entitlements must be granted by a trusted backend.
+    return {ok:false, msg:'Payment verification is unavailable until a secure server endpoint is configured.'};
   }
 
   function requestStaffPermission(data){
@@ -453,13 +424,16 @@ const FE = (function(){
     m.classList.add('show');
   }
 
-  function completeSimulatedPayment(email, fee){
-    const u = users().find(x=>x.email === (email||'').toLowerCase()) || me();
-    const pid = 'pay_rzp_' + uid();
-    unlockByRazorpay(pid, u);
+  function completeSimulatedPayment(){
     closeModal();
-    toast('🎉 Razorpay Payment Verified! IELTS Practice Suite Unlocked.');
-    setTimeout(()=>location.reload(), 900);
+    toast('Payment is not configured. No charge was made and IELTS access was not changed.');
+  }
+
+  function showPaymentNotConfigured(){
+    let m=document.getElementById('paymentNotConfigured');
+    if(!m){m=document.createElement('div');m.id='paymentNotConfigured';m.className='modal-bg';document.body.appendChild(m);}
+    m.innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentUnavailableTitle" style="max-width:480px;text-align:left"><h3 id="paymentUnavailableTitle">Online payment is not available yet</h3><p style="margin:12px 0 18px">The secure payment service has not been configured. No payment was taken and IELTS access has not been granted. Please contact the office team.</p><button class="btn btn-o btn-full" onclick="FE.closeModal()">Close</button></div>';
+    m.classList.add('show');
   }
 
   function startRazorpayPayment(customUser){
@@ -487,9 +461,9 @@ const FE = (function(){
             prefill: { name: u.name, email: u.email, contact: u.phone },
             theme: { color: "#003498" },
             handler: function(response){
-              unlockByRazorpay(response.razorpay_payment_id || ('pay_' + uid()), u);
-              toast('🎉 Payment successful! IELTS suite unlocked.');
-              setTimeout(()=>location.reload(), 900);
+              closeModal();
+              toast('Payment submitted. IELTS access will remain locked until the server verifies the payment.');
+              console.warn('Payment requires server-side signature verification before entitlement is granted.', response.razorpay_payment_id);
             },
             modal: {
               ondismiss: function(){
@@ -503,7 +477,7 @@ const FE = (function(){
           console.warn('Razorpay open fallback:', e);
         }
       }
-      showRazorpaySimulator(fee, u);
+      showPaymentNotConfigured();
     }
 
     if(!window.Razorpay && !document.getElementById('rzpScript')){
@@ -511,7 +485,7 @@ const FE = (function(){
       sc.id = 'rzpScript';
       sc.src = 'https://checkout.razorpay.com/v1/checkout.js';
       sc.onload = launchGateway;
-      sc.onerror = function(){ showRazorpaySimulator(fee, u); };
+      sc.onerror = function(){ showPaymentNotConfigured(); };
       document.body.appendChild(sc);
     } else {
       launchGateway();

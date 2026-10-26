@@ -383,5 +383,14 @@
       renderLibrary();
     }());
   </script>
+
+  <script>
+  // Re-check access after browser back/forward cache restores this page.
+  window.addEventListener('pageshow', function () {
+    if (window.FE && !FE.hasIeltsAccess()) {
+      window.location.replace('login.html?next=ielts.html');
+    }
+  });
+  </script>
 </body>
 </html>
