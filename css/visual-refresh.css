@@ -146,9 +146,12 @@ nav.main { background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(0,52
 .pagehead .container { position: relative; z-index: 1; }
 .pagehead h1 { font-size: clamp(31px,3.2vw,44px); letter-spacing: -.045em; }
 .pagehead p { line-height: 1.75; }
-.country-hero { padding: 66px 0; background-color: var(--navy); background-image: linear-gradient(100deg,rgba(8,31,45,.82),rgba(18,60,75,.66)),url('../assets/images/campus-students.jpg'); background-size: cover; background-position: center; }
-.country-hero h1 { font-size: clamp(32px,4vw,48px); letter-spacing: -.045em; }
-.country-hero p { line-height: 1.8; color: #d7e5e8; }
+.country-hero { padding: 66px 0; background-color: var(--navy); background-image: linear-gradient(100deg,rgba(8,31,45,.82),rgba(18,60,75,.66)),url('../assets/images/campus-students.jpg'); background-size: cover; background-position: center; color: #fff; }
+.country-hero h1 { font-size: clamp(32px,4vw,48px); letter-spacing: -.045em; color: #fff; }
+.country-hero p { line-height: 1.8; color: #fff; }
+.country-hero .tabs,
+.country-hero .tabs a { color: #0f1e35; }
+.country-hero .tab { color: #0f1e35; }
 
 /* Pricing, dashboard, forms and admin keep familiar information architecture */
 .pcard, .wcard, .tcard, .bm, .rev, .qb { border-radius: 15px; }
