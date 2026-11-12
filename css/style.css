@@ -26,7 +26,7 @@ a{text-decoration:none;color:inherit}
 nav.main{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 2px 10px rgba(0,52,152,.06)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
 .logo{font-family:'Poppins';font-weight:800;font-size:20px;color:var(--navy);display:flex;align-items:center;gap:8px}
-.logo img{height:46px;width:auto;display:block;object-fit:contain}
+.logo img{height:72px;width:auto;display:block;object-fit:contain}
 .logo .plane{background:var(--orange);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
 .navlinks{display:flex;gap:20px;align-items:center;font-weight:600;font-size:14.5px}
 .navlinks a{color:#334155;padding:6px 2px;border-bottom:2px solid transparent}

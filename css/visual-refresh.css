@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5 { letter-spacing: -.025em; }
 nav.main { background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(0,52,152,.08); box-shadow: 0 8px 28px rgba(0,52,152,.04); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .nav-in { min-height: 78px; height: auto; gap: 20px; }
 .logo { font-size: 19px; letter-spacing: -.045em; white-space: nowrap; }
-.logo img { height: 48px; width: auto; display: block; object-fit: contain; }
+.logo img { height: 72px; width: auto; display: block; object-fit: contain; }
 .logo .plane { width: 39px; height: 39px; border-radius: 13px; background: var(--orange); box-shadow: 0 6px 15px rgba(0,150,250,.23); }
 .navlinks { gap: 17px; font-size: 13.5px; }
 .navlinks a { transition: color .18s ease, border-color .18s ease; }

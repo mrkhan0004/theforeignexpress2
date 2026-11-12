@@ -556,7 +556,7 @@ const FE = (function(){
     if(h){const u=me();
       h.innerHTML=`<nav class="main rv-nav"><div class="container nav-in">
         <a href="index.html" class="logo" aria-label="The Foreign Express home" style="display:inline-flex;align-items:center;">
-          <img src="logo.png" alt="The Foreign Express" style="height:48px;max-height:48px;width:auto;display:block;" />
+          <img src="logo.png" alt="The Foreign Express" style="height:72px;max-height:72px;width:auto;display:block;" />
         </a>
         <div class="navlinks" id="primary-navigation">
           <a href="index.html#approach">Why us</a>
@@ -571,7 +571,7 @@ const FE = (function(){
       </div></nav>`;}
     const f=document.getElementById('site-footer');
     if(f){f.innerHTML=`<footer><div class="container"><div class="fgrid">
-      <div><a href="index.html" class="logo" style="margin-bottom:15px;display:inline-flex;align-items:center;"><img src="logo.png" alt="The Foreign Express" style="height:42px;max-height:42px;width:auto;display:block;" /></a><p style="font-size:12px;line-height:1.85;max-width:280px">A connected place to practise IELTS, explore universities and organise your next study-abroad steps.</p><p style="margin-top:16px;font-size:11px;color:var(--muted)">${esc(s.phone)}<br>${esc(s.email)}</p></div>
+      <div><a href="index.html" class="logo" style="margin-bottom:15px;display:inline-flex;align-items:center;"><img src="logo.png" alt="The Foreign Express" style="height:60px;max-height:60px;width:auto;display:block;" /></a><p style="font-size:12px;line-height:1.85;max-width:280px">A connected place to practise IELTS, explore universities and organise your next study-abroad steps.</p><p style="margin-top:16px;font-size:11px;color:var(--muted)">${esc(s.phone)}<br>${esc(s.email)}</p></div>
       <div><h5>STUDY ABROAD</h5>${Object.keys(COUNTRIES).map(k=>`<a href="country.html?c=${k}">Study in ${COUNTRIES[k].short}</a>`).join('')}<a href="universities.html">Find universities</a><a href="scholarships.html">Scholarships</a></div>
       <div><h5>IELTS TOOLS</h5><a href="diagnostic.html">AI Diagnostic</a><a href="tests.html">Mock Tests</a><a href="writing-checker.html">Writing Checker</a><a href="speaking-ai.html">Speaking Practice</a><a href="study-plan.html">Study Plan</a></div>
       <div><h5>DISCOVER</h5><a href="about.html">About us</a><a href="stories.html">Student stories</a><a href="blog.html">Resources</a><a href="contact.html">Contact</a></div>
