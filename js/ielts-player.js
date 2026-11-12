@@ -143,11 +143,10 @@
       return { left, right };
     }
     if (section.type === 'listening') {
-      const practiceTranscript = mode === 'practice' ? `<button type="button" class="lp-tool" data-action="toggle-transcript">Transcript: show / hide</button>` : '';
       const left = `<p class="lp-pane-kicker">Academic Listening · Audio sample</p><h2>${esc(section.title)}</h2>
-        <div class="lp-tool-row"><button type="button" class="lp-tool is-active" data-action="play-audio">▶ Play read-aloud</button><button type="button" class="lp-tool" data-action="pause-audio" id="pauseAudioBtn">Ⅱ Pause</button><button type="button" class="lp-tool" data-action="stop-audio">■ Stop</button>${practiceTranscript}</div>
+        <div class="lp-tool-row"><button type="button" class="lp-tool is-active" data-action="play-audio">▶ Play read-aloud</button><button type="button" class="lp-tool" data-action="pause-audio" id="pauseAudioBtn">Ⅱ Pause</button><button type="button" class="lp-tool" data-action="stop-audio">■ Stop</button></div>
         <p class="lp-muted">This demonstration reads the original sample script with your browser's speech synthesis. It is not a licensed IELTS audio recording. Replays: <b id="repN">0</b> / ${mode === 'exam' ? '1' : '3'}.</p>
-        <div id="transcript" class="lp-passage" style="display:none">${section.chunks.map((chunk, index) => `<p data-ch="${index}">${esc(chunk)}</p>`).join('')}</div><div id="liveChunks" class="lp-passage" aria-live="polite" style="display:none"></div>`;
+        <div id="liveChunks" class="lp-passage" aria-live="polite" style="display:none"></div>`;
       const right = `<p class="lp-pane-kicker">Academic Listening · Answer sheet</p><h2>Listen for the detail</h2><p class="lp-muted">Play the sample once before answering.</p>${section.questions.map((question, qIndex) => renderQuestion(question, qIndex)).join('')}`;
       return { left, right };
     }
@@ -343,10 +342,6 @@
     audioReplays += 1;
     const replayCounter = document.getElementById('repN');
     if (replayCounter) replayCounter.textContent = String(audioReplays);
-    const transcript = document.getElementById('transcript');
-    if (mode === 'practice' && transcript && transcript.style.display === 'block') {
-      // Transcript remains visible in practice mode by user choice.
-    }
     const live = document.getElementById('liveChunks');
     if (live) live.innerHTML = section.chunks.map((chunk, index) => `<p data-ch="${index}">${esc(chunk)}</p>`).join('');
     let chunkIndex = 0;
@@ -387,11 +382,6 @@
     if (live) live.querySelectorAll('[data-ch]').forEach(p => p.classList.remove('lp-current-chunk'));
   }
 
-  function toggleTranscript() {
-    const transcript = document.getElementById('transcript');
-    if (!transcript) return;
-    transcript.style.display = transcript.style.display === 'block' ? 'none' : 'block';
-  }
 
   function renderSpeakingPart() {
     clearInterval(speakingClock);
@@ -648,7 +638,6 @@
     } else if (action === 'play-audio') playListening();
     else if (action === 'pause-audio') pauseListening();
     else if (action === 'stop-audio') stopListening();
-    else if (action === 'toggle-transcript') toggleTranscript();
     else if (action === 'select-writing-task') selectWritingTask(button.dataset.task);
     else if (action === 'select-speaking-part') {
       if (recording || speakingClock) { showToast('Stop the recording or timer before switching parts.'); return; }
